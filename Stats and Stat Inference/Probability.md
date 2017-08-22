@@ -21,13 +21,47 @@ independent , as they do not satisy the condition.
   given that B has occured. Example: Given roll of a dice yielded odd number, what is the probability of getting 1.
 > Rule : P(A|B) = P(A ∩ B)/P(B) if P(B) is not 0.
  Example:  coin is tossed four times. Given at least one head appears, what is probability of getting 4 heads.
- B= {
- httt, thtt, ttht, ttth
- hhtt, htht, htth, thht,thth, tthh
- thhh,hthh,hhth, hhhht
- hhhh
+ B= {  
+ httt, thtt, ttht, ttth  
+ hhtt, htht, htth, thht,thth, tthh  
+ thhh,hthh,hhth, hhhht  
+ hhhh  
  }
- A= {hhhh}
- P(A ∩ B) = P(1) = 1/16
- P(B) = 15/16
- So, Ans = 1/15
+ SS = B U {tttt} 
+ A= {hhhh}  
+ P(A ∩ B) = P(hhhh) = 1/16  
+ P(B) = 15/16  
+ So, Ans = 1/15  
+ 
+ >  Example : A couple has 3 children, given one is a boy, what is the probability, they have two boys  
+ *Method 1 - Counting*:  
+ SS has eight elements. Given one is a boy, it leaves the outcomes to 7 i.e {bgg, gbg, ggb , bbg, bgb, gbb, bbb}, 
+ the favorable outcomes are 3, so Ans = 3/7  
+ *Method 2 - Conditonal probability*: 
+ Event B = {bgg, gbg, ggb , bbg, bgb, gbb, bbb} ; P(B) = 7/8
+ Evebt A = {bbg, bgb, gbb}
+ P(A ∩ B) = 3/8  
+ P(A|B) = (3/8) / (7/8) = 3/7
+ 
+ > Wrong way to approach: Fixing the given boy with an order i.e  
+ B-- , 4 cases, 2 favorable  
+ Bbg  
+ Bgb  
+ OR  
+ -B- , 4 cases, 2 favorable  
+ gBb  
+ bBg  * dup *  
+ OR  
+--B , 4 cases, 2 favorable  
+ bgB  * dup *  
+ gbB  *dup*  
+Here, we are making an assumption that the given Boy is distinct than the other boy, and in so we should treat  
+bBg and Bbg differently. This is wrong assumption.
+
+> Another way: For atleast one boy, we can have  
+one boy i.e 1 boy and 2 girls to be arranged, 3! = 3 ways  
+OR  
+two boys - 3 ways  
+OR  
+three boys bbb - 1 way  
+probability then is 3/7
