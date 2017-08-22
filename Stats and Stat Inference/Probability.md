@@ -1,4 +1,3 @@
-
 ### Random Experiment 
 * An activity that has an element of chance  with more than one outcome possible
 ### Sample Space 
@@ -64,4 +63,22 @@ OR
 two boys - 3 ways  
 OR  
 three boys bbb - 1 way  
-probability then is 3/7
+probability then is 3/7  
+
+### Baye's Theorem  
+Baye's theorem extends to the situations of conditional events and thus conditional probabilities.  
+It connects the current conditional probabilities (which is usually the question that drives the thought ), to know prior conditional  
+probabilities.  
+![eq1](https://user-images.githubusercontent.com/8353134/29589695-cc61194c-875b-11e7-8b6c-9b94a5ec6845.png)
+
+**Example**:  Email phishing could result from opening an attachment from an unknown email id, or clicking a url in the email.    
+A question of interest could be - If a user is a victim of email phishing, what are the chances he/she opened the email with an 
+attachement.So, P(Attachment|Phished)?  
+Usually, at the outset of phishing incidences, you would expect the metrics to be computed to to support the following -  
+* P(Phishing|Attachment) i.e Given an email had an attachment, what is the probability of it being phishing email. This in turn requires-  
+a. P(Attachment ∩ Phishing) i.e the probability of intersection of -
+     event of an email coming with an attchment, and the event of email phishing.  
+b. P(Attachment) i.e Probability of an email with attachment  
+
+
+
