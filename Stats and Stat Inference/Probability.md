@@ -67,8 +67,8 @@ probability then is 3/7
 
 ### Baye's Theorem  
 Baye's theorem extends to the situations of conditional events and thus conditional probabilities.  
-It connects the current conditional probabilities (which is usually the question that drives the thought ), to know prior conditional  
-probabilities.  
+It connects the current conditional probabilities (which is usually the question that drives the thought ), to known
+prior conditional probabilities.  
 ![eq1](https://user-images.githubusercontent.com/8353134/29589695-cc61194c-875b-11e7-8b6c-9b94a5ec6845.png)
 
 **Example**:  Email phishing could result from opening an attachment from an unknown email id, or clicking a url in the email.    
@@ -80,5 +80,31 @@ a. P(Attachment ∩ Phishing) i.e the probability of intersection of -
      event of an email coming with an attchment, and the event of email phishing.  
 b. P(Attachment) i.e Probability of an email with attachment  
 
+**Example**
+60% of people in a company do DS training in an year from joining. 10% of those who do the training get promotion in an year of their joining. 1% of those who got promoted in an year had not done the training. What is the probability of getting promoted,
+having not done the training.  
+**Solution**  
+T be event of someone having done the training.  
+P is the event of getting promoted.  
+P(P|T) is conditional probability of getting promoted, having done the training.
+Question is P(T|P) i. e a conditonal probability relating to a know prior.  
+P(T)=0.6 , P(P|T) = 0.1 , P(P|Tc) = .01  
+P(T|P) = (0.1 * 0.6) / P(P)  
+P(P) = 0.6 * 0.1 + .01 * 0.4  
+Ans = 93.75%  
 
+---
+#### Birthday Paradox  
+What is the probability that any two people in a room of 23 share their birth date?  
+* First, the probability of two people sharing their birthday.
+* Consider non leap year, the random experiment is to chooe two dates out of 365, event is two dates are same,
+ so P(E) = 365*1/ 365*365 i.e 1/365  
+ * For probability of a group of 2 among 23 people to share b'day, we are looking at 253 groups.
+ * We can solve this as -  
+ Only one group shares :1st group shating and 482 not sharing, or 2nd sharing other 482 not and so on so, 253 * ((1/365) * (364/365)^252 )
+ Two groups share - and so on, the computation will be complex  
+ * A simple way is 1- P(No. group shares b'date) = 1 - (364/365)^253 = 0.500477  
+ The paradox is that the probability is > 50% , and this is attributed due to repeat multiplication i.e 1- (0.99726)^253.  
+ As number of people increases, the probability increases
+---
 
