@@ -107,4 +107,24 @@ What is the probability that any two people in a room of 23 share their birth da
  The paradox is that the probability is > 50% , and this is attributed due to repeat multiplication i.e 1- (0.99726)^253.  
  As number of people increases, the probability increases
 ---
+** Example **  
+Rare Event are ones having very less incident rate, say 1%. If we focus on overall high accuracy, we may be commiting a debacle.
+Why?  
+** Solution **  
+Outcome of rare event - P, N. P(P) =.01 P(N) =0.99  
+If we do a test to determine outcome, and say overall accuracy is 95%, it means-  
+
+|         | P | N |**Total**|
+|      ---|---|---|---      |  
+|Tp       |  a|b  |a+b      |
+|Tn       |  c|d  |c+d      |
+|**Total**|1  |99 |100      |  
+
+a+c = 1,
+b+d =99,
+a+d / 100 = .95, a+d =95,
+So, b+c = 5
+
+> P(Tp|P) + P(Tn|N) =0.95  
+What is P(P|Tp) + P(N|Tn) i.e a/(a+b)  
 
