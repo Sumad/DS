@@ -108,23 +108,44 @@ What is the probability that any two people in a room of 23 share their birth da
  As number of people increases, the probability increases
 ---
 ** Example **  
-Rare Event are ones having very less incident rate, say 1%. If we focus on overall high accuracy, we may be commiting a debacle.
-Why?  
+Rare Event are ones having very less incident rate, say 1%. If we design a test to predict the rare event focussing on an 
+accuracy of 95%, it may not give us a good precision.Why?  
 ** Solution **  
-Outcome of rare event - P, N. P(P) =.01 P(N) =0.99  
-If we do a test to determine outcome, and say overall accuracy is 95%, it means-  
+Let outcome of rare event - P, N. P(P) =.01 P(N) =0.99.  
+Let outcome of the test be Pp,Pn i.e predicted positive and predicted negative.
+Accuracy of 95% means,both P(Pp|P) = 0.95, P(Pn|N) = 0.95, P(P) = 0.01 , P(N) = 0.99  
 
-|         | P | N |**Total**|
+|         | Pp | Pn |**Total**|
 |      ---|---|---|---      |  
-|Tp       |  a|b  |a+b      |
-|Tn       |  c|d  |c+d      |
-|**Total**|1  |99 |100      |  
+|P       |  TP|FN  |TP+FN      |
+|N       |  FP|TN  |FP+TN      |. 
 
-a+c = 1,
-b+d =99,
-a+d / 100 = .95, a+d =95,
-So, b+c = 5
+Question - what is the precision of this test i.e, give the test identifies a positive, what is the probability of being
+actually positive?  
+P(P|Pp) = TP/ (TP+FP)=?  
+> P(P|Pp) = [P(Pp|P). P(P)]/[P(Pp)]  = [P(Pp|P). P(P)]/[P(Pp ∩ P) U P(Pp ∩ N)]. 
+= 0.95 * 0.01 / [0.95 * 0.01 + 0.05 * 0.99] = 0.16. 
+So, although accuracy is high, the precision is very low.  
+If precision is to be increased, accuracy has to go up.  
 
-> P(Tp|P) + P(Tn|N) =0.95  
-What is P(P|Tp) + P(N|Tn) i.e a/(a+b)  
+Accuracy	Precision. 
 
+0.95	0.161016949152542    
+0.96	0.195121951219512    
+0.97	0.246192893401015   
+0.98	0.331081081081081   
+0.99	0.5   
+0.995	0.667785234899329.     
+
+** Example ** 
+Four football players take shots at goal froma team, chances of their taking shots are. 
+P(Sa) = 0.1, P(Sb) = 0.2, P(Sc) = 0.3, P(Sd) = 0.4. 
+Chances of them scoring are 1,0.4,0.4, 0.25. Given a goal has been scored, what are the chances D scored it?  
+** Solutions **  
+An experiment is that shot is taken by one of the four, so S = {Sa, Sb, Sc, Sd} and second event is Result = {G, NG}.
+Conditional probabilities are given -  
+P(G|Sa) = 1, P(G|Sb)=0.4, P(G|Sc)=0.4, P(G|Sd)= 0.25.  
+P(Sd|G) = ?  
+= 0.25 * 0.4 / (P(G) ,  
+now, P(G) = P(G ∩ Sa) + P(G ∩ Sb) + P(G ∩ Sc) + P(G ∩ Sd) = 1 * 0.1 + 0.4 * 0.2 + 0.4 * 0.3 + 0.25 * 0.4  ,  
+Ans = 0.25
