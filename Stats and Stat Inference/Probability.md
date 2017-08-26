@@ -128,14 +128,14 @@ P(P|Pp) = TP/ (TP+FP)=?
 So, although accuracy is high, the precision is very low.  
 If precision is to be increased, accuracy has to go up.  
 
-Accuracy	Precision. 
+>Accuracy	Precision. 
 
-0.95	0.161016949152542    
-0.96	0.195121951219512    
-0.97	0.246192893401015   
-0.98	0.331081081081081   
-0.99	0.5   
-0.995	0.667785234899329.     
+>0.95	0.161016949152542    
+>0.96	0.195121951219512    
+>0.97	0.246192893401015   
+>0.98	0.331081081081081   
+>0.99	0.5   
+>0.995	0.667785234899329.    
 
 ** Example ** 
 Four football players take shots at goal froma team, chances of their taking shots are. 
