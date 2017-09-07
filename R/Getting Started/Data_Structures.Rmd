@@ -217,12 +217,10 @@ print.all(ls, names(ls))
 |XLS|xls||* Create worksheets in a workbook, read from an excel 2007 file i.e xlsx, which is a collection of zipped xmls|
 |ZIPPED FILES||gzfile(),bzfile(),xzfile()||
 |RDBMS|RODBC||Also helpful to read from ms excel, ms access; library(RODBC)
-# create an odbc connection to excel workbook
+* create an odbc connection to excel workbook
 con <- RODBC::odbcConnectExcel(xls.file = )
-
 dataframe <- RODBC::sqlFetch(channel = con, sqtable = <file name>)
-RODBC::odbcClose()
-|
+RODBC::odbcClose()|
 |XML||||
 |WEB SCRAPING||||
 |HDFS - HIVE TABLES, PARQUET FILES||||
