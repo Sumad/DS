@@ -230,7 +230,7 @@ print.all(attach(mtcars) , cyl) #
     ## 
     ##     cyl
 
-    ## <environment: 0x000000001b32f578>
+    ## <environment: 0x000000001af29dd0>
     ## attr(,"name")
     ## [1] "mtcars"
     ## [1] 2 3 4
@@ -401,50 +401,44 @@ REFERENCE : <http://cran.r-project.org/doc/manuals/R-data.pdf>
 <tr class="odd">
 <td>DELIMITED FILES</td>
 <td></td>
-<td>read.table()</td>
-<td></td>
+<td>read.table() ,read.csv()</td>
+<td>Key arguments : read.table(file = ,header = ,sep = ,nrows = ,skip = ,colClasses = ,stringsAsFactors = ,na.strings = , nrow = )</td>
 </tr>
 <tr class="even">
 <td>XLS</td>
 <td>xls</td>
 <td></td>
-<td>* Create worksheets in a workbook, read from an excel 2007 file, which is a collection of xmls</td>
+<td>* Create worksheets in a workbook, read from an excel 2007 file i.e xlsx, which is a collection of zipped xmls</td>
 </tr>
 <tr class="odd">
+<td>ZIPPED FILES</td>
+<td></td>
+<td>gzfile(),bzfile(),xzfile()</td>
+<td></td>
+</tr>
+<tr class="even">
 <td>RDBMS</td>
+<td>RODBC</td>
 <td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>XML</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>WEB SCRAPING</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>HDFS - HIVE TABLES, PARQUET FILES</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>JSON</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>SPSS, SAS</td>
-<td></td>
-<td></td>
-<td></td>
+<td>Also helpful to read from ms excel, ms access; library(RODBC)</td>
 </tr>
 </tbody>
 </table>
+
+create an odbc connection to excel workbook
+===========================================
+
+con &lt;- RODBC::odbcConnectExcel(xls.file = )
+
+dataframe &lt;- RODBC::sqlFetch(channel = con, sqtable = <file name>) RODBC::odbcClose() | |XML|||| |WEB SCRAPING|||| |HDFS - HIVE TABLES, PARQUET FILES|||| |JSON|||| |SPSS, SAS||||
+
+``` r
+# read.table(file = ,header = ,sep = ,nrows = ,skip = ,colClasses = ,stringsAsFactors = ,na.strings = ,)
+# #install.packages("RODBC")
+# library(RODBC)
+# # create an odbc connection to excel workbook
+# con <- RODBC::odbcConnectExcel(xls.file = )
+# 
+# dataframe <- RODBC::sqlFetch(channel = con, sqtable = <file name>)
+# RODBC::odbcClose()
+```
