@@ -230,7 +230,7 @@ print.all(attach(mtcars) , cyl) #
     ## 
     ##     cyl
 
-    ## <environment: 0x000000001b348658>
+    ## <environment: 0x000000001b34e8a8>
     ## attr(,"name")
     ## [1] "mtcars"
     ## [1] 2 3 4
@@ -407,7 +407,7 @@ DATA INPUT FROM DIFFERENT SOURCES
 <td>XLS</td>
 <td>xlsx,rodbc</td>
 <td>read.xlsx()</td>
-<td>* Create worksheets in a workbook, read from an excel 2007 file i.e xlsx, which is a collection of zipped xmls</td>
+<td>Create worksheets in a workbook, read from an excel 2007 file i.e xlsx, which is a collection of zipped xmls</td>
 </tr>
 <tr class="odd">
 <td>ZIPPED FILES</td>
@@ -417,7 +417,7 @@ DATA INPUT FROM DIFFERENT SOURCES
 </tr>
 <tr class="even">
 <td>RDBMS</td>
-<td>RODBC</td>
+<td>RODBC, DBI</td>
 <td></td>
 <td>Also helpful to read from ms excel, ms access</td>
 </tr>
@@ -435,20 +435,20 @@ DATA INPUT FROM DIFFERENT SOURCES
 </tr>
 <tr class="odd">
 <td>HDFS - HIVE TABLES, PARQUET FILES</td>
+<td>sparklyr,sparklyr + DBI</td>
 <td></td>
-<td></td>
-<td></td>
+<td><a href="https://spark.rstudio.com/" class="uri">https://spark.rstudio.com/</a></td>
 </tr>
 <tr class="even">
 <td>JSON</td>
-<td></td>
+<td>jsonlite, rjson</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="odd">
-<td>SPSS, SAS</td>
-<td></td>
-<td></td>
+<td>SPSS, SAS, STATA</td>
+<td>Hmisc, foreign (SPSS &amp; SAS)</td>
+<td>read.spss(),read.ssd, spss.get(),sas.get</td>
 <td></td>
 </tr>
 </tbody>
@@ -473,4 +473,26 @@ DATA INPUT FROM DIFFERENT SOURCES
 #install.packages("xlsx")
 #library(xlsx)
 #xlsx::read.xlsx(file= ,sheetName = ,sheetIndex = ,startRow = ,endRow = ,header = ,colClasses = )
+
+# RDBMS
+## TWO  WAY COMMUNICATION B/W R AND RDBMSes IS POSSIBLE
+## Follwing RDBMSes : MS SQL Server, MS Access, Oracle, PostgreSQL,IBM DB2, Teradata, SQLite, Sybase
+## R packages aceess these DBMSes through native database driver, or ODBC or JDBC driver
+  
+# ODBC INTERFACE
+#STEP 1: Install and configure ODBC drivers for the data base and platform
+# STEP 2: Install RODBC package
+
+# con <- RODBC::odbcConnect(dsn = ,uid = ,pwd = ) # Give a registered data source name (dsn)
+#RODBC::sqlFetch(channel = con , ... (<tblname>) # Fetch tables directly
+#RODBC::sqlQuery(channel = ,query = ,errors = ) # Pass a sql query
+# RODBC::sqlSave(channel = ,dat = ,tablename = ,append = ) # function to write tables, or append to table
+#RODBC::sqlDrop() # drop a table
+#close(con)
+
+
+# DBI INTERFACE
+# DBI PACKAGE PROVIDES A CLIENT SIDE (I.E FROM R) CONSISTENT INTERFACE TO DBMSes.
+# OTHER R PACKAGES BUILT USING THIS INTERFACE - RMySQL, ROracle RSQLite, RPostgreSQL
+# RJDBC provides access to DBMSes through a JDBC driver, needs to be installed and configured
 ```
