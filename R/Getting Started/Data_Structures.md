@@ -230,7 +230,7 @@ print.all(attach(mtcars) , cyl) #
     ## 
     ##     cyl
 
-    ## <environment: 0x000000001af29dd0>
+    ## <environment: 0x000000001b348658>
     ## attr(,"name")
     ## [1] "mtcars"
     ## [1] 2 3 4
@@ -379,8 +379,7 @@ print.all(ls, names(ls))
 DATA INPUT FROM DIFFERENT SOURCES
 ---------------------------------
 
-REFERENCE : <http://cran.r-project.org/doc/manuals/R-data.pdf>
-==============================================================
+### REFERENCE : <http://cran.r-project.org/doc/manuals/R-data.pdf>
 
 <table style="width:22%;">
 <colgroup>
@@ -402,12 +401,12 @@ REFERENCE : <http://cran.r-project.org/doc/manuals/R-data.pdf>
 <td>DELIMITED FILES</td>
 <td></td>
 <td>read.table() ,read.csv()</td>
-<td>Key arguments : read.table(file = ,header = ,sep = ,nrows = ,skip = ,colClasses = ,stringsAsFactors = ,na.strings = , nrow = )</td>
+<td></td>
 </tr>
 <tr class="even">
 <td>XLS</td>
-<td>xls</td>
-<td></td>
+<td>xlsx,rodbc</td>
+<td>read.xlsx()</td>
 <td>* Create worksheets in a workbook, read from an excel 2007 file i.e xlsx, which is a collection of zipped xmls</td>
 </tr>
 <tr class="odd">
@@ -420,25 +419,58 @@ REFERENCE : <http://cran.r-project.org/doc/manuals/R-data.pdf>
 <td>RDBMS</td>
 <td>RODBC</td>
 <td></td>
-<td>Also helpful to read from ms excel, ms access; library(RODBC)</td>
+<td>Also helpful to read from ms excel, ms access</td>
+</tr>
+<tr class="odd">
+<td>XML</td>
+<td></td>
+<td></td>
+<td>Useful for putting the semi-structured xml format into structured format, <a href="http://www.omegahat.net/RSXML/Tour.pdf" class="uri">http://www.omegahat.net/RSXML/Tour.pdf</a></td>
+</tr>
+<tr class="even">
+<td>WEB SCRAPING</td>
+<td>Rcurl and xml to read complex web data</td>
+<td>url()- to make a web connection ,readLines() - to read text data, gsub() and grep() for pattern finding and replacement</td>
+<td><a href="http://www.programmingr.com/" class="uri">http://www.programmingr.com/</a></td>
+</tr>
+<tr class="odd">
+<td>HDFS - HIVE TABLES, PARQUET FILES</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>JSON</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>SPSS, SAS</td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 </tbody>
 </table>
 
-create an odbc connection to excel workbook
-===========================================
-
-con &lt;- RODBC::odbcConnectExcel(xls.file = )
-
-dataframe &lt;- RODBC::sqlFetch(channel = con, sqtable = <file name>) RODBC::odbcClose() | |XML|||| |WEB SCRAPING|||| |HDFS - HIVE TABLES, PARQUET FILES|||| |JSON|||| |SPSS, SAS||||
-
 ``` r
-# read.table(file = ,header = ,sep = ,nrows = ,skip = ,colClasses = ,stringsAsFactors = ,na.strings = ,)
-# #install.packages("RODBC")
+# DELIMITED FILES
+# Key arguments : read.table(file = ,header = ,sep = ,nrows = ,skip = ,
+# colClasses = ,stringsAsFactors = ,na.strings = , nrow = )# 
+
+# MS EXCEL AND ACCESS FILES
+#install.packages("RODBC")
 # library(RODBC)
+
+# Example of reading an excel workbool
 # # create an odbc connection to excel workbook
 # con <- RODBC::odbcConnectExcel(xls.file = )
-# 
+# # Read a workbook 
 # dataframe <- RODBC::sqlFetch(channel = con, sqtable = <file name>)
 # RODBC::odbcClose()
+
+#install.packages("xlsx")
+#library(xlsx)
+#xlsx::read.xlsx(file= ,sheetName = ,sheetIndex = ,startRow = ,endRow = ,header = ,colClasses = )
 ```

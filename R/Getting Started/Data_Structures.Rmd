@@ -209,32 +209,38 @@ print.all(ls, names(ls))
 
 ## DATA INPUT FROM DIFFERENT SOURCES
 
-# REFERENCE : http://cran.r-project.org/doc/manuals/R-data.pdf
+### REFERENCE : http://cran.r-project.org/doc/manuals/R-data.pdf
 
 |INPUT|PACKAGE|KEY FUNCTIONS|FURTHER READING/COMMENTS|
 |---|---|---|---|
-|DELIMITED FILES| | read.table() ,read.csv()|Key arguments : read.table(file = ,header = ,sep = ,nrows = ,skip = ,colClasses = ,stringsAsFactors = ,na.strings = , nrow = )|
-|XLS|xls||* Create worksheets in a workbook, read from an excel 2007 file i.e xlsx, which is a collection of zipped xmls|
+|DELIMITED FILES| | read.table() ,read.csv()||
+|XLS|xlsx,rodbc|read.xlsx()|* Create worksheets in a workbook, read from an excel 2007 file i.e xlsx, which is a collection of zipped xmls|
 |ZIPPED FILES||gzfile(),bzfile(),xzfile()||
-|RDBMS|RODBC||Also helpful to read from ms excel, ms access; library(RODBC)
-* create an odbc connection to excel workbook
-con <- RODBC::odbcConnectExcel(xls.file = )
-dataframe <- RODBC::sqlFetch(channel = con, sqtable = <file name>)
-RODBC::odbcClose()|
-|XML||||
-|WEB SCRAPING||||
+|RDBMS|RODBC||Also helpful to read from ms excel, ms access|
+|XML|||Useful for putting the semi-structured xml format into structured format, http://www.omegahat.net/RSXML/Tour.pdf|
+|WEB SCRAPING|Rcurl and xml to read complex web data|url()- to make a web connection ,readLines() - to read text data, gsub() and grep() for pattern finding and replacement| http://www.programmingr.com/|
 |HDFS - HIVE TABLES, PARQUET FILES||||
 |JSON||||
 |SPSS, SAS||||
 
 ```{r}
-# read.table(file = ,header = ,sep = ,nrows = ,skip = ,colClasses = ,stringsAsFactors = ,na.strings = ,)
-# #install.packages("RODBC")
+# DELIMITED FILES
+# Key arguments : read.table(file = ,header = ,sep = ,nrows = ,skip = ,
+# colClasses = ,stringsAsFactors = ,na.strings = , nrow = )# 
+
+# MS EXCEL AND ACCESS FILES
+#install.packages("RODBC")
 # library(RODBC)
+
+# Example of reading an excel workbool
 # # create an odbc connection to excel workbook
 # con <- RODBC::odbcConnectExcel(xls.file = )
-# 
+# # Read a workbook 
 # dataframe <- RODBC::sqlFetch(channel = con, sqtable = <file name>)
 # RODBC::odbcClose()
+
+#install.packages("xlsx")
+#library(xlsx)
+#xlsx::read.xlsx(file= ,sheetName = ,sheetIndex = ,startRow = ,endRow = ,header = ,colClasses = )
 ```
 
