@@ -230,7 +230,7 @@ print.all(attach(mtcars) , cyl) #
     ## 
     ##     cyl
 
-    ## <environment: 0x7f8b0557c878>
+    ## <environment: 0x000000001b32f578>
     ## attr(,"name")
     ## [1] "mtcars"
     ## [1] 2 3 4
@@ -379,13 +379,72 @@ print.all(ls, names(ls))
 DATA INPUT FROM DIFFERENT SOURCES
 ---------------------------------
 
-| INPUT                             | PACKAGE | KEY FUNCTIONS | FURTHER READING/COMMENTS |
-|-----------------------------------|---------|---------------|--------------------------|
-| DELIMITED FILES                   |         |               |                          |
-| XLS                               |         |               |                          |
-| RDBMS                             |         |               |                          |
-| XML                               |         |               |                          |
-| WEB SCRAPING                      |         |               |                          |
-| HDFS - HIVE TABLES, PARQUET FILES |         |               |                          |
-| JSON                              |         |               |                          |
-| SPSS, SAS                         |         |               |                          |
+REFERENCE : <http://cran.r-project.org/doc/manuals/R-data.pdf>
+==============================================================
+
+<table style="width:22%;">
+<colgroup>
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>INPUT</th>
+<th>PACKAGE</th>
+<th>KEY FUNCTIONS</th>
+<th>FURTHER READING/COMMENTS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>DELIMITED FILES</td>
+<td></td>
+<td>read.table()</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>XLS</td>
+<td>xls</td>
+<td></td>
+<td>* Create worksheets in a workbook, read from an excel 2007 file, which is a collection of xmls</td>
+</tr>
+<tr class="odd">
+<td>RDBMS</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>XML</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>WEB SCRAPING</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>HDFS - HIVE TABLES, PARQUET FILES</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>JSON</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>SPSS, SAS</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>

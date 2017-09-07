@@ -207,10 +207,12 @@ print.all(ls, names(ls))
 
 ## DATA INPUT FROM DIFFERENT SOURCES
 
+# REFERENCE : http://cran.r-project.org/doc/manuals/R-data.pdf
+
 |INPUT|PACKAGE|KEY FUNCTIONS|FURTHER READING/COMMENTS|
 |---|---|---|---|
-|DELIMITED FILES||||
-|XLS||||
+|DELIMITED FILES| | read.table()||
+|XLS|xls||* Create worksheets in a workbook, read from an excel 2007 file, which is a collection of xmls|
 |RDBMS||||
 |XML||||
 |WEB SCRAPING||||
