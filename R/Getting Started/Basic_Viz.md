@@ -41,7 +41,7 @@ detach(mtcars)
 
 ``` r
 #2. KEY PLOTTING FUNCTIONS
-# A. PLOT
+# 2.1 PLOT
 #PLOT FUNCTION WORKS DIFFERENTY ON OBJECTS LIKE DATA FRAMES, DENSITY, PLOT.DEFAULT WORKS 
 #FOR SCATTERPLOT B/W X AND Y
 attach(mtcars)
@@ -52,6 +52,13 @@ plot(x= hp, y= mpg,type = "p",xlab = "log (horsepower)",ylab = "log(Miles per ga
 ![](Basic_Viz_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-2-1.png)
 
 ``` r
+# 2.2 
+#lines()
+
+#2.3 
+#abline(v = seq()) can give horizontal and vertical points where to draw lines
+
+
 detach(mtcars)
 # xlim, ylim are limits on the axes
 # main title
@@ -97,8 +104,9 @@ par(par.default) # return to original settings
 
 ### GRAPHICAL PARAMETERS SUMMARY
 
-<table style="width:17%;">
+<table style="width:22%;">
 <colgroup>
+<col width="5%" />
 <col width="5%" />
 <col width="5%" />
 <col width="5%" />
@@ -108,6 +116,7 @@ par(par.default) # return to original settings
 <th>GEOM</th>
 <th>PARAMETER/AESTHETIC</th>
 <th>KEYWORD USED FOR SETTING AESTHETIC FOR GEOM</th>
+<th>REALIZATION-AES.GEOM</th>
 </tr>
 </thead>
 <tbody>
@@ -115,11 +124,38 @@ par(par.default) # return to original settings
 <td>TEXT - TITLE, SUBTITLE,AXIS LABELS,AXIS VALUES</td>
 <td>FONT FAMILY,FONT,SIZE,COLOUR</td>
 <td>family,font,cex,col</td>
+<td>family,</td>
+</tr>
+<tr class="even">
+<td>font.main, font.sub, font.lab, font.axis AND col.main, col.sub etc AND cex.main, cex.sub etc</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>POINT</td>
+<td>SIZE, TYPE</td>
+<td>cex,pch</td>
+<td>cex, pch</td>
+</tr>
+<tr class="even">
+<td>LINE</td>
+<td>TYPE, WIDTH</td>
+<td>lty,lwd</td>
+<td>lty,lwd</td>
+</tr>
+<tr class="odd">
+<td>PLOT DIM</td>
+<td>DIM</td>
+<td>dim(wdth,hght)</td>
+<td>same</td>
+</tr>
+<tr class="even">
+<td>MARGIN</td>
+<td>MARGIN IN INCHES OR LINES</td>
+<td>mar(vector of 4) or mai(vector of 4)</td>
+<td>same</td>
 </tr>
 </tbody>
 </table>
-
-font.main, font.sub, font.lab, font.axis AND col.main, col.sub etc AND cex.main, cex.sub etc | |POINT|SIZE, TYPE| |LINE| TYPE, WIDTH|
 
 ``` r
 #C.  PARAMETERS FOR POINT AND LINES
@@ -211,8 +247,35 @@ par(par.default)
 # Only some of the high level functionslike plot() let you specify
 # the graphical parameters, in other cases separate function can be used
 
-#G.1 TITLE LETS TEXT SIZE, FONT, COLOR
+#G.1 TITLE LETS setting OF TEXT RELATED AESTHETICS LIKE 
+# TEXT SIZE, FONT, COLOR, FAMILY
 #title(main = ,sub = ,xlab = ,ylab = , # Adding titles - main, sub, labels
 #      col.main =,col.sub, col.lab =,  # Adjust color
 #      cex.main =, cex.sub, cex.lab)  # Adjust size
+
+#G.2 AXIS LETS CUSTOMIZATION OF AXES
+# USE TO DRAW GRAPHS WITH MORE THAN 2 AXES
+#PLOTS ONE AXIS AT A TIME
+# axis(side = ,    which side of the plot to draw axis (1-b,2-l,3-u,4-r)
+#      at = ,  num vector, where to put tick marks on the axis
+#      labels = ,  char vec, what labels to give to ticks
+#      tick = , length of tick as fraction of plotting area
+#      pos = ,  point on the other axis where it crosses
+#      font = ,
+#      las = labels parallel or perpendicular to axis
+#      lty = ,lwd = ,lwd.ticks = ,col = ,col.ticks = )
+
+# G.3 USING MINOR TICKS IN A PLOT from Hmisc library
+# library(Hmisc)
+# minor.tick(nx = , ny = , no. of intevals to divide major ticks in on x and y axis
+#            tick.ratio = ) size of minor tick to major tick
+
+# G.3 LEGEND, KEY PARAMS
+# legend(x= ,y = , # coordinates of legend or use xy.legend and "left", "right" etc
+#        legend = , # charcter vectot of labels 
+#        fill = ,# causes boxes to be filled besides legend text
+#        col = , # cause color of point or lines appearing besdides text
+#        pch = ,lty = ,lwd = , point or line attributes appearing the legend
+#        bty = ,bg =  box type, background color
+#        box.lwd = ,box.lty = ,box.col = )
 ```
