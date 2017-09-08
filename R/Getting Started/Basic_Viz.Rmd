@@ -35,11 +35,73 @@ knitr::opts_chunk$set(echo = TRUE)
 # EXAMPLE OF PLOTTING A SCATTER PLOT, AND A REGRESSION LINE
 attach(mtcars)
 dev.new()
-plot(x = hp ,y = mpg,type = "p") # PLOT IS A HIGH LEVEL FUNCTION IN R, WHICH CAN MAKE DIFFERENT TYPE OF PLOTs
-# BASED ON THE 'TYPE' ARGUMENTS,  IT TRIES TO FIGURE OUT THE TYPE BASED ON VARIABLES PROVIDED
+plot(x = hp ,y = mpg,type = "p") # PLOT IS A HIGH LEVEL FUNCTION IN R, WHICH CAN MAKE DIFFERENT TYPE OF PLOTS
+# BASED ON THE 'TYPE' ARGUMENT
 abline(reg = lm(mpg~hp))
 detach(mtcars)
 #help(abline)
 
+```
+
+```{r}
+#2. KEY PLOTTING FUNCTIONS
+# A. PLOT
+#PLOT FUNCTION WORKS DIFFERENTY ON OBJECTS LIKE DATA FRAMES, DENSITY, PLOT.DEFAULT WORKS 
+#FOR SCATTERPLOT B/W X AND Y
+attach(mtcars)
+plot(x= hp, y= mpg,type = "p",xlab = "log (horsepower)",ylab = "log(Miles per gallon)",log = "xy" ,main = " Log Linear relationship?"  ,
+     sub =  "log mpg vs log hp" ,frame.plot = TRUE,asp = 1)
+
+detach(mtcars)
+# xlim, ylim are limits on the axes
+# main title
+# sub - subtitle of the plot
+# xlab/ylab -  x , y axis labels
+# axes - used "xaxt" or "yaxt to suppresss one of thre axes"
+# frame.plot - logical to choose if plot to be enclosed in a box
+# asp - aspect ration i.e y/x
+
+```
+```{r}
+# Plot function operates on a data frame with all numeric columns to give
+# bivariate scatter plots
+plot(mtcars)
+```
+```{r}
+#3. GRAPHICAL PARAMETERS - COLOR, LINE/POINT/BAR TYPE, LENGTH,WIDTH ,TEXT ETC
+#A. GENERAL FUNCTION TO SPECIFY GRAPHICAL PARAMETERS
+#par() # return a list of current graphical paramters
+par.default <- par(no.readonly = TRUE) # return the current setting of parameters that can be modified, use of no.readonly=T
+par(lty = 2, lwd = 2, pch= 2 ,cex= 1.2) # new settings
+attach(mtcars)
+plot(x= hp, y= mpg,type = "p",xlab = "horsepower",ylab = "Miles per gallon" ,main = " Linear relationship?"  ,
+     sub =  "mpg vs hp" ,frame.plot = TRUE)
+abline(reg = lm(mpg ~ hp))
+detach(mtcars)
+par(par.default) # return to original settings
+
+
+#B. GRAPHICAL PARAMETERS WITHIN HIGH LEVEL FUNCTIONS (NOT ALL ARE AVAILABLE THOUGH!, 
+#SO USE A OPTION AS NEEDED )
+# plot() and abline() for example have ... argument to specify graphical parameters,
+# these settings are used only for the current plot
+```
+
+```{r}
+#C.  PARAMETERS FOR POINT AND LINES
+# pch -  point type, goes from 0 to 24
+# cex - size zooming relative to default of 1, expressed as 1.<x>
+# lty - line type goes from 1 to 6
+# lwd - line width ,elative to default of 1, expressed as 1.<x>
+
+# D. PARAMETERS FOR COLORS
+# col - color of lines or points in the plot, can be given as a vector, the values of which are recycled
+# col.axis - color of axes
+# col.lab - color of label of axes
+# col.main , col.sub 
+#fg, bg - foreground and background color
+
+colors()
+rainbow(10)
 ```
 
