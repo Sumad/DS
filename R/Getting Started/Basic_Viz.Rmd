@@ -8,7 +8,7 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-## BASIC GRAPHIC SYSTEM IN R
+### BASIC GRAPHIC SYSTEM IN R
 ### PARAMETERS TO ANNOTATE GRAPHS
 ### COMBINE GRAPHS
 
@@ -87,6 +87,15 @@ par(par.default) # return to original settings
 # these settings are used only for the current plot
 ```
 
+### GRAPHICAL PARAMETERS SUMMARY
+
+|GEOM|PARAMETER/AESTHETIC|KEYWORD USED  FOR SETTING AESTHETIC FOR GEOM|REALIZATIONS -<AES.GEOM> |
+|---|---|---|
+|TEXT - TITLE, SUBTITLE,AXIS LABELS,AXIS VALUES|FONT FAMILY,FONT,SIZE,COLOUR|family,font,cex,col|family, 
+font.main, font.sub, font.lab, font.axis AND col.main, col.sub etc AND cex.main, cex.sub etc
+|
+|POINT|SIZE, TYPE|
+|LINE| TYPE, WIDTH|
 ```{r}
 #C.  PARAMETERS FOR POINT AND LINES
 # pch -  point type, goes from 0 to 24
@@ -101,7 +110,76 @@ par(par.default) # return to original settings
 # col.main , col.sub 
 #fg, bg - foreground and background color
 
-colors()
-rainbow(10)
+# FUNCTIONS TO GET A VECTOR OF COLORS, COLORS CAN BE SPECIFIED AS NAMES, OR DIGITS
+#OR HEXADECIMALS
+x <- colors(5)
+y <- rainbow(5)
+z <- heat.colors(5)
+cvec <- c(rgb(0.2,1,0.5), rgb(0.5,1,0),rgb(0.5,0.5,0.2),rgb(0.1,0.3,0.4),rgb(0.4,.2,0.1)) 
+# rgb lets you create  vector of colors using red green blue
+hvec <- c(hsv(0.2,1,0.5), hsv(0.5,1,0),hsv(0.5,0.5,0.2),hsv(0.1,0.3,0.4),hsv(0.4,.2,0.1))
+# hsv is another function
+pie(x = c(100,20,30,40,10),radius = 1 ,clockwise = TRUE ,col = y ,labels = y)
+# function to create a pie chart
+```
+```{r}
+#E. PARAMETERS FOR TEXT -
+#SIZE : params for font size
+# cex - specify how much text enlargement is needed for plotted text
+# same paramter govern point size
+# cex. axis - for text on the axis
+# cex.lab - axes labels
+# cex.main - main title
+# cex.sub - subtitle
+
+
+#FONT FAMILY, STYLE
+# family - for drawing text,
+  #by default there are three families - serif, sans, mono
+# font - integer for specifying bold  -2, italic-3 ,plain - 1, bold italic - 4  
+ # for plotted text
+# font. axis - for text on the axis, i.e values marked on axes
+# font.lab - axes labels
+# font.main - main title
+# font.sub - subtitle
+
+# ps - font point size (1/72 inch). text size =  cex * ps
+
+
+#F. GRAPH DIMESNIONS AND MARGINS
+#pin(width, height) to fix plot dimensios in inches
+#mar() - vector of 4 to fix margins in lines in order (bottom, left, top, right) 
+#mai() - same but this is in inches, default  is c(5,4,4,2) + 0.1 
+
+# Example , draw a simple scatter and line chart 
+# fix dim of plot, fix margins, note the margins are taken from the plot are and out
+attach(mtcars)
+par.default <- par(no.readonly = TRUE)
+par(pin=c(5,3), mai = c(1,1,0.5,0.5)) # 33% of y dim as margin in bottom, 20% on left
+
+# fix point type/size,
+# Font family, font bolded for title, italics for axis, bold italics for labels
+plot(x = wt, y= mpg, type = "p" ,main = "Scatter Plot with regression line" ,
+     frame.plot = TRUE, pch = 2,col= "blue",xlab = "Weight", ylab = "Mpg",
+     font.axis = 3, font.main = 2,font.lab = 4, 
+     cex = 1.2, cex.main = 1.2, cex.lab= 0.8, cex.axis = 0.9)
+
+# fix color/type/width of line
+abline(reg=lm(mpg~wt), lty = 2, lwd = 1.2, col ="red")
+detach(mtcars)
+par(par.default)
+```
+
+```{r}
+# G. ADDING TEXT ON CHART, LEGENDS, CUSTOMIZING AXES SEPARATELY
+# Only some of the high level functionslike plot() let you specify
+# the graphical parameters, in other cases separate function can be used
+
+#G.1 TITLE LETS TEXT SIZE, FONT, COLOR
+#title(main = ,sub = ,xlab = ,ylab = , # Adding titles - main, sub, labels
+#      col.main =,col.sub, col.lab =,  # Adjust color
+#      cex.main =, cex.sub, cex.lab)  # Adjust size
+
+  
 ```
 
