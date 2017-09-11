@@ -52,21 +52,20 @@ plot(x= hp, y= mpg,type = "p",xlab = "log (horsepower)",ylab = "log(Miles per ga
 ![](Basic_Viz_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-2-1.png)
 
 ``` r
-# 2.2 
-#lines()
-
-#2.3 
-#abline(v = seq()) can give horizontal and vertical points where to draw lines
-
-
 detach(mtcars)
 # xlim, ylim are limits on the axes
 # main title
 # sub - subtitle of the plot
 # xlab/ylab -  x , y axis labels
-# axes - used "xaxt" or "yaxt to suppresss one of thre axes"
+# axes - used "xaxt" or "yaxt to suppresss one of the axes"
 # frame.plot - logical to choose if plot to be enclosed in a box
 # asp - aspect ration i.e y/x
+
+# 2.2 
+#lines()
+
+#2.3 
+#abline(v = seq()) can give horizontal and vertical points where to draw lines
 ```
 
 ``` r
@@ -102,7 +101,7 @@ par(par.default) # return to original settings
 # these settings are used only for the current plot
 ```
 
-### GRAPHICAL PARAMETERS SUMMARY
+### GRAPHICAL PARAMETERS SUMMARY & DETAILS
 
 <table style="width:22%;">
 <colgroup>
@@ -132,15 +131,15 @@ par(par.default) # return to original settings
 </tr>
 <tr class="odd">
 <td>POINT</td>
-<td>SIZE, TYPE</td>
+<td>SIZE, TYPE, COLOR</td>
 <td>cex,pch</td>
-<td>cex, pch</td>
+<td>cex, pch, col</td>
 </tr>
 <tr class="even">
 <td>LINE</td>
-<td>TYPE, WIDTH</td>
+<td>TYPE, WIDTH, COLOR</td>
 <td>lty,lwd</td>
-<td>lty,lwd</td>
+<td>lty,lwd, col</td>
 </tr>
 <tr class="odd">
 <td>PLOT DIM</td>
@@ -158,20 +157,20 @@ par(par.default) # return to original settings
 </table>
 
 ``` r
-#C.  PARAMETERS FOR POINT AND LINES
+#C.  PARAMETERS/AESTHEICS FOR POINTS AND LINES(GEOMS)
 # pch -  point type, goes from 0 to 24
 # cex - size zooming relative to default of 1, expressed as 1.<x>
 # lty - line type goes from 1 to 6
 # lwd - line width ,elative to default of 1, expressed as 1.<x>
 
-# D. PARAMETERS FOR COLORS
+# D. COLOR PARAMETER/AESTHETICS FOR TEXT BASED GEOMS
 # col - color of lines or points in the plot, can be given as a vector, the values of which are recycled
 # col.axis - color of axes
 # col.lab - color of label of axes
 # col.main , col.sub 
 #fg, bg - foreground and background color
 
-# FUNCTIONS TO GET A VECTOR OF COLORS, COLORS CAN BE SPECIFIED AS NAMES, OR DIGITS
+# FUNCTIONS TO GET A VECTOR OF COLORS, COLOR VALUES CAN BE SPECIFIED AS NAMES, OR INTS
 #OR HEXADECIMALS
 x <- colors(5)
 y <- rainbow(5)
@@ -190,7 +189,7 @@ pie(x = c(100,20,30,40,10),radius = 1 ,clockwise = TRUE ,col = y ,labels = y)
 ```
 
 ``` r
-#E. PARAMETERS FOR TEXT -
+#D. PARAMETERS FOR TEXT (contd.) -
 #SIZE : params for font size
 # cex - specify how much text enlargement is needed for plotted text
 # same paramter govern point size
@@ -205,7 +204,7 @@ pie(x = c(100,20,30,40,10),radius = 1 ,clockwise = TRUE ,col = y ,labels = y)
   #by default there are three families - serif, sans, mono
 # font - integer for specifying bold  -2, italic-3 ,plain - 1, bold italic - 4  
  # for plotted text
-# font. axis - for text on the axis, i.e values marked on axes
+# font.axis - for text on the axis, i.e values marked on axes
 # font.lab - axes labels
 # font.main - main title
 # font.sub - subtitle
@@ -213,7 +212,7 @@ pie(x = c(100,20,30,40,10),radius = 1 ,clockwise = TRUE ,col = y ,labels = y)
 # ps - font point size (1/72 inch). text size =  cex * ps
 
 
-#F. GRAPH DIMESNIONS AND MARGINS
+#E. GRAPH DIMESNIONS AND MARGINS (GEOM)
 #pin(width, height) to fix plot dimensios in inches
 #mar() - vector of 4 to fix margins in lines in order (bottom, left, top, right) 
 #mai() - same but this is in inches, default  is c(5,4,4,2) + 0.1 
@@ -224,6 +223,7 @@ attach(mtcars)
 par.default <- par(no.readonly = TRUE)
 par(pin=c(5,3), mai = c(1,1,0.5,0.5)) # 33% of y dim as margin in bottom, 20% on left
 
+# EXAMPLE:
 # fix point type/size,
 # Font family, font bolded for title, italics for axis, bold italics for labels
 plot(x = wt, y= mpg, type = "p" ,main = "Scatter Plot with regression line" ,
@@ -265,17 +265,41 @@ par(par.default)
 #      las = labels parallel or perpendicular to axis
 #      lty = ,lwd = ,lwd.ticks = ,col = ,col.ticks = )
 
+# Note: If using a plot function fto plot first, need to suppress
+# the axis created using axes = FALSE or use xaxt, yaxt arguments
+
 # G.3 USING MINOR TICKS IN A PLOT from Hmisc library
 # library(Hmisc)
 # minor.tick(nx = , ny = , no. of intevals to divide major ticks in on x and y axis
 #            tick.ratio = ) size of minor tick to major tick
 
-# G.3 LEGEND, KEY PARAMS
+# G.4 LEGEND, KEY PARAMS
 # legend(x= ,y = , # coordinates of legend or use xy.legend and "left", "right" etc
-#        legend = , # charcter vectot of labels 
+#        legend = , # charcter vector of labels 
 #        fill = ,# causes boxes to be filled besides legend text
 #        col = , # cause color of point or lines appearing besdides text
 #        pch = ,lty = ,lwd = , point or line attributes appearing the legend
 #        bty = ,bg =  box type, background color
 #        box.lwd = ,box.lty = ,box.col = )
+
+# EXERCISE : PLOT SCATTER AND REGRESSION LINE B/W WT AND MPG, FOR SUBSETS BASED
+# ON CYL TO SEE WHERE THERE IS A LINEAR DEPENDENCE
+#str(mtcars)
+#data <- mtcars
+#data$color <- ifelse(data$cyl==4,"red",ifelse(data$cyl==6,"green","blue"))
+attach(mtcars)
+par.default <- par(no.readonly = TRUE)
+colors <- rainbow(n = length(unique(cyl)))
+plot(x = wt, y = mpg, type = "p", main = " mpg vs wt" ,frame.plot = TRUE, col = cyl)
+legend(x = "topright",legend = c("cyl-4","cyl-6","cyl-8"),fill = cyl)
+abline(reg = lm(formula = mpg ~ wt,subset = (cyl==4)),col ="red")
+abline(reg = lm(formula = mpg ~ wt,subset = (cyl==6)), col ="green")
+abline(reg = lm(formula = mpg ~ wt,subset = (cyl==8)), col ="blue")
+```
+
+![](Basic_Viz_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-7-1.png)
+
+``` r
+detach(mtcars)
+par(par.default)
 ```
