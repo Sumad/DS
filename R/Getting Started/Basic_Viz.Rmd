@@ -179,17 +179,17 @@ par(par.default)
 ```
 
 ```{r}
-# G. ADDING TEXT ON CHART, LEGENDS, CUSTOMIZING AXES SEPARATELY
+# F. ADDING TEXT ON CHART, LEGENDS, CUSTOMIZING AXES SEPARATELY
 # Only some of the high level functionslike plot() let you specify
 # the graphical parameters, in other cases separate function can be used
 
-#G.1 TITLE LETS setting OF TEXT RELATED AESTHETICS LIKE 
+#F.1 TITLE LETS setting OF TEXT RELATED AESTHETICS LIKE 
 # TEXT SIZE, FONT, COLOR, FAMILY
 #title(main = ,sub = ,xlab = ,ylab = , # Adding titles - main, sub, labels
 #      col.main =,col.sub, col.lab =,  # Adjust color
 #      cex.main =, cex.sub, cex.lab)  # Adjust size
 
-#G.2 AXIS LETS CUSTOMIZATION OF AXES
+#F.2 AXIS LETS CUSTOMIZATION OF AXES
 # USE TO DRAW GRAPHS WITH MORE THAN 2 AXES
 #PLOTS ONE AXIS AT A TIME
 # axis(side = ,    which side of the plot to draw axis (1-b,2-l,3-u,4-r)
@@ -204,12 +204,12 @@ par(par.default)
 # Note: If using a plot function fto plot first, need to suppress
 # the axis created using axes = FALSE or use xaxt, yaxt arguments
 
-# G.3 USING MINOR TICKS IN A PLOT from Hmisc library
+# F.3 USING MINOR TICKS IN A PLOT from Hmisc library
 # library(Hmisc)
 # minor.tick(nx = , ny = , no. of intevals to divide major ticks in on x and y axis
 #            tick.ratio = ) size of minor tick to major tick
 
-# G.4 LEGEND, KEY PARAMS
+# F.4 LEGEND, KEY PARAMS
 # legend(x= ,y = , # coordinates of legend or use xy.legend and "left", "right" etc
 #        legend = , # charcter vector of labels 
 #        fill = ,# causes boxes to be filled besides legend text
@@ -223,16 +223,144 @@ par(par.default)
 #str(mtcars)
 #data <- mtcars
 #data$color <- ifelse(data$cyl==4,"red",ifelse(data$cyl==6,"green","blue"))
+library(dplyr)
 attach(mtcars)
 par.default <- par(no.readonly = TRUE)
-colors <- rainbow(n = length(unique(cyl)))
+#colors <- rainbow(n = length(unique(cyl)))
 plot(x = wt, y = mpg, type = "p", main = " mpg vs wt" ,frame.plot = TRUE, col = cyl)
-legend(x = "topright",legend = c("cyl-4","cyl-6","cyl-8"),fill = cyl)
-abline(reg = lm(formula = mpg ~ wt,subset = (cyl==4)),col ="red")
-abline(reg = lm(formula = mpg ~ wt,subset = (cyl==6)), col ="green")
-abline(reg = lm(formula = mpg ~ wt,subset = (cyl==8)), col ="blue")
+abline(reg = lm(formula = mpg ~ wt,subset = (cyl==4)),lty = 1)
+abline(reg = lm(formula = mpg ~ wt,subset = (cyl==6)), lty = 2)
+abline(reg = lm(formula = mpg ~ wt,subset = (cyl==8)), lty = 3)
+abline(reg = lm(formula = mpg ~ wt), lty = 6, col = "red")
+legend(x = "topright",legend = c("cyl-4","cyl-6","cyl-8", "combined"),lty = c(1,2,3,6),
+       col = c(rep("black",3),"red"))
 detach(mtcars)
 par(par.default)
-  
 ```
+```{r}
+#F.5 ADDING TEXT ON CHART AT CUSTOM PLACES (FOR LABELING) AND ON MARGINS
+#str(mtcars)
+# TEXT(), MTEXT() FUNCTIONS
+attach(mtcars)
+plot(x = wt, y = mpg)
+text(x = wt, y = mpg, # can be vectors specifying x,y coordinates to place text
+     labels = rownames(mtcars), # labels of text to place
+     cex = 0.6,col = "red", # size, color, font etc aesthetics of text
+     pos =4 # relative position w.r.t x,y coordinates where to place text   
+     )
+mtext(text = "wt in '000 pounds" , # text to be put in margins
+      side = 1 ,line = 2,adj = 1) # which side (1/2/3/4)
+                                  # how many lines of difference to be put from margin
+                                  # adjustment to left of right, or top/bottom of text
+detach(mtcars)
+# math notation can also be added, details are spared for now.
+# More on this with demo(plotmath) and help(plotmath)
+
+```
+
+```{r}
+# G. GRAPHICAL PARAMETERS TO COMBINE GRAPHS
+#G.1 WITH PAR(), WE CAN SET MFROW() AND MFCOL() TO COMBINE PLOTS
+
+par.default  <- par(no.readonly = TRUE)
+par(mfrow = c(2,2))
+attach(mtcars)
+
+boxplot(x = wt, main = "Distribution of Weight using boxplot", 
+        cex.main = 0.9)
+
+hist(x = wt,density = TRUE, main = "Distribution of Weight using histogram",
+     cex.main = 0.9)
+
+plot(x = wt, y = mpg, main = "Scatter plot to visualize linear dependence", 
+     cex.main = 0.9)
+
+plot(x = wt, y = mpg, type = "p", main = " mpg vs wt" ,frame.plot = TRUE, 
+     col = cyl, cex.main = 0.9)
+abline(reg = lm(formula = mpg ~ wt,subset = (cyl==4)),lty = 1)
+abline(reg = lm(formula = mpg ~ wt,subset = (cyl==6)), lty = 2)
+abline(reg = lm(formula = mpg ~ wt,subset = (cyl==8)), lty = 3)
+abline(reg = lm(formula = mpg ~ wt), lty = 6, col = "red")
+legend(x = "topright",legend = c("cyl-4","cyl-6","cyl-8", "combined"),lty = c(1,2,3,6),
+       col = c(rep("black",3),"red"),cex = 0.6)
+detach(mtcars)
+par(par.default)
+
+```
+
+```{r}
+#G.2 LAYOUT() FUNCTION GIVES MORE FINE CONTROL IN PLOT SIZING
+# LAYOUT FUNCTION TAKES FOLLOWING KEY ARGUMENTS
+#1. MATRIX : MXN DIMENSIONS TO KNOW HOW TO DIVIDE THE DEVICE SPACE
+#2. MATRIX : MATRIX ELEMENTS THAT SPECIFY WHICH CELL IS ASSIGNED
+# TO WHICH FIGURE
+par.default  <- par(no.readonly = TRUE)
+layout(mat = matrix(c(1,1,0,2), # ASSIGN CELLS TO FIGURES
+                    nrow =2 ,ncol =2 , byrow = TRUE)) # DEFINE CELLS
+layout.show(n = 2)
+par(par.default)
+```
+
+```{r}
+par.default  <- par(no.readonly = TRUE)
+layout(mat = matrix(c(1,2,3,3), # ASSIGN CELLS TO FIGURES
+                    nrow =2 ,ncol =2 , byrow = TRUE),# DEFINE CELLS
+                    heights = c(45,55)) # heights and widths
+                      # used to specify relative/absolute dimesnions
+                      # of rows and cols resp., here 45% to 55%
+attach(mtcars)
+
+boxplot(x = wt, main = "Distribution of Weight using boxplot", 
+        cex.main = 0.9)
+
+plot(x = wt, y = mpg, main = "Scatter plot to visualize linear dependence", 
+     cex.main = 0.9)
+
+plot(x = wt, y = mpg, type = "p", main = " mpg vs wt" ,frame.plot = TRUE, 
+     col = cyl, cex.main = 0.9)
+abline(reg = lm(formula = mpg ~ wt,subset = (cyl==4)),lty = 1)
+abline(reg = lm(formula = mpg ~ wt,subset = (cyl==6)), lty = 2)
+abline(reg = lm(formula = mpg ~ wt,subset = (cyl==8)), lty = 3)
+abline(reg = lm(formula = mpg ~ wt), lty = 6, col = "red")
+legend(x = "topright",legend = c("cyl-4","cyl-6","cyl-8", "combined"),lty = c(1,2,3,6),
+       col = c(rep("black",3),"red"),cex = 0.6)
+detach(mtcars)
+
+par(par.default)
+
+```
+
+```{r}
+# G.2 fig parameter within par() function
+# lets you combine plots with finest control
+par.default  <- par(no.readonly = TRUE)
+attach(mtcars)
+par(fig=c(0,0.8,0,0.8))
+plot(x = wt, y = mpg, type = "p", frame.plot = TRUE, 
+     col = cyl, cex.main = 0.9)
+abline(reg = lm(formula = mpg ~ wt,subset = (cyl==4)),lty = 1)
+abline(reg = lm(formula = mpg ~ wt,subset = (cyl==6)), lty = 2)
+abline(reg = lm(formula = mpg ~ wt,subset = (cyl==8)), lty = 3)
+abline(reg = lm(formula = mpg ~ wt), lty = 6, col = "red")
+legend(x = "topright",legend = c("cyl-4","cyl-6","cyl-8", "combined"),lty = c(1,2,3,6),
+       col = c(rep("black",3),"red"),cex = 0.6)
+
+par(fig=c(0,0.8,0.5,1), new = TRUE)
+
+boxplot(x = wt, horizontal = TRUE,axes =FALSE, plot.frame = FALSE)
+
+par(fig=c(0.6,1,0,0.8), new = TRUE)
+
+boxplot(x = mpg, horizontal = FALSE,axes =FALSE, plot.frame = FALSE)
+mtext(text = " Three plots combined using fig",side = 3 ,line = 4,adj = 1,
+      ,at = c(0.2,0.2))
+
+detach(mtcars)
+
+par(par.default)
+?par()
+
+
+```
+
 
