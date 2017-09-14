@@ -287,6 +287,7 @@ par(par.default)
 #str(mtcars)
 #data <- mtcars
 #data$color <- ifelse(data$cyl==4,"red",ifelse(data$cyl==6,"green","blue"))
+#install.packages("dplyr")
 library(dplyr)
 ```
 
@@ -432,8 +433,14 @@ par(par.default)
 ```
 
 ``` r
-# G.2 fig parameter within par() function
+# G.3 PAR () FUNCTION WITH PARAMETERS FIG AND NEW
 # lets you combine plots with finest control
+# FIG takes values as (x1,x2,y1,y2) to confine the boundary in which to draw the plot,
+# each of x1,x2 & y1,y2 define a range on x-axis and y-axis b/w 0,1
+# specifying par(fig =) starts a new plot on the graphic device, idea is to continue putting new plots
+# using fig , and 
+# NEW = TRUE ENSURES THE NEXT HIGH LEVEL PLOTTING FUNCTION DOES NOT CLEAN THE DEVICE/FRAME, AND
+# PLOT AS IF IT WERE A NEW DEVICE, RATHER CONTINIUE WITH PREVIOUS PLOT ON THE FRAME
 par.default  <- par(no.readonly = TRUE)
 attach(mtcars)
 par(fig=c(0,0.8,0,0.8))
@@ -446,6 +453,7 @@ abline(reg = lm(formula = mpg ~ wt), lty = 6, col = "red")
 legend(x = "topright",legend = c("cyl-4","cyl-6","cyl-8", "combined"),lty = c(1,2,3,6),
        col = c(rep("black",3),"red"),cex = 0.6)
 
+# the use of latter two y values are experimental, need a bit of tuning 
 par(fig=c(0,0.8,0.5,1), new = TRUE)
 
 boxplot(x = wt, horizontal = TRUE,axes =FALSE, plot.frame = FALSE)
@@ -453,8 +461,8 @@ boxplot(x = wt, horizontal = TRUE,axes =FALSE, plot.frame = FALSE)
 par(fig=c(0.6,1,0,0.8), new = TRUE)
 
 boxplot(x = mpg, horizontal = FALSE,axes =FALSE, plot.frame = FALSE)
-mtext(text = " Three plots combined using fig",side = 3 ,line = 4,adj = 1,
-      ,at = c(0.2,0.2))
+mtext(text = " Three plots combined using fig",side = 3 ,outer = TRUE, 
+      line = -3, font = 2) 
 ```
 
 ![](Basic_Viz_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-12-1.png)
@@ -463,7 +471,4 @@ mtext(text = " Three plots combined using fig",side = 3 ,line = 4,adj = 1,
 detach(mtcars)
 
 par(par.default)
-?par()
 ```
-
-    ## starting httpd help server ... done
