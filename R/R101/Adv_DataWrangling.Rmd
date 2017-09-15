@@ -1,16 +1,78 @@
 ---
 title: "Advanced Data Wrangling"
-output: html_notebook
+output: github_document
   ---
-
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
-
 ```{r}
-plot(cars)
+# STARTING EXAMPLE
+# Get a combined score, assign A, B,C,D,E grades at 20%ile, sort by student first names
+student <- c("Ja De","Aq Wa","Br Mt","Ds Je","Ja Mc","Cw Cf","Rv Yt","Gj Kl","Jo Ek","JM Rw")
+math <- c(502,600,412,358,495,512,410,625,573,522)
+science <- c(95,99,80,82,75,85,80,95,89,86)
+english <-c(25,22,18,15,20,28,15,30,27,18)
+df<- data.frame(student, math, science, english, stringsAsFactors = FALSE)
+
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+```{r}
+# COMMON MATHEMATICS FUNCTIONS  
+# THESE FUNCTIONS ARE VECTORIZED, I.E THEY WORK ON SCALARS, VECTOTS, DATA FRAMES
+# sqrt()
+# abs()
+# floor()
+# ceiling()
+# trunc(34.99)
+# round(34.993,digits =2 ) digits after decimal
+# signif(34.993, digits = 4) significant digits
+#cos(), sin(), tan() trig functions
+#log(x = ,base = ) , log (x) is natural log
+#exp(x)
+```
+
+```{r}
+# STATISTICS FUNCTIONS
+temp <- c(20,25,11,35,60, 25,11)
+sort(temp)
+
+mean(x = temp,trim = 0.05 ,na.rm = TRUE ) # can get trimmed mean after specifying a fraction
+ # of observations to be trimmed from each end
+median(x = temp,na.rm = TRUE )
+
+mad(x = temp) # MEDIAN OF ABSOLUTE DEVIATIONS
+sd(x = temp,na.rm = TRUE )
+var(x = temp)
+range(temp)
+IQR(temp)
+quantile(x = temp,probs = c(0.25,0.5,0.75,1)) # creates approx. quantiles
+# like 25%ile is not 11+ 25%  (20-11) 
+
+diff(temp,    # Used to create lagged series, given a vector
+     lag = 1 , # order of lag
+     differences = 2) # order of difference
+min(x)
+max(x)
+mean(temp)
+sd(temp)
+(temp - mean(temp)) / sd(temp) 
+scale(x = temp,
+      center = TRUE, 
+      scale = )
+?scale
+```
+
+```{r}
+# CHARACTER MANIPULATION FUNCTIONS
+```
+
+```{r}
+# CONTROL FUNCTIONS
+```
+
+```{r}
+# USER DEFINED FUNCTIONS
+```
+
+```{r}
+# RESHAPE DATA
+```
+
