@@ -139,7 +139,7 @@ scale(x = temp,   # CAN OPERATE ON EACH COLUMN OF A MATRIX LIKE OBJECT
    # IF CENTER IS TRUE, STD. DEVIATION IS USED FOR SCALING, ELSE RMS IS USED
 
 # MOVING A SERIES TO A DESIRED MEAN AND STANDARD DEVIATION
-#STEP1: STANDARDIZE THE SERIES
+#STEP1: STANDARDIZE THE SERIES using Z STATISTIC
 #STEP 2: MULTIPLE SERIES BY DESIRED SD ( THIS DOES NOT CHANGES THE MEAN), 
 #THEN ADD THE DESIRED MEAN TO SERIES (THIS DOES NOT CHANGES THE SD)
 
@@ -211,7 +211,7 @@ sd(temp.new2)
 ``` r
 # PROBABILITY FUNCTIONS
 # DISCRETE AND CONTINUOUS PROBABILITY DISTRIBUTIONS ARE AVAILABLE in R
-# form is - <d/p/q/r><distribution name>, with dpqr meaning and use as below
+# 4 TYPES OF FUNCTIONS, THEIR FORM IS - <d/p/q/r><distribution name>, with dpqr meaning and use as below
 
 #d - DENSITY FUNCTION TO GET POINT/ APPROX POINT PROBABILITIES
 #r - RANDOM NUMBERS FROM A DISTRIBUTION
@@ -261,13 +261,18 @@ plot(x = ns,y = probs,type = "l", xlab = "Outcomes value",ylab = "Probabilities"
 
 ``` r
 # MULTIVARIATE NORMAL DISTRIBUTION
+# GENERATE N NORMAL VARIABLES, GIVEN MEANS AND COVARIANCE MATRIX
 library(MASS)
 set.seed(100)
 mean <- c(30,40,45)
+# COVARIANCE MATRIX
 cov.mat <- matrix(nrow = 3,ncol = 3, data = c(100,-85, -90,
                                              -85,400,200,
                                               -90,200,225))  
+
 df <- mvrnorm(n = 100 ,mu = mean  ,Sigma = cov.mat)
+
+# VALIDATE THE VARIABLES ARE NORMALLY DISTRIBUTED
 y1 <- dnorm(x = df[,1], mean = 30, sd = 10)
 y2 <- dnorm(x = df[,2], mean = 40, sd = 20)
 y3 <- dnorm(x = df[,3], mean = 45, sd = 15)
@@ -306,7 +311,198 @@ main = "Normal Distribution?" , col = "green")
 | 17  | Beta              | beta     |
 
 ``` r
-# CHARACTER MANIPULATION FUNCTIONS
+# PRINT AND CAT - DIFFERENCES AND WHEN TO USE WHAT
+# PRINT() CALLS A METHOD BASED ON THE CLASS OF THE OBJECT GIVEN AS ARGUMENT, AND RETURNS AN OBJECT 
+# OF THE SAME CLASS
+class(print(1:3))
+```
+
+    ## [1] 1 2 3
+
+    ## [1] "integer"
+
+``` r
+class(print(c("a","b")))
+```
+
+    ## [1] "a" "b"
+
+    ## [1] "character"
+
+``` r
+# CAT() INTERNALLY TRIES TO CONVERT THE ARGUMENT/S TO CHARATCER VECTOR, CONCATENATEs
+# AND OUTPUTS TO CONSOLE OR A FILE.IT CANNOT ON ACT ON COMPLEX OBJECTS LIKE LISTS,
+# DATA FRAMES. IT IS VALID ONLY FOR ATOMIC DATA TYPES
+# ALSO RETURNS OBJECT OF CLASS NULL, OUTPUT APPEARS CLEAN
+#print()
+#cat(... = ,file = ,fill = ,append = )
+class(cat(1:3))
+```
+
+    ## 1 2 3
+
+    ## [1] "NULL"
+
+``` r
+class(cat(c("a","b")))
+```
+
+    ## a b
+
+    ## [1] "NULL"
+
+``` r
+# WHEN TO USE WHICH
+#1.  USE CAT TO USE ESCAPE SEQUENCES: USING ESCAPE SEQUENCES IN CAT() MEANS, THEY ARE NOT RETURNED AS
+# CHARACTER VECTORS AND ARE BROUGHT TO EFFECT BY CAT, BUT NOT BY PRINT
+#2. USE CAT TO WRITE TO LOG FILES, MAKING USE OF ESCAPE SEQUENCES. OR USE IT'S UNFORMATTED OUTPUT
+# TO COPY IT OVER TO OTHER PLACES
+#3. USE PRINT WITH NON -ATOMIC CLASSES
+```
+
+``` r
+# SPECIAL CHARACTERS, ESCAPE SEQUENCES, NON-STANDARD NAMING OF VARIABLES
+
+#1. SPECIAL CHARACTERS AND ESCAPE SEQUENCES
+# SPECIAL CHARACTERS : \, "  HAVE RESERVED INTERPRETATION IN R, FOR THESE TO BE USED
+# IN LITERAL SENSE IN CHARACTER VECTORS, EACH OF THEM NEED TO BE ESCAPED WITH A '\'
+
+# x <- c("\", "'", """) # will throw an error
+#x <- c("\m", "'") # will throw an error that \m is unrecognized esc seq
+x <- c("\\", "'", "\"", "\\m") 
+print(x) # RETURNS A CHARACTER VECTOR
+```
+
+    ## [1] "\\"  "'"   "\""  "\\m"
+
+``` r
+cat(x) # RETURNS A NULL CLASS OBJECT, YOU CAN SEE THE CHARACTERS AS YOU WOULD ON
+```
+
+    ## \ ' " \m
+
+``` r
+# KEYBOARD INPUT
+
+# ESCAPE SEQUENCES:
+
+# \n, \t, \b, \r, \f, \v have ascribed interpretations for keyboard inputs
+# THESE CAN BE USED IN CHARACTER STRINGS
+
+# EXAMPLES OF USING SPECIAL CHARACTER AND ESCAPE SEQUENCES:
+# x <- "In ALGOL, you could do logical AND with /\."
+# throws an error, because '\' character is interpreted as a special character
+# in R, to use it as a normal character have to backlash it.
+
+x <- "In ALGOL, you could do logical AND with /\\."
+print(x)
+```
+
+    ## [1] "In ALGOL, you could do logical AND with /\\."
+
+``` r
+cat(x) 
+```
+
+    ## In ALGOL, you could do logical AND with /\.
+
+``` r
+# SEE THE DIFFERENCE IN THE TWO OUTPUTS FROM CAT
+y <- c("tab:\\t", "newline:\\n", "escape:\\", "arbitrary string:\\s")
+print(y)
+```
+
+    ## [1] "tab:\\t"              "newline:\\n"          "escape:\\"           
+    ## [4] "arbitrary string:\\s"
+
+``` r
+cat(y)
+```
+
+    ## tab:\t newline:\n escape:\ arbitrary string:\s
+
+``` r
+y <- c("tab:\t", "newline:\n", "escape:\\", "arbitrary string:\\s")
+print(y)
+```
+
+    ## [1] "tab:\t"               "newline:\n"           "escape:\\"           
+    ## [4] "arbitrary string:\\s"
+
+``` r
+cat(y)
+```
+
+    ## tab:  newline:
+    ##  escape:\ arbitrary string:\s
+
+``` r
+# USING QUOTES IN THE FINAL OUTOUT ON CONSOLE OR A FILE
+x <- "My name is \"Sumad\""       
+print(x)
+```
+
+    ## [1] "My name is \"Sumad\""
+
+``` r
+cat(x)
+```
+
+    ## My name is "Sumad"
+
+``` r
+#2. NON STANDARD NAMES - USE OF ``
+
+`x y` <- 1:5
+`x y`
+```
+
+    ## [1] 1 2 3 4 5
+
+``` r
+# COMMON CHARACTER MANIPULATION FUNCTIONS
+
+vec <- c("Hello", "it has been very .. \\s slow going!" ,"Can we make itt fast??")
+#1. nchar()
+nchar(vec)  # length(vec[2]) will not count characters
+```
+
+    ## [1]  5 34 22
+
+``` r
+#2. substr()
+vec[2]
+```
+
+    ## [1] "it has been very .. \\s slow going!"
+
+``` r
+#grep(x =vec ,pattern = "y", value = FALSE)
+#substr(x = ,start = ,stop = )
+
+#3. grep  # Search a pattern and return the position where match was found 
+
+#4. sub , gsub # FInd a pattern and substitie, can do global search and replace
+
+#5. strsplit # split a string based on a pattern
+# USED TO SPLIT A CHARACTER VECRTOR EITHER TO ITS CONSTITUENT CHARACTERS
+# OR CREATE SPLITS BASED ON A PATTERN, RETURNS A LIST
+str.split <- strsplit(x = vec[2], 
+         fixed = TRUE, # FALSE if a regular expression pattern
+         split = "")
+str.split <- strsplit(x = vec[2], fixed = TRUE, split = "..")
+str(str.split)
+```
+
+    ## List of 1
+    ##  $ : chr [1:2] "it has been very " " \\s slow going!"
+
+``` r
+#6. paste () # pasting string together
+
+#7. cat() # concatenate strings, also understands special quotes
+
+#8. case change functions
 ```
 
 ``` r
