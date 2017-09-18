@@ -76,8 +76,17 @@ help("options")
 #dir.exists()
 
 # FILE PATH 
-# faster than paste, and do not need to specify separators
-#file.path()
+
+# CHARACTER '\' IS CONSTRUED AS ESCAPE CHARACTER, AND SHOULD NOT BE USED
+# IN SPCIFYING FILEPATH
+setwd("C:\Users\sumad.singh\Documents\DS") # throws an error
+setwd("C:/Users/sumad.singh/Documents/DS/R/R101")
+
+#file.path() works better, in not needing the separator to be specified
+# faster than paste, and do not need to specify separators, picks up
+# based on platform
+file.path("C:", "Users", "sumad.singh","DS")
+
 
 # CONNECTION TO A FILE
 

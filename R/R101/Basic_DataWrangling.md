@@ -208,7 +208,7 @@ fmt.date
 datetime
 ```
 
-    ## [1] "2017-09-15 14:38:16 CDT"
+    ## [1] "2017-09-18 16:44:21 CDT"
 
 ``` r
 date
@@ -216,7 +216,7 @@ date
 
     ## function () 
     ## .Internal(date())
-    ## <bytecode: 0x000000001af60650>
+    ## <bytecode: 0x000000001b382010>
     ## <environment: namespace:base>
 
 ``` r
@@ -225,7 +225,7 @@ t1 <- Sys.time()
 difftime(t1, fmt.date, units = "days")
 ```
 
-    ## Time difference of 198.8182 days
+    ## Time difference of 201.9058 days
 
 ``` r
 # FUNCTION TO EXPLORE FOR HANDLING DATE TIMES

@@ -10,16 +10,6 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
-# STARTING EXAMPLE
-# Get a combined score, assign A, B,C,D,E grades at 20%ile, sort by student first names
-student <- c("Ja De","Aq Wa","Br Mt","Ds Je","Ja Mc","Cw Cf","Rv Yt","Gj Kl","Jo Ek","JM Rw")
-math <- c(502,600,412,358,495,512,410,625,573,522)
-science <- c(95,99,80,82,75,85,80,95,89,86)
-english <-c(25,22,18,15,20,28,15,30,27,18)
-df<- data.frame(student, math, science, english, stringsAsFactors = FALSE)
-```
-
 
 ```{r}
 # COMMON MATHEMATICS FUNCTIONS  
@@ -210,20 +200,22 @@ class(cat(c("a","b")))
 # SPECIAL CHARACTERS, ESCAPE SEQUENCES, NON-STANDARD NAMING OF VARIABLES
 
 #1. SPECIAL CHARACTERS AND ESCAPE SEQUENCES
-# SPECIAL CHARACTERS : \, "  HAVE RESERVED INTERPRETATION IN R, FOR THESE TO BE USED
+# SPECIAL CHARACTERS : \ and "  HAVE RESERVED INTERPRETATION IN R, FOR THESE TO BE USED
 # IN LITERAL SENSE IN CHARACTER VECTORS, EACH OF THEM NEED TO BE ESCAPED WITH A '\'
 
 # x <- c("\", "'", """) # will throw an error
 #x <- c("\m", "'") # will throw an error that \m is unrecognized esc seq
 x <- c("\\", "'", "\"", "\\m") 
 print(x) # RETURNS A CHARACTER VECTOR
-cat(x) # RETURNS A NULL CLASS OBJECT, YOU CAN SEE THE CHARACTERS AS YOU WOULD ON
+cat(x) # RETURNS A NULL CLASS OBJECT, YOU CAN SEE THE CHARACTERS PLANLY AS YOU WOULD ON
 # KEYBOARD INPUT
 
 # ESCAPE SEQUENCES:
 
-# \n, \t, \b, \r, \f, \v have ascribed interpretations for keyboard inputs
-# THESE CAN BE USED IN CHARACTER STRINGS
+# \n, \t, \b, \r, \f, \v have ascribed MEANINGS for keyboard inputs
+# AND WITH ONLY THESE, CAN '\' BE USED IN CHARACTER STRINGS
+#print("\s") # gives error
+print("\n")
 
 # EXAMPLES OF USING SPECIAL CHARACTER AND ESCAPE SEQUENCES:
 # x <- "In ALGOL, you could do logical AND with /\."
@@ -233,11 +225,14 @@ cat(x) # RETURNS A NULL CLASS OBJECT, YOU CAN SEE THE CHARACTERS AS YOU WOULD ON
 x <- "In ALGOL, you could do logical AND with /\\."
 print(x)
 cat(x) 
+class(writeLines(x)) # writelines also returns object of null class
 
 # SEE THE DIFFERENCE IN THE TWO OUTPUTS FROM CAT
 y <- c("tab:\\t", "newline:\\n", "escape:\\", "arbitrary string:\\s")
 print(y)
 cat(y)
+
+sub(pattern = "\\s",replacement = "." ,x = "hello there")
 
 y <- c("tab:\t", "newline:\n", "escape:\\", "arbitrary string:\\s")
 print(y)
@@ -256,42 +251,157 @@ cat(x)
 ```
 
 ```{r}
-# COMMON CHARACTER MANIPULATION FUNCTIONS
+# COMMON STRING AND CHARACTER MANIPULATION FUNCTIONS
 
-vec <- c("Hello", "it has been very .. \\s slow going!" ,"Can we make itt fast??")
+vec <- c("Hello", "it has been very long and \\s slow going!" ,"Can we make itt fast??")
 #1. nchar()
 nchar(vec)  # length(vec[2]) will not count characters
+nchar(" ") # space is a character
 
 #2. substr()
-vec[2]
-#grep(x =vec ,pattern = "y", value = FALSE)
-#substr(x = ,start = ,stop = )
+# SUBSTR() LETS YOU ACCESS A STRING (SCALAR CHARACTER), AND CARVE OUT A SUBSTRING
 
-#3. grep  # Search a pattern and return the position where match was found 
+# EXAMPLE : TO PICK THE SUBSTRING '\\S' FROM VEC[2]
+vec[2] # IS A SCALAR, SO YOU CANNOT INDEX AND ACCESS IT'S PARTS
+split.bbones <- strsplit(x = vec[2], # FIRst split the scalar string
+                         split = "", # to its constituting characters
+                         fixed = TRUE) # to form a vector
+#str(split.bbones)
+ind <- grep(pattern = "\\",              # Access the vector and find matching
+            value = FALSE, fixed = TRUE, # index for "\\", note that "\\"
+            x = split.bbones[[1]])       # was broken to be a single character
 
-#4. sub , gsub # FInd a pattern and substitie, can do global search and replace
+# now pass the indices to substr()
+substr(x = vec[2] ,start = ind ,stop = ind +1 ) # takes a start and stop index
+
+#3. grep  # Search a pattern and return the positions/values from the vecor
+# where match was found 
+grep(pattern = "\\",             # Pattern can be specified using reg. expressions
+    value = FALSE,               # the default behavior expexts reg. exp.
+    fixed = TRUE,                # index or value can be returned, fixed = TRUE
+    x = split.bbones[[1]],        # ensure pattern is treated as normal string 
+    ignore.case = TRUE ,
+    invert = FALSE,               # can get non -matching index or values also
+    perl = TRUE)                  # if perl compatibel reg ex should be used
+
+#4. sub , gsub # Find a pattern and substitie, can do global search and replace
+sub(pattern = "\\s",
+    replacement = "",x = vec[2],
+    ignore.case = FALSE,perl = FALSE ,
+    fixed = TRUE ) # WITH FIXED = TRUE THE METACHARCTER '\' LOOSES IT'S MEANING
+
+sub(pattern = "\\\\s",
+    replacement = "",x = vec[2],
+    ignore.case = FALSE,perl = FALSE ,
+    fixed = FALSE )  # NOW THE PATTERN SPECIFICATION CHANGES, USING \ AS
+                     # AN ESCAPE CHARCTER FOR EACH \
+
+# find and replace whitespace
+sub(pattern = "\\s",  # \ is used in string scalars, when used with escape seq.
+    replacement = "." , # \s is a regex for whitespace
+    x = "hello there")
 
 #5. strsplit # split a string based on a pattern
-# USED TO SPLIT A CHARACTER VECRTOR EITHER TO ITS CONSTITUENT CHARACTERS
+# USED TO SPLIT A CHARACTER SCALAR EITHER TO ITS CONSTITUENT CHARACTERS
 # OR CREATE SPLITS BASED ON A PATTERN, RETURNS A LIST
 str.split <- strsplit(x = vec[2], 
          fixed = TRUE, # FALSE if a regular expression pattern
          split = "")
-str.split <- strsplit(x = vec[2], fixed = TRUE, split = "..")
-str(str.split)
+str.split <- strsplit(x = vec[2], fixed = TRUE, split = "\\s")
+str.split
 
-#6. paste () # pasting string together
+#6. paste () # CONCATENATES SCALARS OR VECTORS TOGETHER TO RETURN A SCALAR VECTOR
+# OR COLLAPSES A VECTOR TO GIVE A SCALAR
 
-#7. cat() # concatenate strings, also understands special quotes
+# concatenates scalars to return a scalar
+paste("file","path", sep = ".")
+# collapses elements of a vector into a scalar
+paste(str.split[[1]],collapse = "." )
+
+#7. cat() # CONCATENATES OBJECTS INTRODUCES A SPACE BETWEEN,
+#RETURNS CLASS OF NULL, ENABLES WRITING TO A FILE
+# DESCRIBED ABOVE IN DETAIL
+# EXAMPLE: # backspace is used to cut the defautl whitsace introduced by cat
+cat("Hi There","\b!","\n","I am here","\b\n","saying hi","\b\n","bye bye!",
+    "\b\n","\b\t","\b\"Sumad\"")
 
 #8. case change functions
+# toupper and tolower
 
 
 ```
 
 ```{r}
 # CONTROL FUNCTIONS
+# MANY R FUNCTIONS THAT WORK ON A VECTOR ALSO WORK ON A DATA FRAME/MATRIX
+# EXAMPLES:
+mat <- matrix(data = rnorm(n = 12 ),nrow = 4,byrow = TRUE)
+is.na(x = mat)
+round(mat,4)
+# WHILE OTHERS DO NOT DO EXPLICITLY
+mean(mat)
+
+#1. APPLY FAMILY OF FUNCTIONS- USE FUNCTIONS ON MATRICES/FRAMES,LISTS
+
+mat <- matrix(data = rnorm(n = 12 ),nrow = 4,byrow = TRUE)
+apply(X = mat,
+      MARGIN = 2 , # 1 is for rows, 2 for columns
+      FUN = mean) # name of the function, could be UDF
+      #... = ) # add'l parameters to be passed to FUN
+
+apply(X = mat,
+      MARGIN = 2 , # 1 is for rows, 2 for columns
+      FUN = mean, # name of the function, could be UDF
+      trim = 0.4) # parameter that function trim takes
+                  # to remove extreme observations
 ```
+```{r}
+# DATA WRANGLING EXAMPLE
+# Get a combined score, assign A, B,C,D,E grades at 20%ile, sort by student first names
+student <- c("Ja De","Aq Wa","Br Mt","Ds Je","Ja Mc","Cw Cf","Rv Yt","Gj Kl","Jo Ek","JM Rw")
+math <- c(502,600,412,358,495,512,410,625,573,522)
+science <- c(95,99,80,82,75,85,80,95,89,86)
+english <-c(25,22,18,15,20,28,15,30,27,18)
+df<- data.frame(student, math, science, english, stringsAsFactors = FALSE)
+
+df1 <- df
+df1$student = NULL
+str(df1)
+
+vec.scale <- c(max(df1$math)/100, max(df1$science)/100, max(df1$english)/100)
+df2 <- as.data.frame(scale(x = df1,center = c(0,0,0), scale = vec.scale ),
+                     row.names = FALSE)
+colnames(df2) <- paste("scaled",colnames(df2),sep=".")
+
+df3 <- cbind(df,df2)
+df3$combined.score <- df3$scaled.math + df3$scaled.science +df3$scaled.english
+qtile <- quantile(x = df3$combined.score, probs = c(0, 0.2,0.4,0.6,0.8,1))
+df3$grade <- cut(x = df3$combined.score,
+    breaks = qtile,
+    labels = c("E","D","C","B","A"),right = FALSE,include.lowest = TRUE)
+df3
+
+split.names <- strsplit(x = df3$student,
+                        split = " ", 
+                        fixed = TRUE)
+first.name <- NULL
+second.name <- NULL
+for (i in 1:dim(df3)[1]){
+  temp.fn <- split.names[[i]][1]
+  temp.sn <- split.names[[i]][2]
+  first.name <- c(first.name,temp.fn )
+  second.name <- c(second.name,temp.sn )
+}
+
+df3$first.name <- first.name
+df3$second.name <- second.name
+
+df4 <- df3[order(df3$first.name,df3$second.name,decreasing = FALSE),]
+df4
+
+
+```
+
 
 ```{r}
 # USER DEFINED FUNCTIONS

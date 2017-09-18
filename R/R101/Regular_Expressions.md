@@ -32,7 +32,8 @@ Sumad Singh
 # "{ }"
 # "[ ]" - bracket used to build a character class, any charcter class will be enclosed with []
 # "|" - interpreted as an OR when building extended regular expressions
-# "\" 
+# "\" - interpreted as an escape character, true for the language
+#       \s is a regex used for whitespace
 # "^" : instruction to match empty i.e "" (0 character string) string at begininig of line, 
 #       except in CHARCTER CLASS (SEE BELOW)
 #       where it means to match for any character except the one following ^
@@ -137,7 +138,7 @@ d
     ## 4 44 vitamin E(ointment)               once a day
     ## 5 55                                             
     ## 6 66          vitamin E              one per day 
-    ## 7 77      provitamin E\n                       \t
+    ## 7 77      provitamin E\n                        \t
     ## 8 88               vit E                     \n
 
 ``` r
