@@ -436,7 +436,7 @@ y <- c("tab:\t", "newline:\n", "escape:\\", "arbitrary string:\\s")
 print(y)
 ```
 
-    ## [1] "tab:\t"                "newline:\n"           "escape:\\"           
+    ## [1] "tab:\t"               "newline:\n"           "escape:\\"           
     ## [4] "arbitrary string:\\s"
 
 ``` r
@@ -677,96 +677,100 @@ science <- c(95,99,80,82,75,85,80,95,89,86)
 english <-c(25,22,18,15,20,28,15,30,27,18)
 df<- data.frame(student, math, science, english, stringsAsFactors = FALSE)
 
-df1 <- df
-df1$student = NULL
-str(df1)
+# GET A DATA FRAME WITH SCALED COLUMNS
+vec.scale <- c(max(df$math)/100, max(df$science)/100, max(df$english)/100)
+df1 <- as.data.frame(scale(x = df[,c("math", "science", "english")],center = c(0,0,0), 
+                           scale = vec.scale ), row.names = FALSE)
+df1 <- round(df1,2)
+colnames(df1) <- paste("scaled",colnames(df1),sep=".")
+
+df2 <- cbind(df,df1)
+df2$combined.score <- df2$scaled.math + df2$scaled.science +df2$scaled.english
+qtile <- quantile(x = df2$combined.score, probs = c(0, 0.2,0.4,0.6,0.8,1))
+
+# USE CUT TO DERIVE A FACTOR VARIABLE FROM A CONTINUOUS VARIABLE (SCORE)
+df2$grade <- cut(x = df2$combined.score,
+    breaks = qtile, # ALL THE POINTS FORMING THE INTERVALS NEED TO BE SPECIFIED IN CUT
+    labels = c("E","D","C","B","A"),
+    right = FALSE, # ENSURES LEFT INTERVAL IS CLOSED AND RIGHT IS OPEN
+    include.lowest = TRUE) # ENSURES THE INTERVAL ONHIGHEST QUANTILE VALUE IS CLOSED 
+df2
 ```
 
-    ## 'data.frame':    10 obs. of  3 variables:
-    ##  $ math   : num  502 600 412 358 495 512 410 625 573 522
-    ##  $ science: num  95 99 80 82 75 85 80 95 89 86
-    ##  $ english: num  25 22 18 15 20 28 15 30 27 18
+    ##    student math science english scaled.math scaled.science scaled.english
+    ## 1    Ja De  502      95      25       80.32          95.96          83.33
+    ## 2    Aq Wa  600      99      22       96.00         100.00          73.33
+    ## 3    Br Mt  412      80      18       65.92          80.81          60.00
+    ## 4    Ds Je  358      82      15       57.28          82.83          50.00
+    ## 5    Ja Mc  495      75      20       79.20          75.76          66.67
+    ## 6    Cw Cf  512      85      28       81.92          85.86          93.33
+    ## 7    Rv Yt  410      80      15       65.60          80.81          50.00
+    ## 8    Gj Kl  625      95      30      100.00          95.96         100.00
+    ## 9    Jo Ek  573      89      27       91.68          89.90          90.00
+    ## 10   JM Rw  522      86      18       83.52          86.87          60.00
+    ##    combined.score grade
+    ## 1          259.61     C
+    ## 2          269.33     B
+    ## 3          206.73     D
+    ## 4          190.11     E
+    ## 5          221.63     D
+    ## 6          261.11     B
+    ## 7          196.41     E
+    ## 8          295.96     A
+    ## 9          271.58     A
+    ## 10         230.39     C
 
 ``` r
-vec.scale <- c(max(df1$math)/100, max(df1$science)/100, max(df1$english)/100)
-df2 <- as.data.frame(scale(x = df1,center = c(0,0,0), scale = vec.scale ),
-                     row.names = FALSE)
-colnames(df2) <- paste("scaled",colnames(df2),sep=".")
+# SPLIT FIRST AND LAST NAMES FROM STRING
+# strsplit can operate on a vector, but returns a list
+split.names <- strsplit(x = df2$student,
+                        split = " ", 
+                        fixed = TRUE)
+# EXTRACT VECTORS OF FIRST NAME & SECOND NAME FROM THE LIST
 
-df3 <- cbind(df,df2)
-df3$combined.score <- df3$scaled.math + df3$scaled.science +df3$scaled.english
-qtile <- quantile(x = df3$combined.score, probs = c(0, 0.2,0.4,0.6,0.8,1))
-df3$grade <- cut(x = df3$combined.score,
-    breaks = qtile,
-    labels = c("E","D","C","B","A"),right = FALSE,include.lowest = TRUE)
+# first.name <- NULL
+# second.name <- NULL
+# for (i in 1:dim(df2)[1]){
+#   temp.fn <- split.names[[i]][1]
+#   temp.sn <- split.names[[i]][2]
+#   first.name <- c(first.name,temp.fn )
+#   second.name <- c(second.name,temp.sn )
+# }
+# df2$first.name <- first.name
+# df2$second.name <- second.name
+
+# A BETTER METHOD
+first.name <- sapply(X = split.names, FUN = "[", 1 ) # Use getElement or "["" function
+second.name <- sapply(X = split.names, FUN = getElement, name = 2 )
+df2$first.name <- first.name
+df2$second.name <- second.name
+
+df3 <- df2[order(df2$first.name,df2$second.name,decreasing = FALSE),]
 df3
 ```
 
     ##    student math science english scaled.math scaled.science scaled.english
-    ## 1    Ja De  502      95      25       80.32       95.95960       83.33333
-    ## 2    Aq Wa  600      99      22       96.00      100.00000       73.33333
-    ## 3    Br Mt  412      80      18       65.92       80.80808       60.00000
-    ## 4    Ds Je  358      82      15       57.28       82.82828       50.00000
-    ## 5    Ja Mc  495      75      20       79.20       75.75758       66.66667
-    ## 6    Cw Cf  512      85      28       81.92       85.85859       93.33333
-    ## 7    Rv Yt  410      80      15       65.60       80.80808       50.00000
-    ## 8    Gj Kl  625      95      30      100.00       95.95960      100.00000
-    ## 9    Jo Ek  573      89      27       91.68       89.89899       90.00000
-    ## 10   JM Rw  522      86      18       83.52       86.86869       60.00000
-    ##    combined.score grade
-    ## 1        259.6129     C
-    ## 2        269.3333     B
-    ## 3        206.7281     D
-    ## 4        190.1083     E
-    ## 5        221.6242     D
-    ## 6        261.1119     B
-    ## 7        196.4081     E
-    ## 8        295.9596     A
-    ## 9        271.5790     A
-    ## 10       230.3887     C
-
-``` r
-split.names <- strsplit(x = df3$student,
-                        split = " ", 
-                        fixed = TRUE)
-first.name <- NULL
-second.name <- NULL
-for (i in 1:dim(df3)[1]){
-  temp.fn <- split.names[[i]][1]
-  temp.sn <- split.names[[i]][2]
-  first.name <- c(first.name,temp.fn )
-  second.name <- c(second.name,temp.sn )
-}
-
-df3$first.name <- first.name
-df3$second.name <- second.name
-
-df4 <- df3[order(df3$first.name,df3$second.name,decreasing = FALSE),]
-df4
-```
-
-    ##    student math science english scaled.math scaled.science scaled.english
-    ## 2    Aq Wa  600      99      22       96.00      100.00000       73.33333
-    ## 3    Br Mt  412      80      18       65.92       80.80808       60.00000
-    ## 6    Cw Cf  512      85      28       81.92       85.85859       93.33333
-    ## 4    Ds Je  358      82      15       57.28       82.82828       50.00000
-    ## 8    Gj Kl  625      95      30      100.00       95.95960      100.00000
-    ## 1    Ja De  502      95      25       80.32       95.95960       83.33333
-    ## 5    Ja Mc  495      75      20       79.20       75.75758       66.66667
-    ## 10   JM Rw  522      86      18       83.52       86.86869       60.00000
-    ## 9    Jo Ek  573      89      27       91.68       89.89899       90.00000
-    ## 7    Rv Yt  410      80      15       65.60       80.80808       50.00000
+    ## 2    Aq Wa  600      99      22       96.00         100.00          73.33
+    ## 3    Br Mt  412      80      18       65.92          80.81          60.00
+    ## 6    Cw Cf  512      85      28       81.92          85.86          93.33
+    ## 4    Ds Je  358      82      15       57.28          82.83          50.00
+    ## 8    Gj Kl  625      95      30      100.00          95.96         100.00
+    ## 1    Ja De  502      95      25       80.32          95.96          83.33
+    ## 5    Ja Mc  495      75      20       79.20          75.76          66.67
+    ## 10   JM Rw  522      86      18       83.52          86.87          60.00
+    ## 9    Jo Ek  573      89      27       91.68          89.90          90.00
+    ## 7    Rv Yt  410      80      15       65.60          80.81          50.00
     ##    combined.score grade first.name second.name
-    ## 2        269.3333     B         Aq          Wa
-    ## 3        206.7281     D         Br          Mt
-    ## 6        261.1119     B         Cw          Cf
-    ## 4        190.1083     E         Ds          Je
-    ## 8        295.9596     A         Gj          Kl
-    ## 1        259.6129     C         Ja          De
-    ## 5        221.6242     D         Ja          Mc
-    ## 10       230.3887     C         JM          Rw
-    ## 9        271.5790     A         Jo          Ek
-    ## 7        196.4081     E         Rv          Yt
+    ## 2          269.33     B         Aq          Wa
+    ## 3          206.73     D         Br          Mt
+    ## 6          261.11     B         Cw          Cf
+    ## 4          190.11     E         Ds          Je
+    ## 8          295.96     A         Gj          Kl
+    ## 1          259.61     C         Ja          De
+    ## 5          221.63     D         Ja          Mc
+    ## 10         230.39     C         JM          Rw
+    ## 9          271.58     A         Jo          Ek
+    ## 7          196.41     E         Rv          Yt
 
 ``` r
 # USER DEFINED FUNCTIONS
