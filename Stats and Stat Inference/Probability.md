@@ -1,11 +1,11 @@
 ### Random Experiment 
 * An activity that has an element of chance  with more than one outcome possible
 ### Sample Space 
-* Set of elementary outcomes of the random experiment
+* Set of  outcomes of the random experiment
 ### Event 
 * A set defined from the elementary outcomes
 * Probability of an event is then defined. Probability of an elementary outcome is simply 
- > the no. of favorable outcomes/total possible outcomes
+ > the no. of times outcome occured/total possible outcomes
 ### Mutually Exclusive events 
 * Occurence of one rules out the occurence of another in a single trial of an experiment.
 ### Independent Events 
@@ -101,9 +101,9 @@ What is the probability that any two people in a room of 23 share their birth da
  so P(E) = 365*1/ 365*365 i.e 1/365  
  * For probability of a group of 2 among 23 people to share b'day, we are looking at 253 groups.
  * We can solve this as -  
- Only one group shares :1st group shating and 482 not sharing, or 2nd sharing other 482 not and so on so, 253 * ((1/365) * (364/365)^252 )
+ Only one group shares :1st group sharing and 252 not sharing, or 2nd sharing other 252 not and so on so, 253 * ((1/365) * (364/365)^252 )
  Two groups share - and so on, the computation will be complex  
- * A simple way is 1- P(No. group shares b'date) = 1 - (364/365)^253 = 0.500477  
+ * A simple way is 1- P(No group shares b'date) = 1 - (364/365)^253 = 0.500477  
  The paradox is that the probability is > 50% , and this is attributed due to repeat multiplication i.e 1- (0.99726)^253.  
  As number of people increases, the probability increases
 ---
