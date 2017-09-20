@@ -1,0 +1,7 @@
+# Documents #
+*.pdf
+*.csv
+*.xls
+
+# logs #
+*.log
