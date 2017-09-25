@@ -5,7 +5,7 @@ date: "September 19, 2017"
 output: github_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = TRUE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -24,7 +24,11 @@ though! but, we spare it for later)
 
 ##### PDF and parameters of binomial
 PDF is mathemtical represenation of Prob. distribution (graphical representation)
-PDF = nCr (p)^r (1-p)^(n-r)
+  
+$PDF = $ C{_r ^n}p^r (1-p)^{(n-r)}$  
+
+![](https://latex.codecogs.com/gif.latex?PDF%20%3D%20%24%20C%7B_r%20%5En%7Dp%5Er%20%281-p%29%5E%7B%28n-r%29%7D%24)
+
 Here, for a given n and probability of succes, we can find probabity distribution, by varying r.
 n and p are the paraemeters of this distribution.
 
@@ -75,8 +79,11 @@ IS NOT DEPENDENT ON POINT OF START OF THE INTERVAL
 Example: Number of cars arriving at a toll booth in 5 mins is likely a poisson random variable
 
 ##### PDF and parameters
+P(x) = $\frac{\lambda^x . e^{-\lambda}}{x!} $  
 
-P(x) = lambda^x . e^(-lambda) / x! i.e probability of observing x counts in TIME T, for which
+![](http://latex.codecogs.com/gif.latex?%24P%28x%29%20%3D%20%24%5Cfrac%7B%5Clambda%5Ex%20.%20e%5E%7B-%5Clambda%7D%7D%7Bx%21%7D%20%24)  
+
+i.e probability of observing x counts in TIME T, for which
 avg. rate of observations is known (i.e lambda OVER TIME T is known)
 lambda is the parameter of the distribution
 
@@ -151,7 +158,10 @@ from the mean
 
 ##### PDF and Parameters of Normal Distribution
 
-PDF = ƒ(x) = 1/√(2π)*sigma exp[- 0.5((x-mean)/sigma)^2]
+$ PDF = f(x) = e^{{\frac{x-\mu}{\sigma}}}^2$  
+
+![](http://latex.codecogs.com/gif.latex?%24%20PDF%20%3D%20f%28x%29%20%3D%20%24%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%5Csigma%7D%20e%5E%7B-0.5%28%5Cfrac%7Bx-%5Cmu%7D%7B%5Csigma%7D%29%5E2%7D%24)  
+
 It is a two parameter distribution, with location i.e mean and scale i.e std. deviation parameters. 
 Its shape paramter or skewness is 0. The kurtosis or peakedness is 3, and peakedness of normal
 distribution is taken as reference.
@@ -205,26 +215,27 @@ n >=30 qualifies for large sample.
 
 samples.df <- Vectorize(FUN = sample, vectorize.args = "size")
 
-clt <- function(pop, sample.size, sample.no)
+clt <- function(pop, sample.size, no.of.samples)
 {
   # computes pop mean
   # draws give no. of random samples of given size from the population
   # computes mean and sd of sample means
-  # Compares mean of sample means and their sd, with population per relationship
+  # Compares mean of sample means and their sd, from population per relationship
   # Returns a vector of pop mean na sd, sampling distribution's mean and sd, sample size
   # returns a vector of the sample means
   pop.mean <- mean(pop)
-  pop.sd <- sd(pop)
+  pop.sd <- sqrt(sum((pop-mean(pop))^2)/length(pop))
   # Call a vectorized function to draw independent same sized samples
-  df <- samples.df(x =pop, size = rep(sample.size, sample.no), replace = TRUE)
+  df <- samples.df(x =pop, size = rep(sample.size, no.of.samples), replace = TRUE)
   sample.means <- apply(X = df,MARGIN = 2,FUN = mean)
   sample.sds <- apply(X = df,MARGIN = 2,FUN = sd)
    
-  mean.sample.mean <- mean(sample.means)
-  sd.sampl.mean <- sd(sample.means) 
-  derived.pop.sd <- sd.sampl.mean * (sample.size)^0.5
-  stats <- c(pop.mean, pop.sd, mean.sample.mean, derived.pop.sd) 
-  lst <- list(stats = stats, sample.means = sample.means, samples = df)
+  mean.sample.means <- mean(sample.means)
+  sd.sample.means <- sd(sample.means) # uses n-1 is denominator
+  derived.sd.sample.means <- pop.sd / ((sample.size)^0.5) # using n in denominator
+  name <- paste("ss",sample.size,sep=".")
+  stats <- c(pop.mean, pop.sd, mean.sample.means, sd.sample.means, derived.sd.sample.means) 
+  lst <- list(name = name, stats = stats, sample.means = sample.means, samples = df)
   return(lst)
 }
 
@@ -243,14 +254,28 @@ for (ss in sample.size.vec){
 return(lt)
 }
 
+plot.dist <- function(lt){
+  # function to extract
+p <- hist(x = lt[["sample.means"]],freq = FALSE, ylab = paste("Prob for", lt[["name"]]))
+return(p)
+  }
+
 set.seed(101)
-pop <- runif(n = 100,min = 10,max = 100)
-sample.size <- seq(30,70,10)
-sample.no <- 50
-result <- clt.vec(pop,sample.size,sample.no)
+pop <- runif(n = 500,min = 10,max = 100)
+sample.size <- seq(30,80,10)
+no.of.samples <- 50
+result <- clt.vec(pop,sample.size,no.of.samples)
 
 # Show the means and sd match
+df <- sapply(X = result, function(lt2) {lt2[["stats"]]})
+names <- c("pop.mean", "pop.sd", "mean.sample.means", "sd.sample.means","derived.sd.sample.means") 
+df <- cbind(names,df)
+df
+
+
 # Show the prob. distr. approaches normal as n increases.
+layout(mat = matrix(data = c(1,2,3,4,5,6),nrow = 3))
+sapply(X = result,FUN = plot.dist)
 #rm(list = ls())
 ```
 
@@ -261,12 +286,13 @@ a sample.
 #### T DISTRIBUTION
 
 When the sample size is small 
-or the population standard deviation is not kown, and sample sd is taken as proxy of population sd, then
-the sampling distribution of means follows t - distribution.
+or the population standard deviation is not known, and sample sd is taken as proxy of population sd, then
+the sampling distribution of means is taken as t - distribution.
 
 ##### PDF and parameters
 PDF ?
-Degrees of Freedom: In general, how many values in a set can be varied, given a set of constraints on 
+Degrees of Freedom: 
+In general, how many values in a set can be varied, given a set of constraints on 
 the set of values.
 For a data set of size n, the degress of freedom are n-1, if no other condition is given.
 Because mean is known, only n-1 values can be varied, and hence the degree of freedom.
@@ -274,11 +300,19 @@ Because mean is known, only n-1 values can be varied, and hence the degree of fr
 Degrees of freedom is the only parameter of t-distribution.
 
 ##### PROPERTIES OF T DISTRIBUTIONS
-1.Mean is 0.ß
+1.Mean is 0.
 2.It is flatter in the tails than the standard normal distribution, it's variance is more than 1 and is
 df/df-2
 3.It is used for random variables, with more uncertainity at extreme values, as it is fatter in the tails,
 than normal distribution.
+```{r}
+p1 <- pnorm(q = -2, mean = 0,sd = 1,lower.tail = TRUE )
+p2 <- pt(q = -2,df = 1:100 ,lower.tail = TRUE )
+p2-p1 # add'l probability is captured by std. t -distribution in the left tail, for a range of df
+# compared to standard normal
+
+```
+
 4. As degrees of freedom increase, variance approaches 1, it tends to normal
 
 ```{r}
@@ -286,15 +320,160 @@ than normal distribution.
 ```
 
 
-
-
 #### Chi-Square
+If a normal random variable is squared it forms a distribution called chi-square distribution.
+If several normals random variables are squared and added, distribution of resulting variable
+is chi square.
+Example : See below
+
+##### PDF and parameters
+Degrees of freedom is the parameter
+
+##### PROPERTIES OF chisquare DISTRIBUTION
+- lies b/w 0 and inf
+- right skewed distribution, skew decreases as df increases (see example below)
+  and becomes more symetric
+
+```{r}
+
+rnorm1 <- rnorm(n = 100,mean = 5,sd = 1)
+sq.rnorm1 <- rnorm1^2
+rnorm2 <- rnorm(n = 100,mean = 5,sd = 1)
+sq.rnorm2 <- rnorm2^2
+rnorm3 <- rnorm(n = 100,mean = 5,sd = 1)
+sq.rnorm3 <- rnorm3^2
+rnorm4 <- rnorm(n = 100,mean = 5,sd = 1)
+sq.rnorm4 <- rnorm4^2
+
+chsq1 <- sq.rnorm1
+var1 <- rep("chsq1", length(chsq1))
+chsq2 <-  sq.rnorm1 + sq.rnorm2
+var2 <- rep("chsq2", length(chsq2))
+chsq3 <- sq.rnorm1 + sq.rnorm2 + sq.rnorm3
+var3 <- rep("chsq3", length(chsq3))
+chsq4 <- sq.rnorm1 + sq.rnorm2 + sq.rnorm3 + sq.rnorm4
+var4 <- rep("chsq4", length(chsq4))
+df <- data.frame(name = c(var1,var2,var3,var4), values = c(chsq1, chsq2, chsq3, chsq4))
+
+#install.packages("ggplot2")
+library(ggplot2)
+ggplot(data = df,mapping = aes(x= values)) + geom_density() + facet_grid(facets = name ~.) 
+
+
+```
+
+
 #### F
-#### Exponential
-#### Gamma
-#### Weibull
-#### Tweedie
-#### Lognormal
+F distribution is the probability distribution of F statistic.
+
+F STATISTIC
+F statistic is used to compare the variance of two normal random variables, after drawing 
+samples independently from them.
+Say, for two normal distributed random variables with population std. deviations
+as  $\sigma_1$, $\sigma_2$ , sample sizes $n_1$ and $n_2$  are drawn with standard deviaitons  $s_1$, $s_2$ .
+
+$F = $\frac{{}(\frac{s_1}{\sigma_1})^2}  {(\frac{s_2} {\sigma_2})^2}$  
+
+![](http://latex.codecogs.com/gif.latex?%24F%20%3D%20%24%5Cfrac%7B%7B%7D%28%5Cfrac%7Bs_1%7D%7B%5Csigma_1%7D%29%5E2%7D%20%7B%28%5Cfrac%7Bs_2%7D%20%7B%5Csigma_2%7D%29%5E2%7D%24)  
+
+##### PDF and Parameters
+?PDF
+The distribution of F-statistic forms F distribution
+The degrees of freedom of the two normal distributions df1 and df2 are parameters of F distributions
+
+```{r}
+# Generate populations of two normal random variables
+norm1 <- rnorm(n = 500,mean = 5,sd = 1)
+norm2 <- rnorm(n = 500,mean = 7,sd = 2)
+sample.size1 <- 50
+sample.size2 <- 80
+repeat.draws1 <- 100
+# VECTORIZE SAMPLE FUNCTION TO TAKE MULTIPLE DRAWS
+sample.multiple <- Vectorize(FUN = sample,vectorize.args = "size")
+samples.norm1 <- sample.multiple(x = norm1, size = rep(sample.size1, repeat.draws1) ,replace = TRUE)
+samples.norm1.sd <- apply(X = samples.norm1,MARGIN = 2,FUN = sd)
+
+samples.norm2 <- sample.multiple(x = norm2, size = rep(sample.size2, repeat.draws1) ,replace = TRUE)
+samples.norm2.sd <- apply(X = samples.norm2,MARGIN = 2,FUN = sd)
+
+Fstat <- ((samples.norm1.sd / 1)^2 ) / (samples.norm2.sd / 2)^2
+Fstat.order <- sort(Fstat)  
+prob <- df(x = Fstat.order ,df1 = 50,df2 = 80 )
+# PLOTS
+layout(mat = matrix(c(1,2,3,4),nrow = 2))
+
+p1 <- plot(x = Fstat.order, y = prob,type = "l",main = "F dist. with df1 50 and df2 80")
+
+# PLOT 2
+sample.size1 <- 70
+sample.size2 <- 80
+repeat.draws1 <- 100
+
+samples.norm1 <- sample.multiple(x = norm1, size = rep(sample.size1, repeat.draws1) ,replace = TRUE)
+samples.norm1.sd <- apply(X = samples.norm1,MARGIN = 2,FUN = sd)
+samples.norm2 <- sample.multiple(x = norm2, size = rep(sample.size2, repeat.draws1) ,replace = TRUE)
+samples.norm2.sd <- apply(X = samples.norm2,MARGIN = 2,FUN = sd)
+
+Fstat <- ((samples.norm1.sd / 1)^2 ) / (samples.norm2.sd / 2)^2
+Fstat.order <- sort(Fstat)  
+prob <- df(x = Fstat.order ,df1 = 70,df2 = 80 )
+p2 <- plot(x = Fstat.order, y = prob,type = "l",main = "F dist. with df1 70 and df2 80")
+
+# PLOT 3
+sample.size1 <- 50
+sample.size2 <- 30
+repeat.draws1 <- 100
+
+samples.norm1 <- sample.multiple(x = norm1, size = rep(sample.size1, repeat.draws1) ,replace = TRUE)
+samples.norm1.sd <- apply(X = samples.norm1,MARGIN = 2,FUN = sd)
+samples.norm2 <- sample.multiple(x = norm2, size = rep(sample.size2, repeat.draws1) ,replace = TRUE)
+samples.norm2.sd <- apply(X = samples.norm2,MARGIN = 2,FUN = sd)
+
+Fstat <- ((samples.norm1.sd / 1)^2 ) / (samples.norm2.sd / 2)^2
+Fstat.order <- sort(Fstat)  
+prob <- df(x = Fstat.order ,df1 = 50,df2 = 30 )
+p3 <- plot(x = Fstat.order, y = prob,type = "l",main = "F dist. with df1 50 and df2 30")
+
+
+# PLOT 4
+sample.size1 <- 90
+sample.size2 <- 100
+repeat.draws1 <- 100
+
+samples.norm1 <- sample.multiple(x = norm1, size = rep(sample.size1, repeat.draws1) ,replace = TRUE)
+samples.norm1.sd <- apply(X = samples.norm1,MARGIN = 2,FUN = sd)
+samples.norm2 <- sample.multiple(x = norm2, size = rep(sample.size2, repeat.draws1) ,replace = TRUE)
+samples.norm2.sd <- apply(X = samples.norm2,MARGIN = 2,FUN = sd)
+
+Fstat <- ((samples.norm1.sd / 1)^2 ) / (samples.norm2.sd / 2)^2
+Fstat.order <- sort(Fstat)  
+prob <- df(x = Fstat.order ,df1 = 90,df2 = 100 )
+p4 <- plot(x = Fstat.order, y = prob,type = "l",main = "F dist. with df1 90 and df2 100")
+
+
+
+```
+
+
+###### OBSERVATION
+The location and peakedness vary by df1 and df2, these plots need to be put on same
+x and y scales for later ?
+
+##### Properties of F distributions
+- skewed to the right
+- ranges from 0 to inf
+- depends on df of numerator and denominator
+
+#### Exponential  
+
+#### Gamma  
+
+#### Weibull  
+
+#### Tweedie  
+
+#### Lognormal  
+
 
 
 
