@@ -1,0 +1,65 @@
+---
+title: "Hypothesis Testing"
+author: "Sumad Singh"
+date: "September 25, 2017"
+output: github_document
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### HYPOTHESIS TESTING
+Problem Solving in Business context requires testing beleifs, prevelant opinions about a population
+of interest to introduce interventions.
+Example: 
+- White lit bulbs over the shelves can imrpove sales than day lit bulbs.
+- Customers would not defect if given an increase in premium equal or less than inflation rate
+The process involves-
+1. Defining the business problem
+2. Laying out Hypothesis tests
+3. Identifying data (sample) to be gathered for testing hypothesis,
+   sampling considerations ( random, stratified etc), size etc
+4. Identifying test statistic, confidence interval or testing error considerations
+5. Testing,Derive inferences and make recommendations
+
+##### 1. HYPOTHESIS STATEMENT
+A positive assertion about a **population characteristic** based on a currently held beleif.
+- Null Hypothesis: captures it mathematically by using relevant metrics. Null Hypothesis is stated
+using an **inequality (<= or >=)**.
+- Alternate hypothsis: states a counter beleif mathematically.
+**Any problem statement, or a change to an existing norm/well accepted idea that needs to be proved is put 
+as 'Alternate Hypothesis'. Unless proven null hypothesis is the accepted idea.**
+
+Examples: 
+PROBLEM STATEMENT-
+A a new driver is more likely to suffer a loss in first 6 months/first policy period
+than subsequent policy periods, so 'no. of times renewed' could be a predictor for
+ultimate loss
+
+Null Hypothesis: Mean loss of new drivers in 1st policy period >= Mean loss in 2nd
+Alternate Hypothesis: Mean loss of new drivers in 1st policy period < Mean loss in 2nd
+
+##### 2. STATISTICALLY TESTING HYPOTHESIS
+The idea is to test that the difference observed in the population parameter and sample
+parameter is a matter of chance and not a systematic difference. This is often cited as
+testing if the difference is **statistically significant**
+
+** CHOICE OF SAMPLING DISTRIBUTION OR TEST STATISTIC AND**
+** SIGNIFICANCE LEVEL/ERROR THRESHHOLD FOR THE TEST AND** 
+** CRITICAL REGION DETERMINATION ** 
+- We use CLT , sample size and test metric to determine the choice of sampling
+  distribution
+- Example with test metric = mean, sample size >30
+  - Sampling distribution is 'normal' per CLT for large sample sizes,so the test statistic is 'z',
+    and mean of sampling distribution of means =  population mean, std. error = sigma/sqrt(n)
+  - So, we have a nomal distriution with mean as population mean, and the observed sample mean
+    can be pictured on this distribution a certain distance away from population mean.
+  - The test is whether this distance is significant, and signifiance brings into picture an
+    assumption of **error threshhold/confidence** we are comfortable with 
+
+
+**  
+
+
+
