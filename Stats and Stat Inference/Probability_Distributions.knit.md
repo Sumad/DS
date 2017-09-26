@@ -1,32 +1,41 @@
-Probability Distributions
-================
-Sumad Singh
-September 19, 2017
+---
+title: "Probability Distributions"
+author: "Sumad Singh"
+date: "September 19, 2017"
+output: github_document
+---
 
-``` r
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-PROBABILITY DISTRIBUTIONS
--------------------------
-
-Graphical represenation linking each values that a random variable can take, to its relative frequency. The random variable could be discrete or continuous. Accordingly, prob. distributions are discrete or continuous.
+## PROBABILITY DISTRIBUTIONS
+Graphical represenation linking each values that a random variable can take, to its relative frequency.
+The random variable could be discrete or continuous. Accordingly, prob. distributions are discrete or continuous.
 
 ### DISCRETE DISTRIBUTIONS
-
-For each value of random variable, a relative frequency can be computed and it is the probability of taking that value. Common distributions - \#\#\#\# Binomial Probability distribution from an experiment that has n independent trials,each trial with two fixed outcomes - success & failure, then the random variable, with r successes follows a binomial distribution. eg: customers going in a store, they come out buying or not buying (one might question,the independence though! but, we spare it for later)
+For each value of random variable, a relative frequency can be computed and it is the probability of taking that
+value. Common distributions - 
+#### Binomial
+Probability distribution from an experiment that  has n independent trials,each trial with two fixed outcomes 
+- success & failure, then the random variable, with r successes follows a binomial distribution.
+eg: customers going in a store, they come out buying or not buying (one might question,the independence 
+though! but, we spare it for later)
 
 ##### PDF and parameters of binomial
-
 PDF is mathemtical represenation of Prob. distribution (graphical representation)
-
-$PDF = $ C{\_r <sup>n}p</sup>r (1-p)^{(n-r)}$
+  
+$PDF = $ C{_r ^n}p^r (1-p)^{(n-r)}$  
 
 ![](https://latex.codecogs.com/gif.latex?PDF%20%3D%20%24%20C%7B_r%20%5En%7Dp%5Er%20%281-p%29%5E%7B%28n-r%29%7D%24)
 
-Here, for a given n and probability of succes, we can find probabity distribution, by varying r. n and p are the paraemeters of this distribution.
+Here, for a given n and probability of succes, we can find probabity distribution, by varying r.
+n and p are the paraemeters of this distribution.
 
-``` r
+
+
+```r
 # SIMULATE A BINOMIAL DISTRIBUTION
 btrial.outcomes <- sample(x = c("Buy", "NoBuy"), size = 20, replace = TRUE, prob = c(0.5,0.5))
 binomial.prob <- function(trials, successes, p.success)
@@ -58,22 +67,28 @@ barplot(height = probs4, names.arg = successes,main = "Binomial Distribution wit
 ![](Probability_Distributions_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-1-1.png)
 
 ##### OBSERVATION
+For probabilities less than 0.5, distribution is right skewed, for > 0.5 it becomes left skewed.
+When prob. of success is lower, it becomes increasingly less probable to get an increase in no.
+of successes, when p is higher, it becomes less probable to get low number of successes.
 
-For probabilities less than 0.5, distribution is right skewed, for &gt; 0.5 it becomes left skewed. When prob. of success is lower, it becomes increasingly less probable to get an increase in no. of successes, when p is higher, it becomes less probable to get low number of successes.
-
-#### Poisson
-
-Typical for random experiments related to observing counts in an interval of time, given one knows the average count per unit time. ASSUMPTION : PROBABILITY DISTRIBUTION REMAINS SAME FOR A GIVEN TIME INTERVAL, AND IS NOT DEPENDENT ON POINT OF START OF THE INTERVAL Example: Number of cars arriving at a toll booth in 5 mins is likely a poisson random variable
+####Poisson
+Typical for random experiments related to observing counts in an interval of time, given
+one knows the average count per unit time.
+ASSUMPTION : PROBABILITY DISTRIBUTION REMAINS SAME FOR A GIVEN TIME INTERVAL, AND
+IS NOT DEPENDENT ON POINT OF START OF THE INTERVAL
+Example: Number of cars arriving at a toll booth in 5 mins is likely a poisson random variable
 
 ##### PDF and parameters
+P(x) = $\frac{\lambda^x . e^{-\lambda}}{x!} $  
 
-P(x) = $ $
+![](http://latex.codecogs.com/gif.latex?%24P%28x%29%20%3D%20%24%5Cfrac%7B%5Clambda%5Ex%20.%20e%5E%7B-%5Clambda%7D%7D%7Bx%21%7D%20%24)  
 
-![](http://latex.codecogs.com/gif.latex?%24P%28x%29%20%3D%20%24%5Cfrac%7B%5Clambda%5Ex%20.%20e%5E%7B-%5Clambda%7D%7D%7Bx%21%7D%20%24)
+i.e probability of observing x counts in TIME T, for which
+avg. rate of observations is known (i.e lambda OVER TIME T is known)
+lambda is the parameter of the distribution
 
-i.e probability of observing x counts in TIME T, for which avg. rate of observations is known (i.e lambda OVER TIME T is known) lambda is the parameter of the distribution
 
-``` r
+```r
 # SIMULATE PROB. DISTRIBUTION
 set.seed(111)
 # Define a function to compute poisson probability
@@ -117,44 +132,63 @@ barplot(height = pois.probs[,"lambda_3.6"], names.arg = 0:60, main = "Poisson Di
 
 ![](Probability_Distributions_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-2-1.png)
 
-##### OBSERVATION
 
-Right skewed distribution, as lambda increases, the right skew starts decreasing. i.e the probability of a higher count observation starts increasing, and that of lower count starts decreasing.
+##### OBSERVATION
+Right skewed distribution, as lambda increases, the right skew starts decreasing. i.e the 
+probability of a higher count observation starts increasing, and that of lower count
+starts decreasing.
+
+
+
 
 ### CONTINUOUS DISTRIBUTIONS
+Probability is defined for a range of values of the random variable, and not at a specific point. Since,
+a continuous random variables is expected to take an infite set of distinct values, the probability of taking
+a single value is effectively 0.
+Area under the curve of a probability distribution b/w two points, is the probability that random variable 
+can take a value b/w those points.
 
-Probability is defined for a range of values of the random variable, and not at a specific point. Since, a continuous random variables is expected to take an infite set of distinct values, the probability of taking a single value is effectively 0. Area under the curve of a probability distribution b/w two points, is the probability that random variable can take a value b/w those points.
-
-Common continuous distributions -
+Common continuous distributions - 
 
 #### Normal Distribution
 
-Normal distribution's relative frequency is maximum at the mean and tapers off as we move away from the mean
+Normal distribution's relative frequency is maximum at the mean and tapers off as we move away 
+from the mean
 
 ##### PDF and Parameters of Normal Distribution
 
-$ PDF = f(x) = e<sup>{{}}</sup>2$
+$ PDF = f(x) = e^{{\frac{x-\mu}{\sigma}}}^2$  
 
-![](http://latex.codecogs.com/gif.latex?%24%20PDF%20%3D%20f%28x%29%20%3D%20%24%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%5Csigma%7D%20e%5E%7B-0.5%28%5Cfrac%7Bx-%5Cmu%7D%7B%5Csigma%7D%29%5E2%7D%24)
+![](http://latex.codecogs.com/gif.latex?%24%20PDF%20%3D%20f%28x%29%20%3D%20%24%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%5Csigma%7D%20e%5E%7B-0.5%28%5Cfrac%7Bx-%5Cmu%7D%7B%5Csigma%7D%29%5E2%7D%24)  
 
-It is a two parameter distribution, with location i.e mean and scale i.e std. deviation parameters. Its shape paramter or skewness is 0. The kurtosis or peakedness is 3, and peakedness of normal distribution is taken as reference.
+It is a two parameter distribution, with location i.e mean and scale i.e std. deviation parameters. 
+Its shape paramter or skewness is 0. The kurtosis or peakedness is 3, and peakedness of normal
+distribution is taken as reference.
 
-Example : What do you get using the PDF function for a discrete value of x Ans : The relative frequency at that point, not the probability
+Example : What do you get using the PDF function for a discrete value of x
+Ans : The relative frequency at that point, not the probability
 
-``` r
+
+```r
 norm.freq <- dnorm(x = 140 :220,mean = 180,sd = 20 )
 plot(x = 140:220, y = norm.freq,type = "p")
 ```
 
 ![](Probability_Distributions_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-4-1.png)
 
+
+
 ##### Properties of Normal Distribution
+1. The area covered between two points at known standard deviations away from mean remains
+   the same for every normal distribution
+2. More area is covered closer to the mean, and as you go away from mean, it reduces
+Example: Area covered in 1 sd = 68% , 2sd = 95.5%, 3sd = 99.7% . For every 2 sd movement away from mean,
+probability increment is 27.5%age points and 2.2%age points.
+3. probability is defined between two points and not at a point
+P (a<= x <=b) = ∫ ƒ(x) dx from a to b 
 
-1.  The area covered between two points at known standard deviations away from mean remains the same for every normal distribution
-2.  More area is covered closer to the mean, and as you go away from mean, it reduces Example: Area covered in 1 sd = 68% , 2sd = 95.5%, 3sd = 99.7% . For every 2 sd movement away from mean, probability increment is 27.5%age points and 2.2%age points.
-3.  probability is defined between two points and not at a point P (a&lt;= x &lt;=b) = ∫ ƒ(x) dx from a to b
 
-``` r
+```r
 x <- seq(from = -3, to = 3, by = 0.02)
 y <- dnorm(x = x,mean = 0,sd = 1)
 plot(x = x,y = y,type = "l", xlab = "Outcomes value",ylab = "Probabilities",main = "Standard Normal")
@@ -162,16 +196,20 @@ plot(x = x,y = y,type = "l", xlab = "Outcomes value",ylab = "Probabilities",main
 
 ![](Probability_Distributions_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-5-1.png)
 
-1.  Method of finding probability of a random variable with normal distribution
-
--   use integral method
--   another property is that the probability could be computed by converting it to a standard normal using z transformation.
-
+4. Method of finding probability of a random variable with normal distribution
+- use integral method
+- another property is that the probability could be computed by converting it to a standard normal using
+  z transformation. 
+  
 #### CENTRAL LIMIT THEOREM
+If we draw large sized independent samples of equal size from a population, which could be anyway distributed, 
+the distribution of mean of the samples tends to be normal, and
+Same SD =  Pop. SD / √n
+Sample Mean = Population Mean
+n >=30 qualifies for large sample.
 
-If we draw large sized independent samples of equal size from a population, which could be anyway distributed, the distribution of mean of the samples tends to be normal, and Same SD = Pop. SD / √n Sample Mean = Population Mean n &gt;=30 qualifies for large sample.
 
-``` r
+```r
 # Draw random numbers from a uniform distribution, compute mean and sd
 
 # Draw samples of size n, compute mean and sd of each sample
@@ -240,26 +278,28 @@ df <- cbind(names,df)
 df
 ```
 
-    ##      names                     ss.30              ss.40             
-    ## [1,] "pop.mean"                "55.5574205192784" "55.5574205192784"
-    ## [2,] "pop.sd"                  "25.9783032261275" "25.9783032261275"
-    ## [3,] "mean.sample.means"       "55.9907184352307" "56.257663433986" 
-    ## [4,] "sd.sample.means"         "5.81739249180638" "3.32492967406885"
-    ## [5,] "derived.sd.sample.means" "4.74296756088642" "4.10753039705315"
-    ##      ss.50              ss.60              ss.70             
-    ## [1,] "55.5574205192784" "55.5574205192784" "55.5574205192784"
-    ## [2,] "25.9783032261275" "25.9783032261275" "25.9783032261275"
-    ## [3,] "55.7968203733796" "55.3588340065675" "55.894535516577" 
-    ## [4,] "4.15912216575131" "2.94770962162337" "3.17581578645008"
-    ## [5,] "3.67388687498302" "3.3537845252506"  "3.10500112378315"
-    ##      ss.80             
-    ## [1,] "55.5574205192784"
-    ## [2,] "25.9783032261275"
-    ## [3,] "55.3342051919119"
-    ## [4,] "2.80767560345233"
-    ## [5,] "2.90446259768616"
+```
+##      names                     ss.30              ss.40             
+## [1,] "pop.mean"                "55.5574205192784" "55.5574205192784"
+## [2,] "pop.sd"                  "25.9783032261275" "25.9783032261275"
+## [3,] "mean.sample.means"       "55.9907184352307" "56.257663433986" 
+## [4,] "sd.sample.means"         "5.81739249180638" "3.32492967406885"
+## [5,] "derived.sd.sample.means" "4.74296756088642" "4.10753039705315"
+##      ss.50              ss.60              ss.70             
+## [1,] "55.5574205192784" "55.5574205192784" "55.5574205192784"
+## [2,] "25.9783032261275" "25.9783032261275" "25.9783032261275"
+## [3,] "55.7968203733796" "55.3588340065675" "55.894535516577" 
+## [4,] "4.15912216575131" "2.94770962162337" "3.17581578645008"
+## [5,] "3.67388687498302" "3.3537845252506"  "3.10500112378315"
+##      ss.80             
+## [1,] "55.5574205192784"
+## [2,] "25.9783032261275"
+## [3,] "55.3342051919119"
+## [4,] "2.80767560345233"
+## [5,] "2.90446259768616"
+```
 
-``` r
+```r
 # Show the prob. distr. approaches normal as n increases.
 layout(mat = matrix(data = c(1,2,3,4,5,6),nrow = 3))
 sapply(X = result,FUN = plot.dist)
@@ -267,101 +307,121 @@ sapply(X = result,FUN = plot.dist)
 
 ![](Probability_Distributions_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-6-1.png)
 
-    ##          ss.30                  ss.40                 
-    ## breaks   Integer,7              Integer,10            
-    ## counts   Integer,6              Integer,9             
-    ## density  Numeric,6              Numeric,9             
-    ## mids     Numeric,6              Numeric,9             
-    ## xname    "lt[["sample.means"]]" "lt[["sample.means"]]"
-    ## equidist TRUE                   TRUE                  
-    ##          ss.50                  ss.60                 
-    ## breaks   Integer,11             Integer,11            
-    ## counts   Integer,10             Integer,10            
-    ## density  Numeric,10             Numeric,10            
-    ## mids     Numeric,10             Numeric,10            
-    ## xname    "lt[["sample.means"]]" "lt[["sample.means"]]"
-    ## equidist TRUE                   TRUE                  
-    ##          ss.70                  ss.80                 
-    ## breaks   Integer,9              Integer,10            
-    ## counts   Integer,8              Integer,9             
-    ## density  Numeric,8              Numeric,9             
-    ## mids     Numeric,8              Numeric,9             
-    ## xname    "lt[["sample.means"]]" "lt[["sample.means"]]"
-    ## equidist TRUE                   TRUE
+```
+##          ss.30                  ss.40                 
+## breaks   Integer,7              Integer,10            
+## counts   Integer,6              Integer,9             
+## density  Numeric,6              Numeric,9             
+## mids     Numeric,6              Numeric,9             
+## xname    "lt[["sample.means"]]" "lt[["sample.means"]]"
+## equidist TRUE                   TRUE                  
+##          ss.50                  ss.60                 
+## breaks   Integer,11             Integer,11            
+## counts   Integer,10             Integer,10            
+## density  Numeric,10             Numeric,10            
+## mids     Numeric,10             Numeric,10            
+## xname    "lt[["sample.means"]]" "lt[["sample.means"]]"
+## equidist TRUE                   TRUE                  
+##          ss.70                  ss.80                 
+## breaks   Integer,9              Integer,10            
+## counts   Integer,8              Integer,9             
+## density  Numeric,8              Numeric,9             
+## mids     Numeric,8              Numeric,9             
+## xname    "lt[["sample.means"]]" "lt[["sample.means"]]"
+## equidist TRUE                   TRUE
+```
 
-``` r
+```r
 #rm(list = ls())
 ```
 
-CLT allows one to make inferences about population charatertistics of location and scale from a sample.
+
+CLT allows one to make inferences about population charatertistics of location and scale from
+a sample.
 
 #### T DISTRIBUTION
 
-When the sample size is small or the population standard deviation is not known, and sample sd is taken as proxy of population sd, then the sampling distribution of means is taken as t - distribution.
+When the sample size is small 
+or the population standard deviation is not known, and sample sd is taken as proxy of population sd, then
+the sampling distribution of means is taken as t - distribution.
 
-Formally, defined as If Z1 is a standardized nornal variables and Z2 is a chi square variable with df k, then t = Z1 / sqrt(Z2/k)
+Formally, defined as 
+If  Z1 is a standardized nornal variables and Z2 is a chi square variable with df k, then
+t = Z1 / sqrt(Z2/k)
 
 ##### PDF and parameters
-
-PDF ? Degrees of Freedom: In general, how many values in a set can be varied, given a set of constraints on the set of values. For a data set of size n, the degress of freedom are n-1, if mean is fixed. Because mean is known, only n-1 values can be varied, and hence the degree of freedom.
+PDF ?
+Degrees of Freedom: 
+In general, how many values in a set can be varied, given a set of constraints on 
+the set of values.
+For a data set of size n, the degress of freedom are n-1, if mean is fixed.
+Because mean is known, only n-1 values can be varied, and hence the degree of freedom.
 
 Degrees of freedom is the only parameter of t-distribution.
 
 ##### PROPERTIES OF T DISTRIBUTIONS
+1.Mean is 0.
+2.It is flatter in the tails than the standard normal distribution, it's variance is more than 1 and is
+df/df-2
+3.It is used for random variables, with more uncertainity at extreme values, as it is fatter in the tails,
+than normal distribution.
 
-1.Mean is 0. 2.It is flatter in the tails than the standard normal distribution, it's variance is more than 1 and is df/df-2 3.It is used for random variables, with more uncertainity at extreme values, as it is fatter in the tails, than normal distribution.
-
-``` r
+```r
 p1 <- pnorm(q = -2, mean = 0,sd = 1,lower.tail = TRUE )
 p2 <- pt(q = -2,df = 1:100 ,lower.tail = TRUE )
 p2-p1 # add'l probability is captured by std. t -distribution in the left tail, for a range of df
 ```
 
-    ##   [1] 0.124833486 0.069001578 0.046912852 0.035308130 0.028219607
-    ##   [6] 0.023463024 0.020059532 0.017507987 0.015526280 0.013943885
-    ##  [11] 0.012651846 0.011577375 0.010670047 0.009893844 0.009222372
-    ##  [16] 0.008635850 0.008119171 0.007660601 0.007250886 0.006882636
-    ##  [21] 0.006549874 0.006247719 0.005972143 0.005719793 0.005487858
-    ##  [26] 0.005273962 0.005076082 0.004892487 0.004721687 0.004562391
-    ##  [31] 0.004413476 0.004273961 0.004142984 0.004019786 0.003903694
-    ##  [36] 0.003794112 0.003690507 0.003592404 0.003499376 0.003411040
-    ##  [41] 0.003327049 0.003247092 0.003170885 0.003098170 0.003028712
-    ##  [46] 0.002962298 0.002898732 0.002837835 0.002779442 0.002723402
-    ##  [51] 0.002669576 0.002617835 0.002568061 0.002520143 0.002473979
-    ##  [56] 0.002429475 0.002386544 0.002345102 0.002305075 0.002266390
-    ##  [61] 0.002228982 0.002192788 0.002157750 0.002123814 0.002090928
-    ##  [66] 0.002059045 0.002028119 0.001998108 0.001968972 0.001940673
-    ##  [71] 0.001913176 0.001886447 0.001860454 0.001835168 0.001810559
-    ##  [76] 0.001786602 0.001763270 0.001740540 0.001718387 0.001696792
-    ##  [81] 0.001675732 0.001655189 0.001635143 0.001615577 0.001596473
-    ##  [86] 0.001577816 0.001559590 0.001541780 0.001524371 0.001507352
-    ##  [91] 0.001490708 0.001474428 0.001458500 0.001442912 0.001427653
-    ##  [96] 0.001412714 0.001398084 0.001383754 0.001369715 0.001355957
+```
+##   [1] 0.124833486 0.069001578 0.046912852 0.035308130 0.028219607
+##   [6] 0.023463024 0.020059532 0.017507987 0.015526280 0.013943885
+##  [11] 0.012651846 0.011577375 0.010670047 0.009893844 0.009222372
+##  [16] 0.008635850 0.008119171 0.007660601 0.007250886 0.006882636
+##  [21] 0.006549874 0.006247719 0.005972143 0.005719793 0.005487858
+##  [26] 0.005273962 0.005076082 0.004892487 0.004721687 0.004562391
+##  [31] 0.004413476 0.004273961 0.004142984 0.004019786 0.003903694
+##  [36] 0.003794112 0.003690507 0.003592404 0.003499376 0.003411040
+##  [41] 0.003327049 0.003247092 0.003170885 0.003098170 0.003028712
+##  [46] 0.002962298 0.002898732 0.002837835 0.002779442 0.002723402
+##  [51] 0.002669576 0.002617835 0.002568061 0.002520143 0.002473979
+##  [56] 0.002429475 0.002386544 0.002345102 0.002305075 0.002266390
+##  [61] 0.002228982 0.002192788 0.002157750 0.002123814 0.002090928
+##  [66] 0.002059045 0.002028119 0.001998108 0.001968972 0.001940673
+##  [71] 0.001913176 0.001886447 0.001860454 0.001835168 0.001810559
+##  [76] 0.001786602 0.001763270 0.001740540 0.001718387 0.001696792
+##  [81] 0.001675732 0.001655189 0.001635143 0.001615577 0.001596473
+##  [86] 0.001577816 0.001559590 0.001541780 0.001524371 0.001507352
+##  [91] 0.001490708 0.001474428 0.001458500 0.001442912 0.001427653
+##  [96] 0.001412714 0.001398084 0.001383754 0.001369715 0.001355957
+```
 
-``` r
+```r
 # compared to standard normal
 ```
 
-1.  As degrees of freedom increase, variance approaches 1, it tends to normal
+4. As degrees of freedom increase, variance approaches 1, it tends to normal
 
-``` r
+
+```r
 # Plot a t and standard normal
 ```
 
-#### Chi-Square
 
-If k independent normal random variable are squared and added, the resulting variable forms a distribution called chi-square distribution with degrees of freedom k. Example : See below
+#### Chi-Square
+If k independent normal random variable are squared and added, the resulting variable  forms a distribution 
+called chi-square distribution with degrees of freedom k.
+Example : See below
 
 ##### PDF and parameters
-
 Degrees of freedom is the parameter
 
 ##### PROPERTIES OF chisquare DISTRIBUTION
+- lies b/w 0 and inf
+- right skewed distribution, skew decreases as df increases (see example below)
+  and becomes more symetric
 
--   lies b/w 0 and inf
--   right skewed distribution, skew decreases as df increases (see example below) and becomes more symetric
 
-``` r
+```r
 rnorm1 <- rnorm(n = 100,mean = 5,sd = 1)
 sq.rnorm1 <- rnorm1^2
 rnorm2 <- rnorm(n = 100,mean = 5,sd = 1)
@@ -388,23 +448,31 @@ ggplot(data = df,mapping = aes(x= values)) + geom_density() + facet_grid(facets 
 
 ![](Probability_Distributions_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-9-1.png)
 
-#### F or Fisher's
 
+#### F or Fisher's 
 F distribution is the probability distribution of F statistic.
 
-F STATISTIC F statistic is used to compare the variance of two normal random variables, after drawing samples independently from them. Say, for two normal distributed random variables with population std. deviations as *σ*<sub>1</sub>, *σ*<sub>2</sub> , sample sizes *n*<sub>1</sub> and *n*<sub>2</sub> are drawn with standard deviaitons *s*<sub>1</sub>, *s*<sub>2</sub> .
+F STATISTIC
+F statistic is used to compare the variance of two normal random variables, after drawing 
+samples independently from them.
+Say, for two normal distributed random variables with population std. deviations
+as  $\sigma_1$, $\sigma_2$ , sample sizes $n_1$ and $n_2$  are drawn with standard deviaitons  $s_1$, $s_2$ .
 
-$F = $\\frac{{}(\\frac{s\_1}{\\sigma\_1})^2} {(\\frac{s\_2} {\\sigma\_2})^2}$
+$F = $\frac{{}(\frac{s_1}{\sigma_1})^2}  {(\frac{s_2} {\sigma_2})^2}$  
 
-![](http://latex.codecogs.com/gif.latex?%24F%20%3D%20%24%5Cfrac%7B%7B%7D%28%5Cfrac%7Bs_1%7D%7B%5Csigma_1%7D%29%5E2%7D%20%7B%28%5Cfrac%7Bs_2%7D%20%7B%5Csigma_2%7D%29%5E2%7D%24)
+![](http://latex.codecogs.com/gif.latex?%24F%20%3D%20%24%5Cfrac%7B%7B%7D%28%5Cfrac%7Bs_1%7D%7B%5Csigma_1%7D%29%5E2%7D%20%7B%28%5Cfrac%7Bs_2%7D%20%7B%5Csigma_2%7D%29%5E2%7D%24)  
 
-F distribution is also defined as the ratio of two independent chi-square random variables that are with df k1 and k2 F = (Z1/k1) / (Z2/k2)
+F distribution is also defined as the ratio of two independent chi-square random variables that are 
+with df k1 and k2
+F = (Z1/k1) / (Z2/k2)
 
 ##### PDF and Parameters
+?PDF
+The distribution of F-statistic forms F distribution
+The degrees of freedom of the two normal distributions df1 and df2 are parameters of F distributions
 
-?PDF The distribution of F-statistic forms F distribution The degrees of freedom of the two normal distributions df1 and df2 are parameters of F distributions
 
-``` r
+```r
 # Generate populations of two normal random variables
 norm1 <- rnorm(n = 500,mean = 5,sd = 1)
 norm2 <- rnorm(n = 500,mean = 7,sd = 2)
@@ -476,22 +544,26 @@ p4 <- plot(x = Fstat.order, y = prob,type = "l",main = "F dist. with df1 90 and 
 
 ![](Probability_Distributions_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-10-1.png)
 
-###### OBSERVATION
 
-The location and peakedness vary by df1 and df2, these plots need to be put on same x and y scales for later ?
+###### OBSERVATION
+The location and peakedness vary by df1 and df2, these plots need to be put on same
+x and y scales for later ?
 
 ##### Properties of F distributions
+- skewed to the right
+- ranges from 0 to inf
+- depends on df of numerator and denominator
 
--   skewed to the right
--   ranges from 0 to inf
--   depends on df of numerator and denominator
+#### Exponential  
 
-#### Exponential
+#### Gamma  
 
-#### Gamma
+#### Weibull  
 
-#### Weibull
+#### Tweedie  
 
-#### Tweedie
+#### Lognormal  
 
-#### Lognormal
+
+
+

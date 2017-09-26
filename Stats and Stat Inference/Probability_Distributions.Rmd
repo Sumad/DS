@@ -289,12 +289,16 @@ When the sample size is small
 or the population standard deviation is not known, and sample sd is taken as proxy of population sd, then
 the sampling distribution of means is taken as t - distribution.
 
+Formally, defined as 
+If  Z1 is a standardized nornal variables and Z2 is a chi square variable with df k, then
+t = Z1 / sqrt(Z2/k)
+
 ##### PDF and parameters
 PDF ?
 Degrees of Freedom: 
 In general, how many values in a set can be varied, given a set of constraints on 
 the set of values.
-For a data set of size n, the degress of freedom are n-1, if no other condition is given.
+For a data set of size n, the degress of freedom are n-1, if mean is fixed.
 Because mean is known, only n-1 values can be varied, and hence the degree of freedom.
 
 Degrees of freedom is the only parameter of t-distribution.
@@ -321,9 +325,8 @@ p2-p1 # add'l probability is captured by std. t -distribution in the left tail, 
 
 
 #### Chi-Square
-If a normal random variable is squared it forms a distribution called chi-square distribution.
-If several normals random variables are squared and added, distribution of resulting variable
-is chi square.
+If k independent normal random variable are squared and added, the resulting variable  forms a distribution 
+called chi-square distribution with degrees of freedom k.
 Example : See below
 
 ##### PDF and parameters
@@ -363,7 +366,7 @@ ggplot(data = df,mapping = aes(x= values)) + geom_density() + facet_grid(facets 
 ```
 
 
-#### F
+#### F or Fisher's 
 F distribution is the probability distribution of F statistic.
 
 F STATISTIC
@@ -375,6 +378,10 @@ as  $\sigma_1$, $\sigma_2$ , sample sizes $n_1$ and $n_2$  are drawn with standa
 $F = $\frac{{}(\frac{s_1}{\sigma_1})^2}  {(\frac{s_2} {\sigma_2})^2}$  
 
 ![](http://latex.codecogs.com/gif.latex?%24F%20%3D%20%24%5Cfrac%7B%7B%7D%28%5Cfrac%7Bs_1%7D%7B%5Csigma_1%7D%29%5E2%7D%20%7B%28%5Cfrac%7Bs_2%7D%20%7B%5Csigma_2%7D%29%5E2%7D%24)  
+
+F distribution is also defined as the ratio of two independent chi-square random variables that are 
+with df k1 and k2
+F = (Z1/k1) / (Z2/k2)
 
 ##### PDF and Parameters
 ?PDF

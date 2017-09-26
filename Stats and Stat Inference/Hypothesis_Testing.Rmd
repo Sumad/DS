@@ -8,58 +8,162 @@ output: github_document
 ```{r setup, include=TRUE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+## HYPOTHESIS TESTING
+## TYPES OF HYPOTHESIS TESTS 
+### COMPARE MEANS,PROPORTIONS,VARIANCES FOR
+### CONTINUOUS VARS. - Z,T,F ;  CATEGORICAL VARS. - CHISQUARE
+### UNDER CONDITIONS OF POPULATION PARAMETER KNOWN/UNKNOWN, SAMPLE SIZE LARGE/SMALL
+### UNDERLYING DISTRIBUTIONS KNOWN/UNKNOWN
 
-#### HYPOTHESIS TESTING
+
+### HYPOTHESIS TESTING
 Problem Solving in Business context requires testing beleifs, prevelant opinions about a population
 of interest to introduce interventions.
 Example: 
-- White lit bulbs over the shelves can imrpove sales than day lit bulbs.
-- Customers would not defect if given an increase in premium equal or less than inflation rate
-The process involves-
-1. Defining the business problem
-2. Laying out Hypothesis tests
-3. Identifying data (sample) to be gathered for testing hypothesis,
-   sampling considerations ( random, stratified etc), size etc
-4. Identifying test statistic, confidence interval or testing error considerations
-5. Testing,Derive inferences and make recommendations
+- White lit bulbs over the shelves can imrpove sales than day lit bulbs.  
+- Customers would not defect if given an increase in premium equal or less than inflation rate  
+The case for interventions is made by hypothesis testing, it involves-  
+1. Defining the business problem  
+2. Laying out Hypothesis tests  
+3. Identifying data (sample) to be gathered for testing hypothesis,  
+   sampling considerations ( random, stratified etc), size etc  
+4. Identifying test statistic, confidence interval or testing error considerations  
+5. Testing,Derive inferences and make recommendations  
 
-##### 1. HYPOTHESIS STATEMENT
-A positive assertion about a **population characteristic** based on a currently held beleif.
-- Null Hypothesis: captures it mathematically by using relevant metrics. Null Hypothesis is stated
-using an **inequality (<= or >=)**.
-- Alternate hypothsis: states a counter beleif mathematically.
+#### 1. HYPOTHESIS STATEMENT
+A positive assertion about a **population characteristic** based on a currently held beleif.  
+- Null Hypothesis: captures it mathematically by using relevant metrics. Null Hypothesis is stated  
+using an **inequality (<= or >=)**.  
+- Alternate hypothsis: states a counter beleif mathematically.  
+
 **Any problem statement, or a change to an existing norm/well accepted idea that needs to be proved is put 
-as 'Alternate Hypothesis'. Unless proven null hypothesis is the accepted idea.**
+as 'Alternate Hypothesis'. Unless proven, null hypothesis is the accepted idea.** 
 
 Examples: 
-PROBLEM STATEMENT-
-A a new driver is more likely to suffer a loss in first 6 months/first policy period
-than subsequent policy periods, so 'no. of times renewed' could be a predictor for
-ultimate loss
+PROBLEM STATEMENT-  
+A a new driver is more likely to suffer a loss in first 6 months/first policy period  
+than subsequent policy periods, so 'no. of times renewed' could be a predictor for  
+ultimate loss  
 
 Null Hypothesis: Mean loss of new drivers in 1st policy period >= Mean loss in 2nd
 Alternate Hypothesis: Mean loss of new drivers in 1st policy period < Mean loss in 2nd
 
-##### 2. STATISTICALLY TESTING HYPOTHESIS
-The idea is to test that the difference observed in the population parameter and sample
-parameter is a matter of chance and not a systematic difference. This is often cited as
-testing if the difference is **statistically significant**
+#### 2. STATISTICALLY TESTING HYPOTHESIS (jumping to step 4)
+The idea is to reject null hypothesis by proving that the difference observed in the population parameter 
+and sample parameter is not just a matter of chance and but a systematic difference. This is often cited as  
+testing if the difference is **statistically significant**  
 
-** CHOICE OF SAMPLING DISTRIBUTION OR TEST STATISTIC AND**
-** SIGNIFICANCE LEVEL/ERROR THRESHHOLD FOR THE TEST AND** 
-** CRITICAL REGION DETERMINATION ** 
-- We use CLT , sample size and test metric to determine the choice of sampling
-  distribution
-- Example with test metric = mean, sample size >30
-  - Sampling distribution is 'normal' per CLT for large sample sizes,so the test statistic is 'z',
-    and mean of sampling distribution of means =  population mean, std. error = sigma/sqrt(n)
-  - So, we have a nomal distriution with mean as population mean, and the observed sample mean
-    can be pictured on this distribution a certain distance away from population mean.
-  - The test is whether this distance is significant, and signifiance brings into picture an
-    assumption of **error threshhold/confidence** we are comfortable with 
+** CHOICE OF SAMPLING DISTRIBUTION OR TEST STATISTIC AND**  
+** SIGNIFICANCE LEVEL/CONFIDENCE FOR THE TEST AND**  
+** CRITICAL VALUES AND REGION DETERMINATION ** 
+1. We use CLT , sample size and test metric to determine the choice of sampling  
+  distribution and hence test statistic  
+2. We also choose a confidence level / significance level, using which null hypothesis can be  
+  confidently rejected. 
+  *Signficance level* is a probability that null hypothesis is true and yet  
+  as a matter of chance, we reject it based on sample observation. It represents what is called 
+  Type 1 error (more on this later).We choose to minimize the probability of making Type1 error due  
+  to chance.  
+  The choice of confidence level/significance level varies with the 'research problem'  
+  
+3. Based on the hypothesis and confidence level, we choose the critical value, i.e the value used to  
+   make the decision of accepting/rejecting null hypothesis such that even if we make the Type 1 error,  
+   it is tolerable.  
+   And then we compare the sample observation to this 'Critical Value' to determine the   
+   decision of rejecting or not being able to reject Null Hypothesis.  
+  
+  Critical region : left tail,right tail, two tailed, formed by the critical value and tail/tails,  
+  determined by sign of inequality of alternate hypothesis.  
+  
+- Example with test metric = mean, sample size >30.  
+  Average waiting time in retail stores for customer is 2.6 mins.Based on a sample of 50 obs.,  
+  it was found to be 2.9 mins with std. deviation of 0.5 mins in store X.  
+  Do the customers in store X wait longer than that the retail store average.  
+  
+  H0 : mu <= 2.6  
+  H1 : mu > 2.6   
+  
+  1. Sampling distribution of sample mean is 'normal' per CLT for large sample sizes ,so the test  
+    statistic should be 'z',and mean of sampling distribution of means =  population mean, 
+    std. error = sigma/sqrt(n).  
+    But population std. deviation is not known, so we take distribution as t.But let us try  
+    with normal first.  
+    So, we have a nomal distriution with mean as population mean, and the observed sample mean  
+    can be pictured on this distribution a certain distance away from population mean.  
+  2.The test is whether this distance is significant, and signifiance brings into picture an  
+    assumption of **significance/confidence** we are comfortable with. If we take it as 5%,  
+    it means in 5/100 samples, we could get an observation that could lead us to reject a true  
+    null hypothesis. 
+  3. Using the probability of significance, we find the critical value pertaining to 5%.  
+     First we see it is a right tailed test seeing the alternate hypothesis.  
+     (Sign of alternate hypothesis determines the critical region, if the hypothesis  
+      are stated correctly as defined above.)  
+     
+     
+```{r}
+# Convert the sampling distribution with mean 2.6 an sd 0.5 to standard normal
+# Then convert sample observation to z stat. on this same scale
+# i.e 
+z = (2.9-2.6)/(0.5/sqrt(50))
+z.crit = qnorm(p = 0.95,mean = 0,sd = 1,lower.tail = TRUE)
+```
 
+This is a right tailed test, critical region lies right to the critical value.  
+z statistic lies lies in the critical region,i.e beyond the critical value,  
+so we can reject the null hypothesis.
 
-**  
+```{r}
+
+# To picture ths values
+r.norm <- sort(rnorm(n = 50))
+f.norm <- dnorm(x = r.norm, mean = 0,sd = 1 )
+plot(x = r.norm,y = f.norm,xlim = c(-4,4))
+abline(v = c(z.crit,z), lty = c(2,1))
+text(x = c(z.crit,z),y = c(0.005,0.005),labels = c("z.crit","z"))
+```
+
+The test statistic used should have been t. 
+
+```{r}
+# Convert the sampling distribution with mean 2.6 and sd 0.5 to t distribution
+# Then convert sample observation to t stat. on this same scale
+# i.e 
+t = (2.9-2.6)/(0.5/sqrt(50))
+t.crit = qt(p = 0.95,df = 49,lower.tail = TRUE) # df 49 as s was used
+# To picture ths values
+r.t <- sort(rt(n = 50,df = 49))
+freq.t <- dt(x = r.t, df = 49 )
+plot(x = r.t,y = freq.t,xlim = c(-4,4))
+abline(v = c(t.crit,t), lty = c(2,1))
+text(x = c(t.crit,t),y = c(0.05,0.05),labels = c("t.crit","t"))
+
+```
+
+### TYPES OF SAMPLING DISTRIBUTIONS
+
+### CONTINUOUS TEST METRIC (TBD?)
+1. COMPARE SAMPLE MEAN TO A POPULATION MEAN 
+  1.1 SAMPLE SIZE >30 & POP. STD. DEVIATION KNOWN : Z STAT.    
+  1.2 LESS THAN 30 OR POP. STD. DEVIATION NOT KNOWN : T STAT.  
+  
+2. COMPARE SAMPLE PROPORTION TO A POPULATION PROPORTION  
+
+3. COMPARE TWO POPULATION MEANS (RECALL PAIRED OBSERVATION VS SEPARATE SAMPLE TEST, FIRST IS BETTER 
+  EXPEERIMENT DESIGN)  
+  3.1 SAMPLE SIZE >30 AND POP. MEANS ARE KNOWN : Z TEST  
+  3.2 LESS THAN 30 OR POP MEAN UNKNOWN : INDEPENDENT T TEST 
+  
+  In both the cases, the sampling distribution of difference of means is considered, the standard error of  
+  sampling distribution is essentially sqrt. of sum of variances of sampling distribution of means of   
+  individual populations.  
+  sqrt(sigma1^2/n1 + sigma1^2/n2) .  
+  The degree of freedom calculation varies on whether population std. deviation is known or not.  
+  
+4. COMPLARE TWO POPULATION PROPORTIONS    
+  
+5. COMPARE VARIANCES OF TWO POPULATIONS : F TEST  
+  
+### CATEGORICAL 
 
 
 
