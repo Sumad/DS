@@ -327,6 +327,7 @@ p2-p1 # add'l probability is captured by std. t -distribution in the left tail, 
 #### Chi-Square
 If k independent normal random variable are squared and added, the resulting variable  forms a distribution 
 called chi-square distribution with degrees of freedom k.
+
 Example : See below
 
 ##### PDF and parameters
@@ -373,9 +374,10 @@ F STATISTIC
 F statistic is used to compare the variance of two normal random variables, after drawing 
 samples independently from them.
 Say, for two normal distributed random variables with population std. deviations
-as  $\sigma_1$, $\sigma_2$ , sample sizes $n_1$ and $n_2$  are drawn with standard deviaitons  $s_1$, $s_2$ .
+as  $\sigma_1$, $\sigma_2$ , sample sizes $n_1$ and $n_2$  are drawn with standard deviaitons  $s_1$, $s_2$, then
+if the two population std. deviation are equal, the below statistic is F statistic
 
-$F = $\frac{{}(\frac{s_1}{\sigma_1})^2}  {(\frac{s_2} {\sigma_2})^2}$  
+$F = \frac{(\frac{s_1}{\sigma_1})^2} {(\frac{s_2}{\sigma_2})^2}$
 
 ![](http://latex.codecogs.com/gif.latex?%24F%20%3D%20%24%5Cfrac%7B%7B%7D%28%5Cfrac%7Bs_1%7D%7B%5Csigma_1%7D%29%5E2%7D%20%7B%28%5Cfrac%7Bs_2%7D%20%7B%5Csigma_2%7D%29%5E2%7D%24)  
 

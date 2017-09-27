@@ -350,7 +350,9 @@ p2-p1 # add'l probability is captured by std. t -distribution in the left tail, 
 
 #### Chi-Square
 
-If k independent normal random variable are squared and added, the resulting variable forms a distribution called chi-square distribution with degrees of freedom k. Example : See below
+If k independent normal random variable are squared and added, the resulting variable forms a distribution called chi-square distribution with degrees of freedom k.
+
+Example : See below
 
 ##### PDF and parameters
 

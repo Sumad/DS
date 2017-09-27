@@ -10,16 +10,13 @@ knitr::opts_chunk$set(echo = TRUE)
 HYPOTHESIS TESTING
 ------------------
 
-TYPES OF HYPOTHESIS TESTS
--------------------------
+TYPES OF HYPOTHESIS TESTS WHEN COMPARING POPULATIONS (TBDe)
+-----------------------------------------------------------
 
-### COMPARE MEANS,PROPORTIONS,VARIANCES FOR
+COMPARE MEASURES OF CONTINUOUS DATA LIKE MEANS,PROPORTIONS,VARIANCES - Z,T,F ;
+COMPARE MEASURES OF CATEGORICAL DATA LIKE COUNTS - CHISQUARE (TBDe) UNDER CONDITIONS OF POPULATION PARAMETER KNOWN/UNKNOWN, SAMPLE SIZE LARGE/SMALL UNDERLYING DISTRIBUTIONS KNOWN/UNKNOWN \#\# P VALUE, DECISION ERRORS, POWER OF A TEST \#\# ANNOVA - ONE WAY, TWO WAY (TBD) \#\# NON PARAMETRIC TESTS USED FOR CONTINUOUS MEASURES WHEN ASSUMOPTIONS ARE VIOLATED (TBD) \#\#\# MANN WHITNEU U TEST \#\#\# WILCOXON T TEST \#\#\# KRUSHAL WALIS H TEST
 
-### CONTINUOUS VARS. - Z,T,F ; CATEGORICAL VARS. - CHISQUARE
-
-### UNDER CONDITIONS OF POPULATION PARAMETER KNOWN/UNKNOWN, SAMPLE SIZE LARGE/SMALL
-
-### UNDERLYING DISTRIBUTIONS KNOWN/UNKNOWN
+NOTE : TBDE MEAN TO BE DETAILED ,TBD TO BE DONE
 
 ### HYPOTHESIS TESTING
 
@@ -30,7 +27,7 @@ The case for interventions is made by hypothesis testing, it involves-
 2. Laying out Hypothesis tests
 3. Identifying data (sample) to be gathered for testing hypothesis,
 sampling considerations ( random, stratified etc), size etc
-4. Identifying test statistic, confidence interval or testing error considerations
+4. Identifying test statistic, confidence interval/significance level/ testing error considerations
 5. Testing,Derive inferences and make recommendations
 
 #### 1. HYPOTHESIS STATEMENT
@@ -54,9 +51,9 @@ Null Hypothesis: Mean loss of new drivers in 1st policy period &gt;= Mean loss i
 The idea is to reject null hypothesis by proving that the difference observed in the population parameter and sample parameter is not just a matter of chance and but a systematic difference. This is often cited as
 testing if the difference is **statistically significant**
 
-\*\* CHOICE OF SAMPLING DISTRIBUTION OR TEST STATISTIC AND\*\*
-\*\* SIGNIFICANCE LEVEL/CONFIDENCE FOR THE TEST AND\*\*
-\*\* CRITICAL VALUES AND REGION DETERMINATION \*\* 1. We use CLT , sample size and test metric to determine the choice of sampling
+**CHOICE OF SAMPLING DISTRIBUTION OR TEST STATISTIC AND**
+**SIGNIFICANCE LEVEL/CONFIDENCE FOR THE TEST AND**
+**CRITICAL VALUES AND REGION DETERMINATION** 1. We use CLT , sample size and test metric to determine the choice of sampling
 distribution and hence test statistic
 2. We also choose a confidence level / significance level, using which null hypothesis can be
 confidently rejected. *Signficance level* is a probability that null hypothesis is true and yet
@@ -137,16 +134,18 @@ text(x = c(t.crit,t),y = c(0.05,0.05),labels = c("t.crit","t"))
 
 ![](Hypothesis_Testing_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-3-1.png)
 
-### TYPES OF SAMPLING DISTRIBUTIONS
+### TYPES OF HYPOTHESIS TESTS AND TEST STATISTICS USED
 
-### CONTINUOUS TEST METRIC (TBD?)
+### CONTINUOUS MEASURES (TBD?)
 
 1.  COMPARE SAMPLE MEAN TO A POPULATION MEAN 1.1 SAMPLE SIZE &gt;30 & POP. STD. DEVIATION KNOWN : Z STAT.
     1.2 LESS THAN 30 OR POP. STD. DEVIATION NOT KNOWN : T STAT.
 
 2.  COMPARE SAMPLE PROPORTION TO A POPULATION PROPORTION
 
-3.  COMPARE TWO POPULATION MEANS (RECALL PAIRED OBSERVATION VS SEPARATE SAMPLE TEST, FIRST IS BETTER EXPEERIMENT DESIGN)
+3.  COMPARE TWO POPULATION MEANS
+    PAIRED OBSERVATION (Z TEST ) VS SEPARATE SAMPLE TEST (INDEPENDENT T TEST), FIRST IS BETTER
+    EXPEERIMENT DESIGN
     3.1 SAMPLE SIZE &gt;30 AND POP. MEANS ARE KNOWN : Z TEST
     3.2 LESS THAN 30 OR POP MEAN UNKNOWN : INDEPENDENT T TEST
 
@@ -154,10 +153,151 @@ In both the cases, the sampling distribution of difference of means is considere
 sampling distribution is essentially sqrt. of sum of variances of sampling distribution of means of
 individual populations.
 sqrt(sigma1^2/n1 + sigma1^2/n2) .
-The degree of freedom calculation varies on whether population std. deviation is known or not.
+The degree of freedom calculation varies on whether population std. deviation is known or not. MORE ELABORATION NEEDED UNDER A SEPARATE PROJECT
+
+EXAMPLES: \* A problem of interest could be to compare the sweetness on a scale for two cold drinks.If we use the
+same set of sample, it is a paired observation test, depending on if the population std. deviations
+are known, and sample sizes chosen, we make choise of sampling distribution and hence test stat.
+\* It is presumed that customer shopping for policies online gives a better overall shopping experience with information submission time less than 5 mins, than those who take more than 5 mins.
+So, submission time is an important metric for customer satisfaction score taken on a scale of 1:10.
+
+    Sample of 15 customers each are taken from the two groups, one that took <5 mins and other that took 
+    >5 mins, and scores are taken on scale of 1:10  
+      
+    |Group|N|Mean Score|SD|  
+    |---|---|---|---|
+    |<5mins|15|9.3|1.5|  
+    |>5mins|15|7.9|1.9|  
+
+    Hypothesis:  
+    H0 : µ1 - µ2 = 0
+    H1 : µ1 - µ2 > 0 
+
+    Sampling Distribution/Test Statistic/Significance Level:  
+    * The sampling distribution of difference of sample means will follow CLT. Here we don't know the  
+      population sigmas, sample sizes are small as well.We don't know if the the underlying populations are normal, 
+      to accomodate for small samples, and if their varinces are  equal or not.  
+    * A simplifying assumption we take is that scores are normally distributed in two underlying populations,
+      that compensates for small samples, now can say sampling distribution will be approx. t.
+    * standard error and degrees of freedom of sampling distribution can be computed in two ways depending  
+      on whether the variance of underlying population is same or different. If they are different, the  
+      distribution can be approximated as t, but a possible better way is to use non-parametric methods.  
+      If the variances are equal ( this can tested using F-test), then -
+
+``` r
+# pooled sd of two samples
+ sd.pop.pooled <- sqrt((1.5^2 * (15-1) + 1.9^2 * (15-1)) / (15-1 + 15 -1 ))
+# used to find std. error
+ std.error <- sqrt(sd.pop.pooled ^2 / 15 +  sd.pop.pooled ^2 / 15)
+ df <- (15 - 1) + (15 - 1)
+ # Take significance level as 5%
+ # Under null hypothesis, the difference of samples means is ditributed with t, with mean as 0
+ # and std. deviation as std.error
+ # The t statistic of observed sample differences
+ t <- (9.3 - 7.9) / std.error
+ t.crit <-  qt(p = 0.95,df = df,lower.tail = TRUE)  
+ print(c(t,t.crit))
+```
+
+    ## [1] 2.239881 1.701131
+
+DECISION : Reject Null Hypothesis
 
 1.  COMPLARE TWO POPULATION PROPORTIONS
 
 2.  COMPARE VARIANCES OF TWO POPULATIONS : F TEST
 
-### CATEGORICAL
+We can draw different size samples from two populations assumed to be normally distributed. A sample drawn from a **normally distributed** population fulfills the property that
+(n-1)s<sup>2/sigma</sup>2 ≈ X2, is a chisquare random variable with (n-1) df
+
+For two populations, assumed to be normally distributed, if the population variance is same, then the ratio
+of sample variance follows an F distribution as,
+
+s1^2 / s2^2 = (X1^2 . sigma1^2) / (n1-1) $\\frac{s\_1^2}{s\_2^2} = \\frac{\\frac{\\chi\_1^2 . \\sigma\_1^2}{n\_1-1}}{\\frac{\\chi\_2^2 . \\sigma\_2^2}{n\_2-1}}$
+![](http://latex.codecogs.com/gif.latex?%5Cfrac%7Bs_1%5E2%7D%7Bs_2%5E2%7D%20%3D%20%5Cfrac%7B%5Cfrac%7B%5Cchi_1%5E2%20.%20%5Csigma_1%5E2%7D%7Bn_1-1%7D%7D%7B%5Cfrac%7B%5Cchi_2%5E2%20.%20%5Csigma_2%5E2%7D%7Bn_2-1%7D%7D)
+and can be seen to become the F statistic
+![](http://latex.codecogs.com/gif.latex?%5Cfrac%7Bs_1%5E2%7D%7Bs_2%5E2%7D%20%3D%20%5Cfrac%7B%5Cfrac%7B%5Cchi_1%5E2%20%7D%7Bn_1-1%7D%7D%7B%5Cfrac%7B%5Cchi_2%5E2%20%7D%7Bn_2-1%7D%7D)
+
+Null Hypothesis is always, that population variances are equal and thus we say, the ratios of square sample
+sds follow an F distribution with given dfs. Based on hypothesis formulation, we look to do a left, right or two tailed test with a chosen significance
+level, understanding the under null hypothesis that F statistic is 1, we are looking if the distance calculated
+from sample F statistic is significant from 1.
+
+Example: Comparing the footfalls in two stores of a company to check that variance in footfall is different.
+H0 : sigma1 = sigma2 H1 : sigma1 \# sigma2
+
+``` r
+# For 7 days footfalls are recorded
+s1 <- c(214,185,214,186,182,220,220)
+s2 <-  c(171,185,236,175,227,198,172)
+sd.s1<- sd(s1)
+sd.s2 <-  sd(s2)
+df1 <- 6
+df2 <- 6
+# Under null hypothesis, Sampling distribution or test statistic is F, df1 = df2 =6
+# Two tailed test, critical points can be computes using signficance level of 5%
+f.stat <- (sd.s1/sd.s2)^2
+f.citical.right <- qf(p = 0.975,df1 = df1,df2 = df2)
+f.citical.left <- qf(p = 0.025,df1 = df1,df2 = df2)
+
+# For visualization
+x <- sort(rf(n = 100,df1 = df1,df2 = df2))
+f.freq <- df(x = x,df1 = df1, df2 =df2)
+plot(x = x,y = f.freq,type = "p")
+abline(v = c(f.citical.left,f.citical.right,f.stat),lty = c(2,2,1))
+```
+
+![](Hypothesis_Testing_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-5-1.png)
+
+Decision : Cannot Reject Null Hypotheis
+
+### CATEGORICAL MEASURES LIKE COUNTS AND FREQUENCIES
+
+#### CHI-SQUARE GOODNESS OF FIT FOR COUNT DATA
+
+We look at a categorical variable in a dat set, and summarize the counts across levels.
+These are observed counts.
+We may also have expected counts of this data from a population or could derive them based on
+null hypothesis. The questions is how well the observed data fits the expected.
+The number of categories k, each having a count that is considered a random variable, as the number of categories increse, the observed count becomes normal random variable. This is
+analogus to binomial distributon with n trials and r successes, with p as prob. of success
+approaching normal.
+
+If, Null Hypothesis is true, For a large sample, the below statistic follows a chi-square distribution with df = k-1 assuming,
+as we are adding squares of normal random variables, that are independent i.e what goes in a cell
+is not dependent on what goes in other.
+
+Ho : Expected and Observed Counts are equal
+H1 : They are not
+
+$ \_{i=1}^{n}{}$
+![](http://latex.codecogs.com/gif.latex?%24%20%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%7B%7D%5Cfrac%7B%28O_i%20-%20E_i%29%5E2%7D%7BE_i%7D%24)
+
+A thumb of rule for large sample is that the expected value in each cell should be &gt;=5.
+If it is not i.e samples is small, then cells could be combined to ensure validity of test.
+
+EXAMPLE : auto policies sold follow a distributon amongst the vehicle types of 5 categories as below, a sample has the following distribution. H0: Observed equals Expected H1 : Does not
+
+``` r
+expected.prop <- c(0.3,0.24,0.3,0.11,0.05)
+sample <- c(35,16,13,19,17)
+expected.count <- expected.prop * sum(sample)
+# expected count is >5 for each category, assumption of large sample is satisfied
+chsq.stat <- sum((((sample - expected.count)^2) / expected.count))
+chsq.stat
+```
+
+    ## [1] 47.75152
+
+``` r
+# Choice of significance level
+qchisq(p = c(0.025,0.0975),df = 4)
+```
+
+    ## [1] 0.4844186 1.0475639
+
+DECISION : Reject the null hypothesis
+
+#### CHI SQUARE TEST OF INDEPENDENCE (TBD)
+
+### P VALUE, DECISION ERRORS, POWER OF A TEST
