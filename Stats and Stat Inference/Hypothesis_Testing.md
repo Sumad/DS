@@ -301,3 +301,153 @@ DECISION : Reject the null hypothesis
 #### CHI SQUARE TEST OF INDEPENDENCE (TBD)
 
 ### P VALUE, DECISION ERRORS, POWER OF A TEST
+
+#### DECISION ERRORS
+
+In hypothesis tests, we construct null and alternate hypothesis on a population parameter, and try to reject/fail
+to reject the null hypothesis based on a single sample statistic. There are two types of errors one can make,
+and their probability can be computed. Decisions making infact, needs to take into account the affordability to
+make each type of error, and only then decision is arrived at.
+
+|                   | Actual Ho True | Actual Ho False |
+|-------------------|----------------|-----------------|
+| Reject Ho         | TYPE 1 Error   | No Error        |
+| Fail to reject Ho | No Error       | TYPE 2 Error    |
+
+There is a counterbalance between type1 error and significance level, explained further. We cannot make type1 or type2 erros as 0. If type1 error were to be made 0, we make a policy of not rejecting a null hypothesis, in that case
+type1 becomes 0, but type 2 will become 1, as we accept all false null hypothesis.Similar is the case if we try to
+make type2 as 0.
+
+#### P-VALUE/TYPE 1 ERROR
+
+Usually we look at the probability of making an error in hypothesis testing if, the null hypothesis were true, and
+based on sample evidence we reject it, i.e if we make a type 1 error. This is called p-value or Type 1 error.
+As mentioned below, we assess the leeway we have at hand of making each type of error, and make a decision. Most often,
+we want to minimize the type 1 error, so we look at p value, and if it is below a chosen limit, we reject the null
+hypothesis, as the error we would make would be less than the limit.
+
+#### SIGNIFICANCE VALUE
+
+A policy on how much type 1 error can be tolerated. It is depdendent on case to case. Eg: If we are testing a proven medicine
+to prove it has side effects (alternate hypothesis), then the type 1 error should be very small.
+Significance level is decided before hypothesis testing.
+
+``` r
+#HO : mu >=1000
+#H1 : mu < 1000
+sample.mean <- 998
+sigma <- 5
+n <- 100
+# Let significance level be 5%
+p.value <- pnorm(q = 998,mean = 1000,sd = 5/sqrt(100),lower.tail = TRUE)
+# Type1 error : If we reject null and say 996 is less than 1000 and it turns out to be false, then the error we are likely 
+# to make is for all samples that show up a value <=996, which is 7.86%. As significance level is 5%, we fail to reject null  
+# hypothesis, which is not to say that we have accepted it, but in the light of evidence and our tolerance of error 1, we cannot
+# reject it
+```
+
+#### TYPE 2 ERROR and relationship with significance level
+
+Type 2 error is failing to reject ( and loosely as accepting Ho) a false null hypothesis.Mostly, we
+are concerned with type1 error, but type2 error could be greater importance ins some cases.
+Example: If a sample of screws was being inspected that would go in fitting of a satellite part, then accepting a
+bad carton of screws could have a huge neagtive bearing on fate of the the satellite. If the carton is bad
+and we accept it, it is type 2 error.
+Genrally, as the significance level decreases, i.e the threshold of making type 1 error decreases, the type2 error increases.
+Type 2 error is related to significance level, and not p value as seen below
+
+``` r
+# Calculate type 2 error from previous example ( for left tail test)
+# First, what is the critical value at which null hyp. is rejected
+crit.value <- qnorm(p = 0.05,mean = 1000,sd = 5/sqrt(100),lower.tail = TRUE) 
+#crit.value is 999.1776, if sample observation is less than crit.value, we reject null hypothesis, else we
+# fail to reject it.
+
+## Type 2 is the probability of finding sample values >=criti.value,  
+## assuming sample observation is population mean. We find the probability of finding sample value >=crit.value,
+## assuming the worst case from given the sample observation, i.e of pop mean = sample mean.
+##to find the greatest probability of accepting null hyp. when it is false
+beta <- pnorm(q = crit.value,mean = 998,sd = 5/sqrt(100),lower.tail = FALSE)
+
+## For visualizaton ( need to do on a single plot to contrast the differences)
+norm1 <- sort(rnorm(n = 100,mean = 1000,sd = 5/sqrt(100)))
+p.norm1 <-  dnorm(x = norm1,mean = 1000,sd = 5/sqrt(100) )
+norm2 <- sort(rnorm(n = 100,mean = 998,sd = 5/sqrt(100)))
+p.norm2 <-  dnorm(x = norm2,mean = 998,sd = 5/sqrt(100) )
+
+layout(mat = matrix(data = c(1,1,2,2),nrow = 2,byrow = TRUE))
+plot(x = norm1,y = p.norm1,type = "l",xlim = c(997,1002),main = "Left tailed test, criti value identification  
+     using type1 error,alpha 5%")
+abline(v = crit.value,lty = 2)
+plot(x = norm2,y = p.norm2,type = "l",xlim = c(997,1002), main="Beta calculation using crit value, and pop mean as
+     sample mean observation")
+abline(v = crit.value,lty = 2)
+```
+
+![](Hypothesis_Testing_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-8-1.png) \#\#\#\#\# BETA VARIES NON-LINEARLY WITH CHOICE OF ALPHA, FOR A GIVEN HYPOTHESIS TEST The relationship looks very roughly a logrithmic relationship, for small values of alpha, beta gets very high,
+but for reasonable values of alpha, B drops. Like for 10% alpha, beta is less than 0.05%.
+It is a good idea to draw these curves for a given hypothesis test, to then make a choice of alpha.
+
+``` r
+# As alpha decreases, threshhold for type1 error decreases, so likelihood of making type 2 error increases
+# Take a vector of alpha values
+pop.mean <- 1000
+sample.mean <- 998
+sample.sd <- 5
+sample.size <- 100
+alpha <- seq(0.01,0.1,0.01)
+crit.values <- qnorm(p = alpha,mean = pop.mean,sd = sample.sd/sqrt(sample.size),lower.tail = TRUE)
+beta <- pnorm(q = crit.values,mean = sample.mean,sd = sample.sd/sqrt(sample.size),lower.tail = FALSE)
+plot(x = alpha,y = beta,type = "l",main = "Beta varying with choice of significance level")
+```
+
+![](Hypothesis_Testing_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-9-1.png)
+
+Beta for a right tailed test and a two tailed test can be computed similarly
+
+#### How to choose threshold for Type1 and Type2 Errors
+
+A good choice is enabled by knowing the relative cost of the two type of errors.
+A general rule is:
+1. If cost of type 1 error is very large, choose alpha as 1%.
+2. If cost of type 2 error is very large, choose alpha as 10%.
+3. If both are important, or cost is indeterminate choose 5%.
+Also, if apha is fixed based on above, beta can still be decreased by increasing the sample size. If cost of both
+are high, we could increase the sample size and decrease alpha to 1%.
+
+``` r
+pop.mean <- 1000
+sample.mean <- 998
+sample.sd <- 5
+sample.sizes <- seq(30,50,5)
+alpha <- seq(0.01,0.1,0.01)
+# q norm is a vectorized function for argument p, to apply it on a vector of sample sizes, can use sapply,
+# and specify all other arguments that qnorm expects, except the one which is to be vectorized
+sds <- sample.sd/sqrt(sample.sizes)
+mat.crit.values <- sapply(X = sds,FUN = qnorm, p = alpha,mean = pop.mean,lower.tail = TRUE,log.p = FALSE )
+colnames(mat.crit.values) <- paste("ss",sample.sizes,sep="_")
+rownames(mat.crit.values) <- paste("alpha",alpha,sep="_")
+
+beta.mat <- apply(X = mat.crit.values,MARGIN = 2,FUN = pnorm, mean = sample.mean,sd = sds,lower.tail = FALSE,log.p = FALSE)
+beta.df <- as.data.frame(beta.mat)
+
+#beta <- pnorm(q = crit.values,mean = sample.mean,sd = sample.sd/sqrt(sample.size),lower.tail = FALSE)
+library(ggplot2)
+library(reshape2)
+melted.df <- melt(data = beta.df,measure.vars = colnames(beta.df),value.name = "beta",variable.name = "sample_size")
+melted.df$alpha <- alpha
+melted.df$sample_size <- as.factor(melted.df$sample_size) 
+# Draw scatter plot first, then connect the dots using lines
+ggplot(data = melted.df,mapping = aes(x = alpha, y = beta)) +  geom_point() + 
+  geom_line(mapping = aes(y = beta, color = sample_size))
+```
+
+![](Hypothesis_Testing_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-10-1.png)
+
+``` r
+#rm(list=ls())
+```
+
+#### POWER OF A TEST
+
+Probability that a false null hypothesis will be detected by a test = 1- Beta
