@@ -13,14 +13,20 @@ HYPOTHESIS TESTING
 TYPES OF HYPOTHESIS TESTS WHEN COMPARING POPULATIONS (TBDe)
 -----------------------------------------------------------
 
-COMPARE MEASURES OF CONTINUOUS DATA LIKE MEANS,PROPORTIONS,VARIANCES - Z,T,F ;
-COMPARE MEASURES OF CATEGORICAL DATA LIKE COUNTS - CHISQUARE (TBDe) UNDER CONDITIONS OF POPULATION PARAMETER KNOWN/UNKNOWN, SAMPLE SIZE LARGE/SMALL UNDERLYING DISTRIBUTIONS KNOWN/UNKNOWN \#\# P VALUE, DECISION ERRORS, POWER OF A TEST \#\# ANNOVA - ONE WAY, TWO WAY (TBD) \#\# NON PARAMETRIC TESTS USED FOR CONTINUOUS MEASURES WHEN ASSUMOPTIONS ARE VIOLATED (TBD) \#\#\# MANN WHITNEU U TEST \#\#\# WILCOXON T TEST \#\#\# KRUSHAL WALIS H TEST
+1. COMPARE MEASURES OF CONTINUOUS DATA LIKE MEANS,PROPORTIONS,VARIANCES - Z,T,F      
+2. COMPARE MEASURES OF CATEGORICAL DATA LIKE COUNTS - CHISQUARE (TBDe) UNDER CONDITIONS OF POPULATION PARAMETER KNOWN/UNKNOWN, SAMPLE SIZE LARGE/SMALL UNDERLYING DISTRIBUTIONS KNOWN/UNKNOWN  
+3. P VALUE, DECISION ERRORS, POWER OF A TEST  
+4. ANNOVA - ONE WAY, TWO WAY (TBD)  
+5. NON PARAMETRIC TESTS USED FOR CONTINUOUS MEASURES WHEN ASSUMPTIONS ARE VIOLATED (TBD)  
+- MANN WHITNEU U TEST 
+- WILCOXON T TEST  
+- KRUSHAL WALIS H TEST
 
-NOTE : TBDE MEAN TO BE DETAILED ,TBD TO BE DONE
+NOTE : TBDE MEANS TO BE DETAILED ,TBD TO BE DONE
 
 ### HYPOTHESIS TESTING
 
-Problem Solving in Business context requires testing beleifs, prevelant opinions about a population of interest to introduce interventions. Example: - White lit bulbs over the shelves can imrpove sales than day lit bulbs.
+Problem Solving in Business context requires testing beleifs, prevelant opinions about a population of interest to introduce interventions. Example: - Whitelight bulbs over the shelves can imrpove sales than daylight bulbs.
 - Customers would not defect if given an increase in premium equal or less than inflation rate
 The case for interventions is made by hypothesis testing, it involves-
 1. Defining the business problem
