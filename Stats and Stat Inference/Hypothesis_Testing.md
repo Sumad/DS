@@ -57,29 +57,24 @@ Null Hypothesis: Mean loss of new drivers in 1st policy period &gt;= Mean loss i
 The idea is to reject null hypothesis by proving that the difference observed in the population parameter and sample parameter is not just a matter of chance and but a systematic difference. This is often cited as
 testing if the difference is **statistically significant**
 
-**CHOICE OF SAMPLING DISTRIBUTION OR TEST STATISTIC AND**
-**SIGNIFICANCE LEVEL/CONFIDENCE FOR THE TEST AND**
-**CRITICAL VALUES AND REGION DETERMINATION** 1. We use CLT , sample size and test metric to determine the choice of sampling
-distribution and hence test statistic
-2. We also choose a confidence level / significance level, using which null hypothesis can be
-confidently rejected. *Signficance level* is a probability that null hypothesis is true and yet
-as a matter of chance, we reject it based on sample observation. It represents what is called Type 1 error (more on this later).We choose to minimize the probability of making Type1 error due
-to chance.
-The choice of confidence level/significance level varies with the 'research problem'
-
-1.  Based on the hypothesis and confidence level, we choose the critical value, i.e the value used to
-    make the decision of accepting/rejecting null hypothesis such that even if we make the Type 1 error,
-    it is tolerable.
-    And then we compare the sample observation to this 'Critical Value' to determine the
-    decision of rejecting or not being able to reject Null Hypothesis.
-
+**CHOICE OF SAMPLING DISTRIBUTION OR TEST STATISTIC AND**  
+**SIGNIFICANCE LEVEL/CONFIDENCE FOR THE TEST AND**  
+**CRITICAL VALUES AND REGION DETERMINATION**  
+1. We use CLT , sample size and test metric to determine the choice of sampling distribution and hence test statistic  
+2. We also choose a confidence level / significance level, using which null hypothesis can be  
+confidently rejected. *Signficance level* is a probability that null hypothesis is true and yet  
+as a matter of chance, we reject it based on sample observation. It represents what is called Type 1 error (more on this later).We choose to minimize the probability of making Type1 error due to chance.  
+The choice of confidence level/significance level varies with the 'research problem'.  
+3. Based on the hypothesis and confidence level, we choose the critical value, i.e the value used to make the decision of   accepting/rejecting null hypothesis such that even if we make the Type 1 error,it is tolerable.  
+And then we compare the sample observation to this 'Critical Value' to determine the decision of rejecting or not being    
+able to reject Null Hypothesis.  
 Critical region : left tail,right tail, two tailed, formed by the critical value and tail/tails,
 determined by sign of inequality of alternate hypothesis.
 
--   Example with test metric = mean, sample size &gt;30.
-    Average waiting time in retail stores for customer is 2.6 mins.Based on a sample of 50 obs.,
-    it was found to be 2.9 mins with std. deviation of 0.5 mins in store X.
-    Do the customers in store X wait longer than that the retail store average.
+Example with test metric = mean, sample size &gt;30.
+Average waiting time in retail stores for customer is 2.6 mins.Based on a sample of 50 obs.,
+it was found to be 2.9 mins with std. deviation of 0.5 mins in store X.
+Do the customers in store X wait longer than that the retail store average.
 
 H0 : mu &lt;= 2.6
 H1 : mu &gt; 2.6
@@ -87,14 +82,14 @@ H1 : mu &gt; 2.6
 1.  Sampling distribution of sample mean is 'normal' per CLT for large sample sizes ,so the test
     statistic should be 'z',and mean of sampling distribution of means = population mean, std. error = sigma/sqrt(n).
     But population std. deviation is not known, so we take distribution as t.But let us try
-    with normal first.
+    with normal first.  
     So, we have a nomal distriution with mean as population mean, and the observed sample mean
     can be pictured on this distribution a certain distance away from population mean.
-    2.The test is whether this distance is significant, and signifiance brings into picture an
+2.  The test is whether this distance is significant, and signifiance brings into picture an
     assumption of **significance/confidence** we are comfortable with. If we take it as 5%,
     it means in 5/100 samples, we could get an observation that could lead us to reject a true
-    null hypothesis.
-2.  Using the probability of significance, we find the critical value pertaining to 5%.
+    null hypothesis.  
+3.  Using the probability of significance, we find the critical value pertaining to 5%.
     First we see it is a right tailed test seeing the alternate hypothesis.
     (Sign of alternate hypothesis determines the critical region, if the hypothesis
     are stated correctly as defined above.)
@@ -120,9 +115,9 @@ abline(v = c(z.crit,z), lty = c(2,1))
 text(x = c(z.crit,z),y = c(0.005,0.005),labels = c("z.crit","z"))
 ```
 
-![](Hypothesis_Testing_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-2-1.png)
+![](Hypothesis_Testing_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-2-1.png)  
 
-The test statistic used should have been t.
+The test statistic used should have been t.  
 
 ``` r
 # Convert the sampling distribution with mean 2.6 and sd 0.5 to t distribution
@@ -138,34 +133,35 @@ abline(v = c(t.crit,t), lty = c(2,1))
 text(x = c(t.crit,t),y = c(0.05,0.05),labels = c("t.crit","t"))
 ```
 
-![](Hypothesis_Testing_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-3-1.png)
+![](Hypothesis_Testing_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-3-1.png)  
 
 ### TYPES OF HYPOTHESIS TESTS AND TEST STATISTICS USED
 
 ### CONTINUOUS MEASURES (TBD?)
 
-1.  COMPARE SAMPLE MEAN TO A POPULATION MEAN 1.1 SAMPLE SIZE &gt;30 & POP. STD. DEVIATION KNOWN : Z STAT.
-    1.2 LESS THAN 30 OR POP. STD. DEVIATION NOT KNOWN : T STAT.
+1.  COMPARE SAMPLE MEAN TO A POPULATION MEAN  
+1.1 SAMPLE SIZE &gt;30 & POP. STD. DEVIATION KNOWN : Z STAT.  
+1.2 LESS THAN 30 OR POP. STD. DEVIATION NOT KNOWN : T STAT.  
 
 2.  COMPARE SAMPLE PROPORTION TO A POPULATION PROPORTION
 
 3.  COMPARE TWO POPULATION MEANS
     PAIRED OBSERVATION (Z TEST ) VS SEPARATE SAMPLE TEST (INDEPENDENT T TEST), FIRST IS BETTER
-    EXPEERIMENT DESIGN
-    3.1 SAMPLE SIZE &gt;30 AND POP. MEANS ARE KNOWN : Z TEST
-    3.2 LESS THAN 30 OR POP MEAN UNKNOWN : INDEPENDENT T TEST
+    EXPEERIMENT DESIGN  
+    3.1 SAMPLE SIZE &gt;30 AND POP. MEANS ARE KNOWN : Z TEST   
+    3.2 LESS THAN 30 OR POP MEAN UNKNOWN : INDEPENDENT T TEST  
 
 In both the cases, the sampling distribution of difference of means is considered, the standard error of
 sampling distribution is essentially sqrt. of sum of variances of sampling distribution of means of
-individual populations.
+individual populations.  
 sqrt(sigma1^2/n1 + sigma1^2/n2) .
-The degree of freedom calculation varies on whether population std. deviation is known or not. MORE ELABORATION NEEDED UNDER A SEPARATE PROJECT
+The degree of freedom calculation varies on whether population std. deviation is known or not. MORE ELABORATION NEEDED UNDER A SEPARATE PROJECT  
 
-EXAMPLES: \* A problem of interest could be to compare the sweetness on a scale for two cold drinks.If we use the
+EXAMPLES:  A problem of interest could be to compare the sweetness on a scale for two cold drinks.If we use the
 same set of sample, it is a paired observation test, depending on if the population std. deviations
 are known, and sample sizes chosen, we make choise of sampling distribution and hence test stat.
-\* It is presumed that customer shopping for policies online gives a better overall shopping experience with information submission time less than 5 mins, than those who take more than 5 mins.
-So, submission time is an important metric for customer satisfaction score taken on a scale of 1:10.
+It is presumed that customer shopping for policies online gives a better overall shopping experience with information submission time less than 5 mins, than those who take more than 5 mins.  
+So, submission time is an important metric for customer satisfaction score taken on a scale of 1:10.  
 
     Sample of 15 customers each are taken from the two groups, one that took <5 mins and other that took 
     >5 mins, and scores are taken on scale of 1:10  
