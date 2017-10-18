@@ -209,16 +209,16 @@ DECISION : Reject Null Hypothesis
 
 2.  COMPARE VARIANCES OF TWO POPULATIONS : F TEST
 
-We can draw different size samples from two populations assumed to be normally distributed. A sample drawn from a **normally distributed** population fulfills the property that
-(n-1)s<sup>2/sigma</sup>2 ≈ X2, is a chisquare random variable with (n-1) df
+We can draw different size samples from two populations assumed to be normally distributed. A sample drawn from a **normally distributed** population fulfills the property that  
+(n-1)s<sup>2/sigma</sup>2 ≈ X2, is a chisquare random variable with (n-1) df  
 
 For two populations, assumed to be normally distributed, if the population variance is same, then the ratio
-of sample variance follows an F distribution as,
+of sample variance follows an F distribution as,  
 
-s1^2 / s2^2 = (X1^2 . sigma1^2) / (n1-1) $\\frac{s\_1^2}{s\_2^2} = \\frac{\\frac{\\chi\_1^2 . \\sigma\_1^2}{n\_1-1}}{\\frac{\\chi\_2^2 . \\sigma\_2^2}{n\_2-1}}$
-![](http://latex.codecogs.com/gif.latex?%5Cfrac%7Bs_1%5E2%7D%7Bs_2%5E2%7D%20%3D%20%5Cfrac%7B%5Cfrac%7B%5Cchi_1%5E2%20.%20%5Csigma_1%5E2%7D%7Bn_1-1%7D%7D%7B%5Cfrac%7B%5Cchi_2%5E2%20.%20%5Csigma_2%5E2%7D%7Bn_2-1%7D%7D)
-and can be seen to become the F statistic
-![](http://latex.codecogs.com/gif.latex?%5Cfrac%7Bs_1%5E2%7D%7Bs_2%5E2%7D%20%3D%20%5Cfrac%7B%5Cfrac%7B%5Cchi_1%5E2%20%7D%7Bn_1-1%7D%7D%7B%5Cfrac%7B%5Cchi_2%5E2%20%7D%7Bn_2-1%7D%7D)
+s1^2 / s2^2 = (X1^2 . sigma1^2) / (n1-1) $\\frac{s\_1^2}{s\_2^2} = \\frac{\\frac{\\chi\_1^2 . \\sigma\_1^2}{n\_1-1}}{\\frac{\\chi\_2^2 . \\sigma\_2^2}{n\_2-1}}$  
+![](http://latex.codecogs.com/gif.latex?%5Cfrac%7Bs_1%5E2%7D%7Bs_2%5E2%7D%20%3D%20%5Cfrac%7B%5Cfrac%7B%5Cchi_1%5E2%20.%20%5Csigma_1%5E2%7D%7Bn_1-1%7D%7D%7B%5Cfrac%7B%5Cchi_2%5E2%20.%20%5Csigma_2%5E2%7D%7Bn_2-1%7D%7D)  
+and can be seen to become the F statistic  
+![](http://latex.codecogs.com/gif.latex?%5Cfrac%7Bs_1%5E2%7D%7Bs_2%5E2%7D%20%3D%20%5Cfrac%7B%5Cfrac%7B%5Cchi_1%5E2%20%7D%7Bn_1-1%7D%7D%7B%5Cfrac%7B%5Cchi_2%5E2%20%7D%7Bn_2-1%7D%7D)  
 
 Null Hypothesis is always, that population variances are equal and thus we say, the ratios of square sample
 sds follow an F distribution with given dfs. Based on hypothesis formulation, we look to do a left, right or two tailed test with a chosen significance
