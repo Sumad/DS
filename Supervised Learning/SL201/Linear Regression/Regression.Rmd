@@ -1,0 +1,406 @@
+---
+title: "Linear Regression"
+author: "Sumad Singh"
+date: "9/22/2017"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# REGRESSION - PREDICTIVE TECHNIQUE FOR CONTINUOUS DEPENDENT VARIABLES, PARAMETRIC  
+# CLASSIFICATION - FOR DISCRETE OUTCOME, PARAMETRIC AND NON PARAMETRIC  
+
+## SECTION A  
+##1. LINEAR REGRESSION AS A TECHNIQUE - THE EQUATION AND USES  
+- ESTABLISH A LINEAR RELATIONSHIP TO EXPLAIN VARIATION IN A RANDOM VARIABLE USING OTHER VARIABLES:  
+Regression is a method to better explain the variation in a variable, using a set of variables called    
+independent variables. With this relationship, we hope to predict the future values of the variable,  
+better than a prediction of mean on an average. 
+Better prediction means that the average error in prediction on an unseen data will be less than that produced by using preiction as a mean value of variable at hand.  
+
+FORMULATION : $Y = \beta_0 + \beta_1.X_1  + \beta_2.X_2 + \epsilon $    
+![](https://latex.codecogs.com/gif.download?%24Y%20%3D%20%5Cbeta_0%20+%20%5Cbeta_1.X_1%20+%20%5Cbeta_2.X_2%20+%20%5Cepsilon%20%24)  
+
+We hypothesize a relationship as above we beleive applies to the population. Taking Expected value  
+operator on both sides, and with the below assumptions we get 
+$E(Y|X_i) = \beta_0 + \beta_1.X_1  + \beta_2.X_2$  
+![](https://latex.codecogs.com/gif.download?%24E%28Y%5C%7CX_i%29%20%3D%20%5Cbeta_0%20+%20%5Cbeta_1.X_1%20+%20%5Cbeta_2.X_2%24)   
+
+Basic Assumptions:  
+1. Expected value of error is 0.    
+2. Xi is fixed, i.e E(Xi) = Xi or Xi is not stochastic. This is a difficult assumption to hold, but as long  as error is not correlated with Xi, this will hold.  
+3.ASSUMPTION OF ADDITIVE RELTIONSHIPS IN STATING LINEAR REGRESSION:  
+The coefficient of a predictor would give the effect of the predictor on response, with other  
+precictors remaining constant. This way, the net affect is additive.When we discover the effect is  
+multiplicative, we need to specify it 
+
+- REGRESSION TO MEAN:  
+The depenent variable is the mean predicted value, and not the actual value.  
+
+##2. ASSUMPTIONS OF LINEAR MODEL   
+Assumptions are made about the relationship exhibited by the population
+
+
+- VALIDATE HYPOTHESES ABOUT RELATIONSHIPS  
+
+
+##3. HYPOTHESIZED RELATIONSHIP, PRF AND SRF  
+We work with a sample of data, so we hypothesize the relationship with variables in population  
+but estimate the parameters from a sample.  
+
+HOW EDA PLAYS A ROLE IN FORMULATING THE HYPOTHESIS:  
+- Data exploration from the sample is used to understand the following characteristics of the data  
+1. Continuous Variables:  
+a. Univariate Distributions - skewed, symmetrical and potential outliers  
+b. Bivariate Distributions - linear relationships between response and predictors that can be modeled or  
+   non-linear relationships, which need to be approximated as linear or require a different modeling approach  
+2. Categorical Variables:  
+a. Distribution of response variable in each category of the categorical variable, does mean of response  
+   increase linearly, or are too many categories that need consolidation
+
+
+```{r}
+library(ggplot2)
+library(car)
+library(gridExtra)
+library(dplyr)
+
+#### Data Dictionary ####
+
+# CRIM - per capita crime rate by town
+# ZN - proportion of residential land zoned for lots over 25,000 sq.ft.
+# INDUS - proportion of non-retail business acres per town.
+# CHAS - Charles River dummy variable (1 if tract bounds river; 0 otherwise)
+# NOX - nitric oxides concentration (parts per 10 million)
+# RM - average number of rooms per dwelling
+# AGE - proportion of owner-occupied units built prior to 1940
+# DIS - weighted distances to five Boston employment centres
+# RAD - index of accessibility to radial highways
+# TAX - full-value property-tax rate per $10,000
+# PTRATIO - pupil-teacher ratio by town
+# B - 1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town
+# LSTAT - % lower status of the population
+# MEDV - Median value of owner-occupied homes in $1000's
+
+#### Analytics Problem is to predict House Prices ####
+#### Data Quality Checks ####
+
+# Read data,tag the appropriate class of each variables, specify what is missing value
+# rm(list=ls())
+dir <- "C:/Users/sumad.singh/Documents/DS/Supervised Learning/SL201/Linear Regression"
+filename <- "boston_file.csv"
+path <- file.path(dir,filename)
+colclasses <- c(rep("numeric",3),"integer",rep("numeric",4),"integer", rep("numeric",5))
+data <- read.csv(file = path, header = TRUE,
+                 na.strings = c("", NA),colClasses = colclasses)
+
+# Consolidate the following at variable level to answer the questions
+#1. Does data have missing values
+na_count <- function(x) {sum(is.na(x))}
+na.count <- apply(X = data, MARGIN = 2,FUN = na_count)
+
+#2. Are there too many categories in some variables
+## Find the no. of unique values in each variable
+unique_count <- function(x) {length(unique(x))}
+unique.count <- apply(X = data, MARGIN = 2,FUN = unique_count)
+
+df.quality <- data.frame(var = names(na.count), na.count = na.count, unique.count = unique.count)
+
+#### Data Split to train (50%), test for tuning (30%) and val for final benchmarking (20%))
+
+set.seed(101)
+data$rand <- runif(n = nrow(data),min = 0,max = 1)
+train <- data %>% filter(rand <= 0.5)
+test <- data %>% filter(rand > 0.5 & rand <= 0.8)
+val <-  data %>% filter(rand > 0.8) 
+
+
+#### Exploratory Analysis ####
+#1. Are the continuous variables skewed
+#2. Do the continuous variables have outliers
+#3. Do they exhibit a linear relationship with response variabes
+#4. Are the predictor variables highly correlated with one another, in case of which their effect  
+# will not be separated with the estimation technique
+#5. Do the ordinal categorical variables exhibit a linear relationship with mean of response
+#6. Are there too many thin categories that can be clubbed together
+
+# These questions can be answered using visualization and determining some metrics
+# VISUALIZATIONS
+#A. plot() and scatterplotMatrix() give a good but constrained picture.Try picturing non-linear,
+# relationships, splines, highly colinear relationships here.
+
+#B.a.plot each variable with response, with a regression line
+# b. Draw a density plot for each variable to gauge extreme skews
+# c. Draw a boxplot to gauge extent of potential outliers, and direction
+
+#C. For categorical variables, use Boxplot() from car package and barplot with dplyr to group,
+# summarize and then plot. Notes about using Std. Evalution are included. dplyr needs expressions
+# specified in form of tests, and they are later evaluated inside the dplyr verbs.
+
+plot.scatter <- function(dataset, var, response.var) {
+plot(x = dataset[,var], y = dataset[,response.var],type = "p",xlab = var, ylab = response.var, 
+       main = paste("Scatterplot for", var, "with", response.var,sep = " " ))
+abline(reg = lm(dataset[,response.var] ~ dataset[,var]), lty = 2, lwd = 1.2, col = "red" )  
+}
+
+plot.box <- function(dataset, var){
+  # Boxplot plots, 1st and 3rd quantile, median to form hinges. Whiskers are formed 
+  # 1.5IQR away from the quantiles,if the whiskers are away from the min or max, whisker/s is
+  # dropped
+  # The boxplot statistics can be seen using plot = FALSE argument, the function also gives
+  # the list of outliers (outside of 1.5 IQR), in a vector accessible as $out
+  boxplot(x = dataset[,var],horizontal = FALSE,
+          main = paste("Boxplot for ", var))
+}
+
+plot.density <-  function(dataset, var)  {
+  # Need to understand how the density values are estimated for plotting
+  densityPlot(x = dataset[,var])
+  title(main = paste("Density plot for", var))
+}
+
+boxplot.categorical <- function(dataset, response.var, group.var ){
+  # function to plot boxplot of response variable values for each category of categorical variable
+  # Boxplot function from car package lets you do that,using formaula approach below
+  # Note: the formula and data arguments need to be specified in below sequence for it to work
+  # Usually you expect named arguments to not depend on order of specification; got this from help 
+  # examples of the function
+  Boxplot(#y = dataset[,response.var],
+          formula = dataset[,response.var] ~ dataset[,group.var],data = dataset,
+          #g = dataset[,group.vars],
+          xlab = group.var,ylab = response.var, 
+          main = paste("Boxplot of response variable grouped by", group.var, sep= " "))
+}
+
+
+barplot.categorical <- function(dataset, var){
+  # function to plot relative freq. distribution of a categorical variables, much like
+  # density or histogram for a continuous variable
+  
+  # Make an expression to evaluate length of grouped variables, required to use with dplyr to 
+  # use dynamic referencing of variables (called Standard Evaluation). dplyr provides NSE as well,
+  # so that column names can be directly used with qupotes
+  exp <- paste("length(",resp,")",sep="")
+  # group_by_ and summarise_ provided SE, where group_by and like provided NSE
+  grouped.data <- dataset %>% group_by_(var) %>% summarise_(.dots = exp) 
+  grouped.data <- setNames(grouped.data, c(var, "Freq"))
+  grouped.data <- mutate(grouped.data, Rel.Freq = Freq/sum(Freq))
+  barplot(height = grouped.data[["Rel.Freq"]],names.arg = grouped.data[[var]],
+          xlab = var,ylab = "Rel.Freq",main = paste("Barplot of cat. variable", var, sep=" "))
+}
+
+eda <- function(dataset, response.var, predictor.cont,predictor.cat, dir){
+  # Function used to answer questions 1,2,3,5,6
+  
+  # function uses three helper function - plot.density(),plot.box(),plot.scatter() 
+  #to draw the plots for continuous variable
+  #pdf(file.path(dir,"basic_eda.pdf"))
+
+  scatterplotMatrix(dataset)
+  for (var in predictor.cont){
+    layout(mat = matrix(data = c(1,1,2,3),nrow = 2,byrow = TRUE))
+    plot.scatter(dataset, var, response.var)
+    plot.box(dataset, var)
+    plot.density(dataset, var)   
+  }
+  
+  # functions uses helper functions barplot.categorical() and boxplot.categorical()
+  #to plot relatice freq. dist, and a bivariate boxplot for categorical variables.
+  # The latter plot gives an idea about if median of response in each categories moves linearly
+  # or non- linearly with a category. Thi is helpful if variables is ordinal in scale. 
+  # If variable is nominal, it provides how the median response varies with each level
+  
+  for (var in predictor.cat){
+    layout(mat = matrix(data = c(1,1,2,2),nrow = 2,byrow = TRUE))
+    barplot.categorical(dataset, var)
+    boxplot.categorical(dataset, response.var, var) 
+  }
+  #dev.off()
+}
+
+cont.vars <- colnames(train)[!colnames(train) %in% c("RAD","CHAS")]
+cat.vars <- c("RAD","CHAS")
+eda(dataset = train,response.var = "MV", predictor.cont = cont.vars,
+              predictor.cat = cat.vars, dir = dir)
+
+
+# METRICS
+#1. Summary with measures of central tendency and variation:
+df.summary <- apply(X = data, MARGIN = 2, FUN = summary)
+#2. quantiles and number of potential outliers
+# Can use quantile function to examine quantile values, boxplot() gives potential outliers, i.e
+# values outside of 1.5 IQR from both hinges, need to get values 3IQR out, and can write a custom  
+# function
+
+#3. Correlation matrix
+
+# VIF
+# Influential Observations
+
+
+```
+
+### OBSERVATIONS 
+#### LINEARITY and OUTLIER TREATMENT
+- CRIM can be seen to have potential **outliers** (from boxplot, point more than 3IQR will be >20), which are   likley decreasing the slope of the line, it also has a very **left skewed** distribution, so linear   relationshipis difficult to  hypothesize. 
+Recommendation :  splines would be best, split around 0.It would not amount to   overfitting,because crime rate per capita are expected to be very low. Evaluate outliers.  
+
+- ZN has a **left skew** because lot of towns do not have large spaces cut for residential zones. Need to  
+do something special for this variable as well, linear relationship will not fit well. There are **potential    outliers** due to some towns having large zones.  
+
+- INDUS has no outliers, general decreasing trend  
+- NOX has no outliers, shows a decreasing relationship  
+- RM i.e Ag rooms per dwelling shows very strong increasing relatonship. **potential outliers** could  
+be capped.
+- AGE , mild decreasing relationship, no potential outliers   
+- DIS, small potential outliers  
+- TAX, large separation b/w 480 to 680, with variable taking no values there  
+-  Pupil to Tutor ratio, shows a decreasing trend  
+- B, very left skewed, not a linear relationship; trend shows as proportion of blacks increases  
+the MV increases, should be taken in with a transformation. Lots of potential outliers, but  prop.  
+of balcks could be genuinely less in some towns  
+- LSTAT shows a strong linearly decreasing trend  
+- RAD does not show as having a linear relationship with MV, the median MV fluctuates up and down  
+- CHAS shows an increase in median value as we go fro 0 (no banks with river) to 1 (otherwise)
+
+
+
+RECOMMENDATIONS:      
+- Strong linear relationships are evident with RM, LSTAT based on the slope of the regression line,
+and how close the points are positioned around it  
+- All outliers seem genuine values , could be inspected record by record  later
+- Highly Skewed variables like CRIM, ZN , B will need transformations and new plot to examine if  
+they exhibit linear relationship later
+- TAX could be converted to two variables with cappings  
+- Splines/piece wise continuous variables can be created after inspecting scatterplot matrix  
+- First, get a base model
+
+
+
+
+WHY USE AN INTERCEPT IN THE MODEL
+
+  
+
+
+##4. ESTIMATION TECHNIQUES USING DATA- PROPERTIES OF GOOD ESTIMATION TECHNIQUES, WHY OLS IS GOOD
+BLUE IF NO HETEROSCEDASTICITY AND AUTOCORRELATION
+###4.1 DATA SELECTION, SAMPLING, OUTLIERS,INFLUENTIAL OBSERVATION CONSIDERATIONS
+###4.2 TRANSFORMATION OF CATEGORICAL VARIABLES
+####4.2.1 DUMMY VARIABLES AND DUMMY VARIABLE TRAP
+####4.2.2 BASE LEVEL SELECTION
+####4.2.3 IDENTIFICATION OF INTERACTIONS
+This helps hypothesize, but whether it increase variance is tested by independent test set
+#####4.2.3.1 GRAPHICAL METHOD  
+#####4.2.3.2 USE OF DECISION TREES OR CHAID
+#### 4.2.4 HOW OUTLIERS AND INFLUENTIAL OBSERVATIONS AFFECT ESTIMATION
+
+##5. PARAMETER ESTIMATES, THEIR STD. ERROR, P VALUE - INTERPRETATION
+###5.1 HOW CAN WE COMPARE PARTIAL REGRESSION COEFFICIENTS
+###5.2 HOW SHOULD DIFFERENCE IN SCALE OF VARIABLES BE MANAGED?
+RUN REGRESSION ON STANDARDIZED AND CONVERT TO ACTUAL SCALES?
+
+##6.   VALIDATION OF ASSUMPTIONS - HOW TO,CONSEQUENCES OF FAILURE, TREATMENT
+###6.1CRUCIAL ASSUMPTIONS
+6.1.1 NORMALITY OF ERRORS: CHISQUARE GOODNESS OF FIT (LARGE SAMPLE TEST), ANDERSON DARLING,
+QQ PLOT; ESSENTIAL FOR RELIABILITYF AND T TESTS; TRANSFORM SKEWED VARIABLES, SPECIFY MODEL BETTER,
+INCREASE SAMPLE SIZE
+6.1.2 HOMOSCEDASTICITY : 
+BREUSCH PAGAN TEST, WHITE TEST,GOLDFIELD QUANDT TEST, GRAPHICAL METHOFS OF PLOTTING STDIZED ERRORS WITH VARIABLES
+(SCATTER PLOT OF STANDARDIZED RESIDUALS WITH INDEPENDENT VARIABLES TO CHECK FUNNEL IN/OUT SHAPE,  
+SAME WITH STANDARDIZDED PREDICTED VALUES  
+OFTEN LEADS TO TRANSFORMATION OF DEPENDENT VARIABLE, CAN TIE IT BACK TO SKEWED DISTRIBUTION  
+OF DEPENDENT);  
+OLS DOES NOT GIVE BEST ESTIMATES,STD.ERROR WOULD BE HIGH, TREATMENT IS WEIGHTED OLS (USED IN GLMS) AS OLS GIVES  
+EQUAL WEIGHT TO ALL OBSERVATIONS, ALSO GIVES BIASED STD. ERRORS OF B'S (DEFLATES) SO RELIABILITY OF
+T TESTS IS IN QUESTION
+6.1.3 MULTICOLINEARITY: 
+PERFECT MC : NOT POSSIBLE TO ESTIMATE COEFFICIENTS 
+HIGH BUT NOT PERFECT : VIF >1, CONFLICT IN F TEST AND T TEST; INFLATED STD. ERRORS, CAN REJECT SIGNIFICANT VARS.;
+DROP VARIABLES, CONSOLIDATE, INCREASE SAMPLE SIZE
+6.1.4 AUTOCORELATION: DURBIN WATSOM TEST, D = 2 THEN NO AC; ADD VARIABLES TO REMOVE AC, USE DUMMY VARS
+
+### 6.2 VALIDATE HYPOTHESIS 
+6.2.1WHY DO F TEST
+6.2.2 T TEST - INDIVIDUAL B IS O WHILE OTHERS ARE NON ZERO OR ZERO, THAT IS WHY  
+Under Null Hyp. B = 0 , i.e population parameter is o, so from multiple SRFs, the mean of Bs will  
+be equal to population mean i.e 0. Std. error of this distribution of B, needs using standard deviation  
+of B from the same, hence use t statistic.  
+6.2.3 RESIDUAL TESTS
+SPECIFICATION BIAS CAN BE PICKED UP, LIKE NON LINEAR RELATIONSHIPS
+TEST FOR NORMALITY AND HOMSCEDASTICITY ALREADY DISCUSSED
+
+### 6.3 TRANSFORMATIONS
+NECESSARY FOR HETEROSCEDASTICITY, NORMLITY, NON LINEAR RELATIONSHIP
+####6.3.1 GUIDELINES FOR TRANSFORMATION TO APPLY  
+FOR HETEROSCEDASTICITY
+FOR LINEARITY 
+
+##7. VARIABLE SELECTION
+###7.1 HOW TO SEE EFFECT OF ADDING/ REMOVING A VARIABLE
+####7.1.1 USING CONCEPT OF PART AND PARTIAL CORRELATIONS
+ADDING A VARIABLE IMPROVES R2 EQUAL TO SQ. OF SEMI-PARTIAL CORRELATION
+####7.2 HOW TO TEST OF VARIABLE SHOULD BE ADDED
+USE ADJUSTED R SQUARE
+ESS/ TSS -> USE OF DF  -> ADJ RSQ =   1- (RSS/N-K-1)/(TSS/N-1)
+%AGE DECRREASE IN RSS SHOULD BE MORE THAN % DECREASE IN DF BY ADDING VARIABLE TO DECREASE ADJ. R2
+####7.3 PARTIAL F TEST FOR A BUNCH OF VARIABLES
+WHAT IS THE Hypothesis
+### NOTE : F TEST FOR VARIABLE SELECTION RELIES ON TESTING THE HYPOTHESIS THAT A DECREASE 
+IN RSS IS ACCOMPISHED THAT IS NOT A MATTER OF CHANCE. 
+BUT, IT DOES NOT ACCOUNT FOR AN INCREASE IN VARIANCE BY ADDING OF THE VARIABLE IF F TEST SUGGESTS SO,  
+TEST FOR BIAS/VARIANCE IS ENTIRELY DIFFERENT DONE 
+
+##8. ESTIMATE STANDARD ERROR OF REGRESSION I.E SD OF REGRESSION
+MSE I.E  RSS/N-K-1 IS AN UNBIASED ESTIMATOR OF VARIANCE OF THE REGRESSION
+##9. GOODNESS OF FIT MEASURES - LIMITATIONS OF RSQ FOR SELECTION
+##10. HOW EQUATION IS USED FOR PREDICTION
+### variance of yhat vs variance of E(Y|Xi)
+
+SECTION B
+
+# MODELING STRATEGY WITH REGRESSION
+## DATA SELECTION
+## DATA QUALITY
+## DATA SAMPLING INTO TRAIN, TEST AND VAL or WHEN CAN WE USE CROSS VALIDATION - WHY?
+## EDA - UNIVARIATE, BIVARIATE, CORRELATIONS, EXTREME VALUES CAPPING
+AGAIN THIS PART IS MEANT TO ASSIST IN FORMULATING THE RELATIONSHIP
+## FEATURE ENGINEERING BASED ON EDA, BUSINESS KNOWLEDGE, ITERATIONS
+## VARIABLE SELECTION STRATEGY
+### TRADITIONAL - FORWARD, BACKWARD AND MIXED SELECTION, SHORTCOMINGS
+#### Uses Partial F test
+### NEW - LASSO
+## MODEL FITTING - UNDERSTANDING LOSS FUNCTIONS
+## BIAS VS VARIANCE TRADE OFF -  MODELS PERFORMANCE ON A TEST SET USING AN ASSESSMENT CRITERIA
+### MAKE MULTIPLE MODELS TO REDUCE SPEC. BIAS AS YOU LEARN AND BETTER HYPOTHESIS  
+USE CV AND AN ASSESSMENT MEASURE LIKE MSE, AND DERIVE THE MEAN AND SD. OF THE MSE  
+THEN CHOOSE THE SIMPLEST MODEL WITHIN 1 SD. OF THE MSE OF MODEL WITH LOWEST MSE  
+
+### ASSESSMENT METRIC TO EVALUATE BEST MODEL
+AIC, BIC, MSE, DEVIANCE
+
+# OTHER STRATEGIES WITH REGRESSION FOR PRICING
+## ADDING CONSTRAINTS OF MONOTONICITY OF COEFFICIENT FOR A FACTOR VARIABLES
+As no. of faults increase, the coefficient should increase
+## ADDING INTERACTIONS TO PROVIDE BENEFITS
+AS NO. OF FAULTS INCREASE, BUT SO DO NUMBER OF CARS ON POLICY, SHOULD PROVIDE BENEFIT
+So, add an interaction variable
+## DELIBERATELY KEEPING SOME CATEGORICAL VARIABLES INSTEAD OF CONTINUOUS TO AVOID TOO THIN SEGMENTATION  
+## FOR COMPETITIVE ADVANTAGE
+Age of drivers could be continuous,and the premium on policy will change at end of policy period due  
+to increase in age if it were continuous, may not if it were categorical, and birthday lies in the  
+current policy period.   
+You may want to do thin segmentatin on variables that have very high propensity for predicting risk
+## TESTING FOR DISCRIMINATION USING INTERACTION
+Can no. of females on policy be used for pricing, may be only along with no, of males?
+## USING AN OFFSET TO FIX THE BASE PRICE USING A SEPARATE MODEL
+
+
+
+
+```{r}
+
+```
+
