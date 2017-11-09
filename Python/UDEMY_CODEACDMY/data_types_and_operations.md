@@ -1,6 +1,11 @@
 # Commenting
 Use '#' for a single line of comment, Anything within three quotes is a comment ‘’’ ‘’’
 
+# Libraries
+#importing some libraries and using them  
+import math  
+math.sqrt(F)  
+
 # Types of variables/fundamental data types
 Four types considered for being relevant to Data science:  
 1.	Integer  
@@ -11,12 +16,7 @@ Four types considered for being relevant to Data science:
 •	 type() can be used to check type of variable, ‘=’ is used for assignment   
 •	 function to coerce int(), long(),float(),str()  
 
-# Working with notebook:  
-•	The working space is a cell, you can type code and hit ‘Shift +Enter’ to execute  
-•	Printing can be done by executing a variable name  
-•	Use of Esc, Enter to toggle between cells, edit cells, and re-execute  
-•	Use of Markdown to create separation b/w cells  
-Arithmetic Operations on variables  
+# Arithmetic Operations  
 A=3  
 B=5  
 C= A+B  
@@ -40,11 +40,6 @@ bool
 '#==,!= or <>'  for comparison  
 '#>,< ,<=,>='  
 '# and, or, not' are logical operators, unlike &,| in R  
-
-# Libraries
-#importing some libraries and using them  
-import math  
-math.sqrt(F)  
 
 # Operations on strings
 i="I"  
