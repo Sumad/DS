@@ -41,8 +41,8 @@ def plotfun (data,nameslist):
         
         plotfun(Salary,["JoeJohnson","ChrisBosh","KevinDurant"])
         
-        import matplotlib.pyplot as plt
-        #Functional Programming aspects
+import matplotlib.pyplot as plt
+#Functional Programming aspects
 # Vectorizing function by making use of filter, map, recuce functions
 def fun(x):
     y=(x>2) and (x**2>9)
@@ -54,18 +54,18 @@ def fun2(x):
     return y
     map(fun2,[1,3,5])
     
-    def fun3(x,y):
-    return(x+y)
+def fun3(x,y):
+  return(x+y)
     
-    reduce(fun3,[1,5,2,5])
+reduce(fun3,[1,5,2,5])
     
-    x= ['Sumad','Sudarshan','Manju','Bhanu','Rock','Rochana','ab','abc']
+x = ['Sumad','Sudarshan','Manju','Bhanu','Rock','Rochana','ab','abc']
     
-     filter(lambda x:len(x)>4,x)
+filter(lambda x:len(x)>4,x)
      
-     z=[12, 15, 18, 20, 21, 24]
+z=[12, 15, 18, 20, 21, 24]
      
-     t=map(lambda x:x**3, z)
+t=map(lambda x:x**3, z)
 print t
 print (type(t))
 
