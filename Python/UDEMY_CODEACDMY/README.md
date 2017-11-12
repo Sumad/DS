@@ -1,4 +1,4 @@
-# Chapter Organization
+# Organization of notebooks in dir notebooks
 1.	Installing Python  
 2.	Data types in Python and commenting  
 3.	Operators and Operations : arithmetic, Boolean  
