@@ -9,3 +9,7 @@
 *.ppt
 *.pps
 *.pptx
+
+#Directory#
+.ipynb_checkpoints/
+
