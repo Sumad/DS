@@ -1,0 +1,135 @@
+# http://www.statmethods.net/stats/regression.html
+
+setwd("C:/Users/tomal.biswas/Desktop/Linear demo")
+
+#install.packages("car")
+library(car)
+library(data.table)
+library(sqldf)
+library(tidyr)
+library(dplyr)
+
+raw_data <- read.csv('Data_final.csv',stringsAsFactors = FALSE)
+
+names(raw_data) <- tolower(names(raw_data))
+
+#objective: to predict CRIM - crime rate in the city of boston based on 
+
+#1. CRIM      per capita crime rate by town on a scale of 100
+#2. ZN        proportion of residential land zoned for lots over 
+#25,000 sq.ft.
+#3. INDUS     proportion of non-retail business acres per town
+#4. CHAS      Charles River dummy variable (= 1 if tract bounds 
+#                                           river; 0 otherwise)
+#5. NOX       nitric oxides concentration (parts per 10 million)
+#6. RM        average number of rooms per dwelling
+#7. AGE       proportion of owner-occupied units built prior to 1940
+#8. DIS       weighted distances to five Boston employment centres
+#9. RAD       index of accessibility to radial highways
+#10. TAX      full-value property-tax rate per $10,000
+#11. PTRATIO  pupil-teacher ratio by town
+#12. B        1000(Bk - 0.63)^2 where Bk is the proportion of blacks 
+#by town
+#13. LSTAT    % lower status of the population
+
+
+#nomissing values
+summary(raw_data)
+
+#outliers
+quantile(raw_data$ptratio,c(0.95,0.99,1))
+quantile(raw_data$b,c(0.95,0.99,1))
+quantile(raw_data$lstat,c(0.95,0.99,1))
+
+
+
+#dev and val samp - 70-30 split
+set.seed(100)
+temp<-raw_data
+temp$rand<-runif(nrow(temp))
+dev<-temp %>% filter (rand<=0.7)
+val<-temp %>% filter (rand>0.7)
+
+
+#correlation analysis
+correl<-cor(dev) 
+correl<-as.data.frame(correl)
+
+
+#PLACE TO TRY DIFFERENT FUNCTIONAL FORMS OF VARIABLES 
+#AND SEE CORRELATION ANALYSIS AGAIN
+
+
+#running regression on dev sample based on correlated variables
+fit <- lm(crim ~ age + lstat + tax, data=dev)
+summary(fit)
+vif(fit)
+#OR use stepwise regression for a more automated selection of variables
+
+# Stepwise Regression
+library(MASS)
+fit <- lm(crim ~ age + indus + lstat + tax, data=dev)
+step <- stepAIC(fit, direction="both")
+step$anova # display results
+anova(step)
+
+#Selected model after first run based on stepwise
+fit <- lm(crim ~ age + lstat + tax, data=dev)
+
+#check VIF DW
+vif(fit)  #VIF < 2
+durbinWatsonTest(lm(crim ~ age + lstat + tax, data=dev))
+
+
+# Other useful functions 
+anova(fit) # anova table 
+summary(fit) # show results
+coefficients(fit) # model coefficients
+
+#confint(fit, level=0.95) # CIs for model parameters 
+fitted(fit) # predicted values
+residuals(fit) # residuals
+
+#vcov(fit) # covariance matrix for model parameters 
+
+abc<-influence(fit) # regression diagnostics
+data<-abc$wt.res
+
+
+#Diagnostic Plots
+#Diagnostic plots provide checks for heteroscedasticity, normality, and influential observerations.
+# diagnostic plots 
+layout(matrix(c(1,2,3,4),2,2)) # optional 4 graphs/page 
+plot(fit)
+
+
+# Beta stablity
+
+fit_val <- lm(crim ~ age + lstat + tax, data=val)
+coefficients(fit_val) # model coefficients
+coefficients(fit) # model coefficients
+#compare both sets of coefficietns for consitent betas(within +/- 20% deviance)
+summary(fit_val) # show results
+
+#score validation sample using finalised dev model
+val_score<-predict(fit, val)
+
+#Find R square, actual vs predicted and MAPE
+val_new<-as.data.table(val[,"crim"])
+val_new$pred<-val_score
+val_new$error<-val_new$V1-val_new$pred
+val_new$error_square<-val_new$error^2
+val_new$temp<-mean(val_new$V1)
+val_new$tss<-(val_new$V1-val_new$temp)^2
+
+Rsq<- 1-sum(val_new$error_square)/sum(val_new$tss)
+
+#MAPE_VAL
+val_new$abs_perc_err<-abs(val_new$error/val_new$V1)
+temp<-val_new %>% filter(abs_perc_err != Inf)
+
+MAPE<-mean(temp$abs_perc_err)
+
+# actual vs predicted based on sorting Y actul in accending order 
+#and representing mean(actual) vs mean(predicted) in deciles
+
