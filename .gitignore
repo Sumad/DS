@@ -3,12 +3,15 @@
 *.csv
 *.xls
 *.xlsx
+*.doc
+*.docx
 
-# logs #
-*.log
 *.ppt
 *.pps
 *.pptx
+
+# logs #
+*.log
 
 #Directory#
 .ipynb_checkpoints/
