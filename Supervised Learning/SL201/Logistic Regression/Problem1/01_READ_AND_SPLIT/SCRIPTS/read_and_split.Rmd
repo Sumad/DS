@@ -1,0 +1,84 @@
+---
+title: "Untitled"
+author: "Sumad Singh"
+date: "November 20, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#01. LOAD NEEDED LIBRARIES
+
+library(data.table)   # For reading csv
+library(dplyr)        # For manipulating data frames  
+library(car)          # To use function
+library(rlang)        # To use dynamic variables in dplyr summarize function
+
+```
+
+```{r}
+#02. DEFINE USER SPECIFIC VARIABLES 
+home.dir <- "C:/Users/sumad.singh"
+
+project.dir <- "Documents/DS/Supervised Learning/SL201/Logistic Regression/Problem1"
+
+# Keep factor variables, if any as characters
+colclasses <- c(rep("numeric",12),"integer")
+
+col.names <- c("Internal_rating","Credit_rating","Age","salary",             
+                    "Overall_spend","Survey_score","Last_quarter_spend","Past_purchases_band",
+                    "Premium_score","Purchase_capacity","net_worth","Bank_balance",       
+                    "Responder")
+
+```
+
+```{r}
+#03. READ DATA
+
+data <- fread(input = file.path(home.dir, project.dir, "Logistic Regression Data_Responder.csv"),
+              na.strings = c("",NA), colClasses = colclasses)
+
+# Fix names in dataset
+
+colnames(data) <- col.names
+
+# BASIC CHECKS 
+cat ("The dimensions of dataset are" , dim(data),"\n")
+cat("The proportion of positives and negatives are", prop.table(table(x = data$Responder)),"\n")      
+```
+
+```{r}
+#04. DIVIDE DATA INTO TRAIN(70%) AND VAL(30%), each haveing the positive: negative ration as in the dataset
+
+set.seed(101)
+pos <- nrow(data[data$Responder == 1,])
+neg <- nrow(data[data$Responder == 0,])
+data_p <- data %>% filter(Responder == 1) %>% mutate(index = 1:pos)
+data_n <- data %>% filter(Responder == 0) %>% mutate(index = 1:neg)
+
+select.index.pos <- sample(x = data_p$index,size = round(0.7*pos,0),replace = FALSE)
+select.index.neg <- sample(x = data_n$index,size = round(0.7*neg,0),replace = FALSE)
+
+train_p <- data_p[select_index_pos,]
+train_n <- data_n[select_index_neg,]
+
+train <- as.data.frame(rbind(train_p,train_n))
+
+test_p <- data_p[-select_index_pos,]
+test_n <- data_n[-select_index_neg,]
+
+test <- as.data.frame(rbind(test_p,test_n))
+
+# table(test$Responder)
+# 0     1 
+# 22447 1493 
+# 
+# table(train$Responder)
+# 0     1 
+# 52375  3482 
+
+```
+

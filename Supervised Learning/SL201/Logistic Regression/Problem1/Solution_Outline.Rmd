@@ -10,25 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-# Read Data
-library(data.table)
-library(dplyr)
-library(car)
-library(rlang)
-
-dir <- "/Users/sumad/Documents/DS/Supervised Learning/SL201/Logistic Regression/Problem1"
-data <- fread(input = file.path(dir, "Logistic Regression Data_Responder.csv"),na.strings = c("",NA),
-      colClasses = c(rep("numeric",12),"integer"))
-
-# Fix names in dataset
-
-colnames(data) <- c("Internal_rating","Credit_rating","Age","salary",             
-                    "Overall_spend","Survey_score","Last_quarter_spend","Past_purchases_band",
-                    "Premium_score","Purchase_capacity","net_worth","Bank_balance",       
-                    "Responder")
 ```
 
-### DDESCRIBE PROBLEM AND  VARIABLES
+### DESCRIBE PROBLEM AND  VARIABLES
 
 Develop a model to predict the probability of responding. The model will be used to prioritize contact
 with the customers
@@ -36,7 +20,7 @@ with the customers
 2. Response rate is 6%
 
 ```{r}
-prop.table(table(x = data$Responder))
+# prop.table(table(x = data$Responder))
 ```
 
 3.Summary of variables :All variables are numeric  
