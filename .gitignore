@@ -13,6 +13,9 @@
 # logs #
 *.log
 
+#videos
+*.mp4
+
 #Directory#
 .ipynb_checkpoints/
 
