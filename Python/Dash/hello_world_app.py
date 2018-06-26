@@ -10,7 +10,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 
 '''Part 1: Visual components of the app are described using 
-visual components in dcc and dtc'''
+visual components in dcc and html'''
 
 app = dash.Dash()
 
