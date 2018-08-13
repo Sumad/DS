@@ -5,7 +5,7 @@
 *.xlsx
 *.doc
 *.docx
-
+*.txt
 *.ppt
 *.pps
 *.pptx
