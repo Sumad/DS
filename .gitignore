@@ -26,6 +26,9 @@
 .ipynb_checkpoints/
 Spark/Spark_Manipal/Data
 Spark/Spark_Manipal/Scala
+Spark/Spark_Manipal/Exercises/
+Spark/Spark_Manipal/Scala-SparkMLLIB-master/
+Spark/Spark_Manipal/sparkstreaming/
 
 #History files
 .Rhistory
