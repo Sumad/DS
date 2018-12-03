@@ -24,6 +24,8 @@
 
 #Directory#
 .ipynb_checkpoints/
+Spark/Spark_Manipal/Data
+Spark/Spark_Manipal/Scala
 
 #History files
 .Rhistory
