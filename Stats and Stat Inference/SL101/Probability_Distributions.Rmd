@@ -158,7 +158,7 @@ from the mean
 
 ##### PDF and Parameters of Normal Distribution
 
-$ PDF = f(x) = e^{{\frac{x-\mu}{\sigma}}}^2$  
+$ PDF = f(x) = e^{\frac{x-\mu}{\sigma}}^2$  
 
 ![](http://latex.codecogs.com/gif.latex?%24%20PDF%20%3D%20f%28x%29%20%3D%20%24%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%5Csigma%7D%20e%5E%7B-0.5%28%5Cfrac%7Bx-%5Cmu%7D%7B%5Csigma%7D%29%5E2%7D%24)  
 
